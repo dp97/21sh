@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   21sh.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/24 10:17:14 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/05 12:54:26 by dpetrov          ###   ########.fr       */
+/*   Created: 2017/12/05 11:32:59 by dpetrov           #+#    #+#             */
+/*   Updated: 2017/12/05 12:55:19 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef SH21_H
+# define SH21_H
+# define STDIN	STDIN_FILENO
+# define STDOUT	STDOUT_FILENO
+# define STDERR	STDERR_FILENO
+# include "libft.h"
+# include <termios.h>
 
-int		main(int argc, char **argv, char **env)
-{
-	(void)argc;
-	(void)argv;
-	(void)env;
-	find();
-	tty_enable_raw();
-	ft_loop(env);
-	tty_disable_raw();
-	return (0);
-}
+#include <printf.h>
+
+void	fatal(char *pre_message, char *message);
+void	find();
+/*
+**	tty.c
+**		- Handle the terminal device.
+*/
+void	tty_enable_raw();
+void	tty_disable_raw();
+#endif

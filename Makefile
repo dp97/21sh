@@ -6,7 +6,7 @@
 #    By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/06 09:37:16 by dpetrov           #+#    #+#              #
-#    Updated: 2017/12/01 20:03:23 by dpetrov          ###   ########.fr        #
+#    Updated: 2017/12/05 11:56:56 by dpetrov          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,9 @@ SRCS	= main.c ft_loop.c execute.c launch.c \
 		  parser/home_symbol.c parser/parser.c \
 		  builtins/env.c builtins/echo.c builtins/cd.c builtins/exit.c \
 		  builtins/setenv.c builtins/history.c \
-		  free_mem/free_2d.c free_mem/free_1d.c free_mem/free_the_chain.c
+		  free_mem/free_2d.c free_mem/free_1d.c free_mem/free_the_chain.c \
+		  \
+		  21sh/tty.c
 
 OBJS	= $(SRCS:.c=.o)
 
@@ -37,21 +39,25 @@ IN_LIB	= -L./libft -lft
 .PHONY: all clean fclean re
 
 all: $(NAME)
+	@make -C libft/
 
 $(NAME): $(OBJ)
-	@make -C libft/
 	@$(CC) $(CFLAGS) $(IN_PATH) $(SRC) -o $(NAME) $(IN_LIB)
-	@echo "\033[32mMSH:\t\t:BUILDED [ ✔ ]\033[0m"
+	@echo "\033[32m21SH:\t\t:BUILDED [ ✔ ]\033[0m"
+
+$(OBJ_PATH)%.o : $(SRC_PATH)%.c includes/sh21.h
+	@mkdir -p $(OBJ_PATH)
+	$(CC) $(CFLAGS) $(INCDIR) -c $< -o $@
 
 clean:
 	@make -C libft/ clean
 	@rm -rf $(OBJ_PATH)
-	@echo "\033[0;33mMSH:\t\t:CLEANED\033[0m"
+	@echo "\033[0;33m21SH:\t\t:CLEANED\033[0m"
 
 fclean: clean
 	@make -C libft/ fclean
 	@rm -f $(NAME)
-	@echo "\033[0;33mMSH:\t\t:FUlL CLEANED\033[0m"
+	@echo "\033[0;33m21SH:\t\t:FUlL CLEANED\033[0m"
 
 re: fclean all
 

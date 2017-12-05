@@ -6,13 +6,12 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/20 16:46:42 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/03/03 17:30:58 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/05 11:56:34 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-# include <unistd.h>
 # include <stdio.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
@@ -20,6 +19,7 @@
 # include <termios.h>
 # include <fcntl.h>
 # include "libft.h"
+# include "sh21.h"
 # include <stdlib.h>
 # include <time.h>
 
