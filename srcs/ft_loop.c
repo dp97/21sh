@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/06 16:42:25 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/06 11:55:02 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/06 18:38:35 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,15 @@ void		ft_loop(char **env)
 	int		status;
 
 	counter = 1;
+	signal(SIGINT, sig_handler);
 	position = 0;
 	g_sig = 0;
 	set_null_id(history);
 	while (1)
 	{
 		if (g_sig != 2)
-			write(1, "$> ", 3);
+			ft_putstrstr("\n\r", PROMPT);
 		g_sig = 0;
-		signal(SIGINT, sig_handler);
 		if (check_if_good(history, &position, counter))
 			continue;
 		if ((status = execute_queue(history, env, position)) == 1)

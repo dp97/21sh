@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/06 12:31:23 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/06 14:16:28 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/06 18:29:44 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,23 @@ static void	ft_mode(char *req)
 	tputs(code, 1, ft_puti);
 }
 
-void	del_char()
+/*
+**	Delete a char from input stream.
+**	If 'which' is 1 then left char from cursor is deleted,
+**	else the char at cursor position is deleted.
+*/
+void	del_char(t_cupos *cursor, short which)
 {
-	//ft_mode("dm");
-	//ft_mode("dc");
-	tputs(tgetstr("dc", 0), 1, ft_puti);
-//	ft_mode("ed");
+	if (which && move_cursor_left(cursor))
+	{
+		tputs(tgetstr("dc", 0), 1, ft_puti);
+		(*cursor).col_end--;
+	}
+	else if (which == 0 && (*cursor).col < (*cursor).col_end)
+	{
+		tputs(tgetstr("dc", 0), 1, ft_puti);
+		(*cursor).col_end--;
+	}
 }
 
 void	ft_insert(char key)

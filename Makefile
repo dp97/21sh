@@ -6,7 +6,7 @@
 #    By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/06 09:37:16 by dpetrov           #+#    #+#              #
-#    Updated: 2017/12/06 13:37:27 by dpetrov          ###   ########.fr        #
+#    Updated: 2017/12/06 18:07:15 by dpetrov          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ SRCS	= main.c ft_loop.c execute.c launch.c \
 		  free_mem/free_2d.c free_mem/free_1d.c free_mem/free_the_chain.c \
 		  \
 		  21sh/tty.c 21sh/ft_readline.c 21sh/detect_ctrl.c 21sh/exec_ctrl.c \
-		  21sh/init.c
+		  21sh/init.c 21sh/arrows.c
 
 OBJS	= $(SRCS:.c=.o)
 
