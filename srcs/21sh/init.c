@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/24 10:17:14 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/06 13:37:54 by dpetrov          ###   ########.fr       */
+/*   Created: 2017/11/22 16:57:55 by dpetrov           #+#    #+#             */
+/*   Updated: 2017/12/06 13:39:21 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "sh21.h"
 
-int		main(int argc, char **argv, char **env)
+void		init_terminal_data(void)
 {
-	(void)argc;
-	(void)argv;
-	(void)env;
-	find();
-	init_terminal_data();
-	tty_enable_raw();
-	ft_loop(env);
-	tty_disable_raw();
-	return (0);
+	char	*term_type;
+	int		success;
+
+	if ((term_type = getenv("TERM")) == NULL)
+		fatal(NULL, "init: Env 'TERM' not defined.\n");
+	success = tgetent(0, term_type);
+	if (success < 0)
+		fatal(NULL, "init: Could not access terminfo database\n");
+	else if (success == 0)
+		fatal(NULL, "init: Terminal type is not defined\n");
 }

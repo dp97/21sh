@@ -6,37 +6,13 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 13:03:01 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/05 17:27:37 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/06 11:51:40 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char		*my_read_line(void)
-{
-	char	*line;
-	char	key;
 
-	/*line = NULL;
-	if ((get_next_line(STDIN_FILENO, &line)) < 0)
-		ft_error("error geting line Sir !");
-	else
-		ft_putstr_fd(line, STDIN_FILENO);*/
-	line = NULL;
-	while (read(STDIN_FILENO, &key, 1) && key != '\r')
-	{
-		if (iscntrl(key)) {
-			printf("%d\n", key);
-		} else {
-			//printf("%d ('%c')\n", key, key);
-			if (ft_strapnd(&line, key))
-				printf("error");
-			else
-				printf("[%s]", line);
-		}
-	}
-	return (line);
-}
 
 void		sig_handler(int signo)
 {

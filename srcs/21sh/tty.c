@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/05 11:32:09 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/05 13:23:45 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/06 13:34:53 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,11 @@ void				tty_enable_raw()
 	struct termios	raw;
 
 	tcgetattr(STDIN_FILENO, &raw);
-	raw.c_iflag &= ~(ICRNL);
-	raw.c_lflag &= ~(ECHO | ICANON);
+	raw.c_iflag &= ~(ICRNL | IXON);
+	raw.c_oflag &= ~(OPOST);
+	raw.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
+	raw.c_cc[VMIN] = 1;
+	raw.c_cc[VTIME] = 0;
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
 }
 
@@ -42,7 +45,8 @@ void				tty_disable_raw()
 	struct termios	cooked;
 
 	tcgetattr(STDIN_FILENO, &cooked);
-	cooked.c_iflag |= ICRNL;
-	cooked.c_lflag |= ECHO | ICANON;
+	cooked.c_iflag |= ICRNL | IXON;
+	cooked.c_oflag |= OPOST;
+	cooked.c_lflag |= ECHO | ICANON | IEXTEN | ISIG;
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &cooked);
 }

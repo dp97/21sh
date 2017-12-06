@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/05 15:43:01 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/05 17:33:01 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/06 12:20:40 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char		*ft_strapnd(char *s, char c)
 		ft_strcpy(new, s);
 		new[len] = c;
 		new[len + 1] = '\0';
-		//free(*s);
+		free(s);
 	}
 	return (new);
 }

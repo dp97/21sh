@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/06 16:42:25 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/03/04 13:49:23 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/06 11:55:02 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	check_if_good(t_cmd history[], int *position, int counter)
 	}
 	history[*position].id = counter;
 	capture_time(history[*position].time);
-	if ((history[*position].line = my_read_line()) == NULL)
+	if ((history[*position].line = ft_readline()) == NULL)
 		return (1);
 	if (ft_strcmp(history[*position].line, "") == 0)
 	{
