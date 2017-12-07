@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/06 15:23:05 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/06 18:34:28 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/07 12:46:08 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,5 @@ t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 char				*ft_str_case(char *s, int up_or_low);
 char				*ft_strapnd(char *s, char c);
 void				ft_putstrstr(char *s1, char *s2);
+void				ft_foreach(char const *s, void (*f)(char));
 #endif

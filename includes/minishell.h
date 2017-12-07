@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/20 16:46:42 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/05 11:56:34 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/07 18:02:09 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <termios.h>
 # include <fcntl.h>
 # include "libft.h"
-# include "sh21.h"
+# include "ft_readline.h"
 # include <stdlib.h>
 # include <time.h>
 

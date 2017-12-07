@@ -6,22 +6,21 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/06 12:22:44 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/06 20:08:48 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/07 18:00:07 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sh21.h"
+#include "ft_readline.h"
 
-
-void	detect_ctrl(char *ctrl, t_cupos *cursor)
+void	detect_ctrl(char *ctrl, t_cupos *cursor, t_chcont **head, t_chcont *history)
 {
 //	printf("{%c}", ctrl);
 	if (ctrl[0] == 127)
-		del_char(cursor, 1);
+		del_char(cursor, 1, head);
 	else if (ctrl[0] == 3)
 		ft_putstrstr("\n\r", PROMPT);
 	else if (ctrl[0] == 4)
-		del_char(cursor, 0);
+		del_char(cursor, 0, head);
 	else if (ctrl[0] == 6)
 	{
 		char c;
@@ -33,7 +32,7 @@ void	detect_ctrl(char *ctrl, t_cupos *cursor)
 		tty_disable_raw();
 		exit(EXIT_SUCCESS);
 	}
-	if_keypad(ctrl, cursor);
+	if_keypad(ctrl, cursor, history);
 
 	//char *key = tgetstr("kl", 0);
 	//printf("/%d-%d-%d-%d-%d/", key[0], key[1], key[2], key[3], key[4]);

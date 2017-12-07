@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   ft_log.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/22 16:57:55 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/06 13:39:21 by dpetrov          ###   ########.fr       */
+/*   Created: 2017/12/07 11:20:17 by dpetrov           #+#    #+#             */
+/*   Updated: 2017/12/07 18:00:48 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sh21.h"
+#include "ft_readline.h"
 
-void		init_terminal_data(void)
+/*
+**	Logs the errors in file pointed by LOG_PATH macro.
+*/
+void	ft_log(char *msg, short critical)
 {
-	char	*term_type;
-	int		success;
-
-	if ((term_type = getenv("TERM")) == NULL)
-		fatal(NULL, "init: Env 'TERM' not defined.\n");
-	success = tgetent(0, term_type);
-	if (success < 0)
-		fatal(NULL, "init: Could not access terminfo database\n");
-	else if (success == 0)
-		fatal(NULL, "init: Terminal type is not defined\n");
+	int			fd;
+	
+	fd = open(LOG_PATH, O_WRONLY | O_APPEND | O_CREAT, S_IRUSR | S_IWUSR);
+	if (fd < 0)
+		return ;
+	if (critical)
+		write(fd, "CRITICAL!!! -->", 15);
+	write(fd, msg, ft_strlen(msg));
+	write(fd, "\n", 1);
+	close(fd);
 }
