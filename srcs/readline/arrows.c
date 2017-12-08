@@ -48,14 +48,14 @@ static void	ft_history(t_cupos *cursor, t_cmds *history, short up)
 	if (up)
 	{
 		if (history->next == NULL)
-			return;
+			return ;
 		history = history->next;
 		change_input(cursor, history->value);
 	}
 	else
 	{
 		if (history->prev == NULL)
-			return;
+			return ;
 		history = history->prev;
 		change_input(cursor, history->value);
 	}

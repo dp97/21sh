@@ -20,11 +20,13 @@ char			*ft_readline(void)
 	char		key[5];
 
 	history = ft_init_history();
+
 	if (ft_cmdprepend(&history, ft_cmdnew(NULL)))
 	{
 		ft_log("Failed to initiate 'line'.", 1);
 		return (NULL);
 	}
+
 //	find();
 	init_terminal_data();
 	tty_enable_raw();
@@ -35,6 +37,7 @@ char			*ft_readline(void)
 
 	tputs(tgetstr("ks", 0), 1, ft_puti);
 	ft_strclr(key);
+	ft_putstrstr("\n\r", PROMPT);
 	while (read(STDIN_FILENO, &key, 5) && key[0] != '\r')
 	{
 //		printf("(%d-%d-%d-%d-%d)", key[0], key[1], key[2], key[3], key[4]);

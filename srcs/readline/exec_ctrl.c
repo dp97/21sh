@@ -62,9 +62,11 @@ void	ft_insert(char *line, t_cupos *cursor)
 {
 	int	len;
 
-	len = ft_strlen(line);
+	len = 0;
 	ft_mode("im");
-	write(STDIN_FILENO, line, len);
+	//write(STDIN_FILENO, line, len);
+	while (line[len])
+		write(STDIN_FILENO, &line[len++], 1);
 	tputs(tgetstr("ei", 0), 1, ft_puti);
 	(*cursor).col += len;
 	(*cursor).col_end += len;

@@ -47,7 +47,7 @@ lib:
 	@make -C libft/
 
 $(NAME): $(OBJ) $(DEPS)
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LFLAGS)
+	@$(CC) -o $(NAME) $(OBJ) $(LFLAGS)
 	@echo "\033[32m21SH:\t\t:LINKED [ ✔ ]\033[0m"
 
 $(OBJ_PATH)%.o : $(SRC_PATH)%.c includes/*.h
@@ -56,7 +56,7 @@ $(OBJ_PATH)%.o : $(SRC_PATH)%.c includes/*.h
 	@mkdir -p $(OBJ_PATH)/parser
 	@mkdir -p $(OBJ_PATH)/free_mem
 	@mkdir -p $(OBJ_PATH)/readline
-	$(CC) $(CFLAGS) $(INCDIR) -c $< -o $@
+	$(CC) $(INCDIR) -c $< -o $@
 
 clean:
 	@make -C libft/ clean

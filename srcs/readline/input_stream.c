@@ -29,6 +29,7 @@ t_cmds		*ft_cmdnew(char *value)
 	}
 	else
 		new->value = NULL;
+	new->prev = NULL;
 	new->next = NULL;
 	return (new);
 }
@@ -95,6 +96,7 @@ int			ft_cmdadd(t_cmds **head, t_cmds *new)
 	{
 		if (tmp->next == NULL)
 		{
+			new->prev = tmp;
 			tmp->next = new;
 			return (0);
 		}
@@ -107,8 +109,8 @@ int				ft_cmdprepend(t_cmds **head, t_cmds *new)
 {
 	if (new == NULL)
 		return (1);
-	new->next = *head;
 	(*head)->prev = new;
+	new->next = *head;
 	*head = new;
 	return (0);
 }
