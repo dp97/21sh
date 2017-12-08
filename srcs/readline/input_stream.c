@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/07 08:51:55 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/07 19:42:25 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/08 09:30:47 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_cmds		*ft_cmdnew(char *value)
 	{
 		if ((new->value = (char *)malloc(sizeof(value))) == NULL)
 		{
-			free(new);
+			ft_memdel((void**)(&new));
 			return (NULL);
 		}
 		ft_strcpy(new->value, value);
@@ -48,8 +48,8 @@ void		ft_cmddel(t_cmds **head, int this)
 		if (todel == NULL)
 			return ;
 		if (todel->value)
-			free(todel->value);
-		free(todel);
+			ft_strdel(&(todel->value));
+		ft_memdel((void**)&todel);
 		return ;
 	}
 	while (this-- && todel)
@@ -61,8 +61,8 @@ void		ft_cmddel(t_cmds **head, int this)
 		return ;
 	prev->next = todel->next;
 	if (todel->value)
-		free(todel->value);
-	free(todel);
+		ft_strdel(&(todel->value));
+	ft_memdel((void**)&todel);
 }
 
 void		ft_purgecmds(t_cmds **head)
@@ -74,9 +74,8 @@ void		ft_purgecmds(t_cmds **head)
 		tmp = *head;
 		*head = (*head)->next;
 		if (tmp->value)
-			free(tmp->value);
-		free(tmp);
-		tmp = NULL;
+			ft_strdel(&(tmp->value));
+		ft_memdel((void**)&tmp);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/06 11:52:07 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/07 19:33:12 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/08 12:33:31 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,15 @@ char			*ft_readline(void)
 	char		key[5];
 
 	line = NULL;
+	find();
+	init_terminal_data();
+	tty_enable_raw();
 	history = ft_init_history();
 	cursor.col_start = ft_strlen(PROMPT);
 	cursor.col = cursor.col_start;
 	cursor.col_end = cursor.col;
 	tputs(tgetstr("ks", 0), 1, ft_puti);
-	ft_bzero(key, 5);
+	ft_strclr(key);
 	while (read(STDIN_FILENO, &key, 5) && key[0] != '\r')
 	{
 //		printf("(%d-%d-%d-%d-%d)", key[0], key[1], key[2], key[3], key[4]);
@@ -35,16 +38,21 @@ char			*ft_readline(void)
 		{
 			//printf("%d ('%c')\n", key, key);
 		//	line = ft_strapnd(line, key);
+
+			if (ft_strichar(&line, cursor.col - cursor.col_start, key[0]))
+				printf("err");
+//			 printf("<%s>", line);
 			ft_insert(key, &cursor);
 		}
 		else
 			detect_ctrl(key, &cursor, NULL, history);
-		ft_bzero(key, 5);
+		ft_strclr(key);
 	}
 
 	ft_update_history(line);
 	free(line);
-	ft_purgecont(&history);
+	ft_purgecmds(&history);
 	tputs(tgetstr("ks", 0), 1, ft_puti);
+	tty_disable_raw();
 	return (NULL);
 }

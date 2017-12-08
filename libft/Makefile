@@ -6,7 +6,7 @@
 #    By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/10/06 13:52:21 by dpetrov           #+#    #+#              #
-#    Updated: 2017/12/07 12:45:54 by dpetrov          ###   ########.fr        #
+#    Updated: 2017/12/08 11:57:21 by dpetrov          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,39 +31,19 @@ LFT_SRCS	= ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_strlen.c \
 		  ft_strsplit.c ft_memchr.c ft_memcmp.c ft_itoa.c ft_lstnew.c \
 		  ft_lstdelone.c ft_lstdel.c ft_lstadd.c ft_lstiter.c ft_lstmap.c \
 		  ft_strndup.c ft_str_case.c ft_strapnd.c ft_putstrstr.c \
-		  ft_foreach.c
+		  ft_foreach.c ft_stredit.c get_next_line.c
 
 LFT_PATH	= srcs/
 LFT_SRC 	= $(addprefix $(LFT_PATH), $(LFT_SRCS))
 IN_LFT		= -I./includes
 
-################# get next line ################
-
-GNL_SRCS	= get_next_line.c
-
-GNL_PATH	= ./gnl/
-GNL_SRC 	= $(addprefix $(GNL_PATH), $(GNL_SRCS))
-IN_GNL		= -I./gnl/includes
-
-################# FT_PRINTF ################
-
-PRINT_SRCS	= ft_printf.c functions.c convert.c util.c print.c color.c \
-			  float.c format_specifiers.c handle_1.c handle_2.c conversion.c \
-			  convert_p.c pre_conversion.c
-
-PRINT_PATH	= ./ft_printf/src/
-PRINT_SRC	= $(addprefix $(PRINT_PATH), $(PRINT_SRCS))
-IN_PRINT	= -I./ft_printf/includes
-
-##################### END ####################
-
 OBJ_PATH	= ./objs/
 
-OBJS 		= $(LFT_SRCS:.c=.o) $(PRINT_SRCS:.c=.o) $(GNL_SRCS:.c=.o)
+OBJS 		= $(LFT_SRCS:.c=.o)
 
 ALL_OBJ		= $(addprefix $(OBJ_PATH), $(OBJS))
 
-IN_ALL		= $(IN_LFT) $(IN_PRINT) $(IN_GNL)
+IN_ALL		= $(IN_LFT)
 
 .PHONY: all clean fclean re
 
@@ -76,15 +56,9 @@ $(NAME): $(ALL_OBJ)
 	@echo "\033[32m\t\t|||   DONE !   |||\033[0m"
 	@echo "\033[32m\t\t||||||||||||||||||\033[0m"
 
-$(OBJ_PATH)%.o: $(LFT_PATH)%.c
+$(OBJ_PATH)%.o: $(LFT_PATH)%.c ./includes/*.h
 	@mkdir -p $(OBJ_PATH)
-	@$(CC) $(IN_ALL) -c $< -o $@
-
-$(OBJ_PATH)%.o: $(PRINT_PATH)%.c
-	@$(CC) $(IN_ALL) -c $< -o $@
-
-$(OBJ_PATH)%.o: $(GNL_PATH)%.c
-	@$(CC) $(IN_ALL) -c $< -o $@
+	$(CC) $(IN_ALL) -c $< -o $@
 
 clean:
 	@rm -rf $(OBJ_PATH)

@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/31 09:43:02 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/03/04 13:48:49 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/08 11:51:08 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void		if_spaced(char *args, char *next_path, int len)
 		len = ft_strlen(next_path);
 		ft_memcpy(&next_path[len], "/", 1);
 		ft_memcpy(&next_path[len + 1], args, ft_strlen(args) + 1);
-		ft_printf("%s\n", next_path);
+		ft_putendl(next_path);
 	}
 }
 

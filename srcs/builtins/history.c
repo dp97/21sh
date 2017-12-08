@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/14 18:13:33 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/02/17 11:02:35 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/08 11:51:38 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int			ft_history(t_cmd **history)
 	}
 	while (counter)
 	{
-		ft_printf("%6d\t%s\t%s\n", (*history)[position].id, \
+		printf("%6d\t%s\t%s\n", (*history)[position].id, \
 				(*history)[position].time, (*history)[position].line);
 		if (++position == FIFO_SIZE \
 				&& (*history)[position - 1].id < (*history)[0].id)

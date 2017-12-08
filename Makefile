@@ -6,7 +6,7 @@
 #    By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/06 09:37:16 by dpetrov           #+#    #+#              #
-#    Updated: 2017/12/07 17:57:40 by dpetrov          ###   ########.fr        #
+#    Updated: 2017/12/08 12:54:37 by dpetrov          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,22 +24,21 @@ SRCS	= main.c ft_loop.c execute.c launch.c \
 		  free_mem/free_2d.c free_mem/free_1d.c free_mem/free_the_chain.c \
 		  \
 		  readline/tty.c readline/ft_readline.c readline/detect_ctrl.c \
-		  readline/exec_ctrl.c readline/history.c\
-		  readline/init.c readline/arrows.c readline/ft_log.c \
-		  readline/input_stream.c
+		  readline/exec_ctrl.c readline/history.c readline/init.c \
+		  readline/arrows.c readline/ft_log.c readline/input_stream.c
 
-OBJS	= $(SRCS:.c=.o)
+OBJS			= $(SRCS:.c=.o)
 
-SRC_PATH	= srcs/
-OBJ_PATH	= objs/
+SRC_PATH	= ./srcs/
+OBJ_PATH	= ./objs/
 INCDIR		= -I includes/ -I libft/includes
 
 SRC 	= $(addprefix $(SRC_PATH), $(SRCS))
-OBJ		= $(addprefix $(SRC_PATH), $(SRCS))
+OBJ		= $(addprefix $(OBJ_PATH), $(OBJS))
 
 LFLAGS	= -Llibft -lft -ltermcap
 
-.PHONY: all clean fclean re
+.PHONY: all lib clean fclean re
 
 all: lib $(NAME)
 
@@ -52,6 +51,10 @@ $(NAME): $(OBJ)
 
 $(OBJ_PATH)%.o : $(SRC_PATH)%.c includes/*.h
 	@mkdir -p $(OBJ_PATH)
+	@mkdir -p $(OBJ_PATH)/builtins
+	@mkdir -p $(OBJ_PATH)/parser
+	@mkdir -p $(OBJ_PATH)/free_mem
+	@mkdir -p $(OBJ_PATH)/readline
 	$(CC) $(CFLAGS) $(INCDIR) -c $< -o $@
 
 clean:

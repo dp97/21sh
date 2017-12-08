@@ -6,13 +6,13 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/06 12:22:44 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/07 18:00:07 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/08 09:07:23 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_readline.h"
 
-void	detect_ctrl(char *ctrl, t_cupos *cursor, t_chcont **head, t_chcont *history)
+void	detect_ctrl(char *ctrl, t_cupos *cursor, t_cmds **head, t_cmds *history)
 {
 //	printf("{%c}", ctrl);
 	if (ctrl[0] == 127)
