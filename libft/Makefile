@@ -6,7 +6,7 @@
 #    By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/10/06 13:52:21 by dpetrov           #+#    #+#              #
-#    Updated: 2017/12/08 11:57:21 by dpetrov          ###   ########.fr        #
+#    Updated: 2017/12/08 16:43:25 by dpetrov          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ CFLAGS	= -Wall -Wextra -Werror
 
 ################# LIBFT ################
 
-LFT_SRCS	= ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_strlen.c \
+SRCS		= ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_strlen.c \
 		  ft_strdup.c ft_strcpy.c ft_strncpy.c ft_strcat.c ft_strncat.c \
 		  ft_strlcat.c ft_strchr.c ft_strrchr.c ft_strstr.c ft_strnstr.c \
 		  ft_strcmp.c ft_strncmp.c ft_atoi.c ft_isalpha.c ft_isdigit.c \
@@ -33,32 +33,30 @@ LFT_SRCS	= ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_strlen.c \
 		  ft_strndup.c ft_str_case.c ft_strapnd.c ft_putstrstr.c \
 		  ft_foreach.c ft_stredit.c get_next_line.c
 
-LFT_PATH	= srcs/
-LFT_SRC 	= $(addprefix $(LFT_PATH), $(LFT_SRCS))
-IN_LFT		= -I./includes
+OBJS        = $(SRCS:.c=.o)
 
+SRC_PATH	= ./srcs/
 OBJ_PATH	= ./objs/
 
-OBJS 		= $(LFT_SRCS:.c=.o)
+SRC 		= $(addprefix $(SRC_PATH), $(SRCS))
+OBJ         = $(addprefix $(OBJ_PATH), $(OBJS))
 
-ALL_OBJ		= $(addprefix $(OBJ_PATH), $(OBJS))
-
-IN_ALL		= $(IN_LFT)
+INCDIR		= -I includes
 
 .PHONY: all clean fclean re
 
 all: $(NAME)
 
-$(NAME): $(ALL_OBJ)
-	@ar rc $(NAME) $(ALL_OBJ)
+$(NAME): $(OBJ)
+	@ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
-	@echo "\033[32m\t\t||||||||||||||||||\033[0m"
-	@echo "\033[32m\t\t|||   DONE !   |||\033[0m"
-	@echo "\033[32m\t\t||||||||||||||||||\033[0m"
+	@echo "\033[32m||||||||||||||||||\033[0m"
+	@echo "\033[32m|||   DONE !   |||\033[0m"
+	@echo "\033[32m||||||||||||||||||\033[0m"
 
-$(OBJ_PATH)%.o: $(LFT_PATH)%.c ./includes/*.h
+$(OBJ_PATH)%.o: $(SRC_PATH)%.c ./includes/*.h
 	@mkdir -p $(OBJ_PATH)
-	$(CC) $(IN_ALL) -c $< -o $@
+	$(CC) $(INCDIR) -c $< -o $@
 
 clean:
 	@rm -rf $(OBJ_PATH)

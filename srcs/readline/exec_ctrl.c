@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/06 12:31:23 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/08 09:09:44 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/08 17:59:40 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,14 @@ int		del_char(t_cupos *cursor, short which, t_cmds **head)
 	position = (*cursor).col - (*cursor).col_start;
 	if (which && move_cursor_left(cursor))
 	{
+		ft_strdchar(&(*head)->value, position - 1);
 		tputs(tgetstr("dc", 0), 1, ft_puti);
 		(*cursor).col_end--;
 		return (1);
 	}
 	else if (which == 0 && (*cursor).col < (*cursor).col_end)
 	{
+		ft_strdchar(&(*head)->value, position);
 		tputs(tgetstr("dc", 0), 1, ft_puti);
 		(*cursor).col_end--;
 		return (1);

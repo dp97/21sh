@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/07 08:54:04 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/07 19:31:20 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/08 17:55:34 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void				ft_purgecmds(t_cmds **head);
 **		- Return 1 on success, 0 on failure.
 */
 int					ft_cmdadd(t_cmds **head, t_cmds *new);
+int					ft_cmdprepend(t_cmds **head, t_cmds *new);
 /*
 **	Delete a container at a given position in list.
 */

@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/09 11:05:51 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/08 11:58:18 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/08 17:18:00 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ size_t		ft_strlen(const char *s)
 	int		i;
 
 	i = 0;
-	while (*s && s[i])
+	while (s && *s && s[i])
 		i++;
 	return (i);
 }

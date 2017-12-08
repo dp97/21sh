@@ -6,7 +6,7 @@
 #    By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/06 09:37:16 by dpetrov           #+#    #+#              #
-#    Updated: 2017/12/08 12:54:37 by dpetrov          ###   ########.fr        #
+#    Updated: 2017/12/08 16:58:30 by dpetrov          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ SRC 	= $(addprefix $(SRC_PATH), $(SRCS))
 OBJ		= $(addprefix $(OBJ_PATH), $(OBJS))
 
 LFLAGS	= -Llibft -lft -ltermcap
+DEPS	= ./libft/libft.a
 
 .PHONY: all lib clean fclean re
 
@@ -45,9 +46,9 @@ all: lib $(NAME)
 lib:
 	@make -C libft/
 
-$(NAME): $(OBJ)
-	@$(CC) $(CFLAGS) $(INCDIR) -o $(NAME) $(OBJ) $(LFLAGS)
-	@echo "\033[32m21SH:\t\t:BUILDED [ ✔ ]\033[0m"
+$(NAME): $(OBJ) $(DEPS)
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LFLAGS)
+	@echo "\033[32m21SH:\t\t:LINKED [ ✔ ]\033[0m"
 
 $(OBJ_PATH)%.o : $(SRC_PATH)%.c includes/*.h
 	@mkdir -p $(OBJ_PATH)

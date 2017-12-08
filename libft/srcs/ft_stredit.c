@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/08 09:05:46 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/08 12:09:13 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/08 17:57:54 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /*
 **	Edit a string:
-**		1 - insert a char at a given position.
+**		1 - insert a char at a given position, error on insuficient memory.
 */
 #include<stdio.h>
 int			ft_strichar(char **s, int pos, char c)
@@ -24,24 +24,18 @@ int			ft_strichar(char **s, int pos, char c)
 	int		i;
 
 	i = 0;
-	len = 0;
-	char *fu = *s;
-	if (fu)
-		while (fu[len])
-			len++;
-	ft_putchar('C');
+	len = ft_strlen(*s);
 	if ((new = ft_strnew(len + 2)) == NULL)
 		return (1);
-	ft_putchar('A');
 	if (*s == NULL)
 	{
 		new[0] = c;
 		*s = new;
 		return (0);
 	}
-	//new = ft_strncpy(new, *s, pos);
+	ft_memcpy(new, *s, pos);
 	new[pos] = c;
-	//new = ft_strcpy(new, s[pos]);
+	ft_memcpy(&new[pos + 1], &(*s)[pos], len - pos + 1);
 	ft_strdel(s);
 	*s = new;
 	return (0);
@@ -50,20 +44,15 @@ int			ft_strichar(char **s, int pos, char c)
 int			ft_strdchar(char **s, int pos)
 {
 	char	*new;
-	int		i;
-	int		j;
+	int		len;
 
-	i = 0;
-	j = 0;
-	if ((new = ft_strnew(ft_strlen(*s) - 1)) == NULL)
+	if (!*s || !s)
 		return (1);
-	while ((*s)[i])
-	{
-		if (i != pos)
-			new[j++] = (*s)[i];
-		++i;
-	}
-	new[j] = '\0';
+	len = ft_strlen(*s);
+	if ((new = ft_strnew(len - 1)) == NULL)
+		return (1);
+	ft_memcpy(new, *s, pos);
+	ft_memcpy(&new[pos], &(*s)[pos + 1], len - pos);
 	ft_strdel(s);
 	*s = new;
 	return (0);

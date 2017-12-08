@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/07 17:56:19 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/07 19:32:53 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/08 17:45:39 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int				del_char(t_cupos *cursor, short which, t_cmds **head);
 **	detect_ctrl.c
 **		- Detect which control char was pressed.
 */
-void			detect_ctrl(char *ctrl, t_cupos *cursor, t_cmds **head, t_cmds *history);
+void			detect_ctrl(char *ctrl, t_cupos *cursor, t_cmds **history);
 /*
 ** 	arrows.c
 ** 		- Detect which arraw was pressed.

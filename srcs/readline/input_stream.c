@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/07 08:51:55 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/08 09:30:47 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/08 17:55:17 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,4 +101,14 @@ int			ft_cmdadd(t_cmds **head, t_cmds *new)
 		tmp = tmp->next;
 	}
 	return (1);
+}
+
+int				ft_cmdprepend(t_cmds **head, t_cmds *new)
+{
+	if (new == NULL)
+		return (1);
+	new->next = *head;
+	(*head)->prev = new;
+	*head = new;
+	return (0);
 }

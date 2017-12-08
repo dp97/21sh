@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/06 18:00:44 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/07 19:41:07 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/08 18:02:09 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,11 @@ static void	ft_history(t_cupos *cursor, t_cmds *history, short up)
 	}
 	change_input(cursor, history->value);
 }
+
+/*	TODO:
+ *	implement ->prev;
+ *	navigate hist adn edit line not history
+ */
 
 int			if_keypad(char *ctrl, t_cupos *cursor, t_cmds *history)
 {
