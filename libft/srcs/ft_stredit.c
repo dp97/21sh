@@ -46,7 +46,7 @@ int			ft_strdchar(char **s, int pos)
 	char	*new;
 	int		len;
 
-	if (!*s || !s)
+	if (!s || !*s)
 		return (1);
 	len = ft_strlen(*s);
 	if ((new = ft_strnew(len - 1)) == NULL)

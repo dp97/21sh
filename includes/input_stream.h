@@ -38,7 +38,7 @@ void				ft_purgecmds(t_cmds **head);
 **	  inclusive if head is NULL.
 **		- Return 1 on success, 0 on failure.
 */
-int					ft_cmdadd(t_cmds **head, t_cmds *new);
+int					ft_cmdappend(t_cmds **head, t_cmds *new);
 int					ft_cmdprepend(t_cmds **head, t_cmds *new);
 /*
 **	Delete a container at a given position in list.

@@ -55,7 +55,7 @@ char			*ft_readline(void);
 **		- Execute control characters.
 */
 void			ft_insert(char *line, t_cupos *cursor);
-int				del_char(t_cupos *cursor, short which, t_cmds **head);
+int				del_char(t_cupos *cursor, short which, char **line);
 /*
 **	detect_ctrl.c
 **		- Detect which control char was pressed.
@@ -65,7 +65,7 @@ void			detect_ctrl(char *ctrl, t_cupos *cursor, t_cmds **history);
 ** 	arrows.c
 ** 		- Detect which arraw was pressed.
 */
-int				if_keypad(char *ctrl, t_cupos *cursor, t_cmds *history);
+int				if_keypad(char *ctrl, t_cupos *cursor, t_cmds **history);
 int				move_cursor_left(t_cupos *cursor);
 /*
 **	Logs the errors in file pointed by LOG_PATH macro.

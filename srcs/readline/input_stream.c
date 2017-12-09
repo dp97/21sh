@@ -34,7 +34,7 @@ t_cmds		*ft_cmdnew(char *value)
 	return (new);
 }
 
-void		ft_cmddel(t_cmds **head, int this)
+/*void		ft_cmddel(t_cmds **head, int this)
 {
 	t_cmds	*prev;
 	t_cmds	*todel;
@@ -64,7 +64,7 @@ void		ft_cmddel(t_cmds **head, int this)
 	if (todel->value)
 		ft_strdel(&(todel->value));
 	ft_memdel((void**)&todel);
-}
+}*/
 
 void		ft_purgecmds(t_cmds **head)
 {
@@ -80,7 +80,7 @@ void		ft_purgecmds(t_cmds **head)
 	}
 }
 
-int			ft_cmdadd(t_cmds **head, t_cmds *new)
+int			ft_cmdappend(t_cmds **head, t_cmds *new)
 {
 	t_cmds	*tmp;
 

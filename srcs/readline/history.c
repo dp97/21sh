@@ -36,6 +36,8 @@ t_cmds		*ft_init_history(void)
 			break ;
 		}
 		tmp->value = line;
+		if (history)
+			history->prev = tmp;
 		tmp->next = history;
 		history = tmp;
 		line = NULL;
