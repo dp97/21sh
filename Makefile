@@ -26,7 +26,7 @@ SRCS	= main.c ft_loop.c execute.c launch.c \
 		  readline/tty.c readline/ft_readline.c readline/detect_ctrl.c \
 		  readline/exec_ctrl.c readline/history.c readline/init.c \
 		  readline/arrows.c readline/ft_log.c readline/input_stream.c \
-			readline/ctrl_arrows.c
+			readline/ctrl_arrows.c readline/copy_paste.c
 
 OBJS			= $(SRCS:.c=.o)
 

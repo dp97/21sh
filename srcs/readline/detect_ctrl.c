@@ -14,7 +14,6 @@
 
 void	detect_ctrl(char *ctrl, t_cupos *cursor, t_cmds **history)
 {
-//	printf("{%c}", ctrl);
 	if (ctrl[0] == 127)
 		del_char(cursor, 1, &((*history)->value));
 	else if (ctrl[0] == 3)

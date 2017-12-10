@@ -38,7 +38,9 @@ typedef struct	s_cupos
 void	fatal(char *pre_message, char *message);
 void	find();
 void        init_terminal_data(void);
+void	infoo(char *key);
 int    ft_puti(int c);
+int				print(t_cmds **history, t_cupos *cursor, char *line);
 /*
 **	tty.c
 **		- Handle the terminal device.
@@ -81,4 +83,8 @@ void			ft_log(char *msg, short critical);
 */
 t_cmds			*ft_init_history(void);
 void			ft_update_history(char *line);
+/*	copy_paste.c
+**		- copy, cut and paste.
+*/
+int				if_copy_paste(char *key, t_cupos *cursor, t_cmds **history, char **in_memory);
 #endif
