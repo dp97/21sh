@@ -109,8 +109,11 @@ int				ft_cmdprepend(t_cmds **head, t_cmds *new)
 {
 	if (new == NULL)
 		return (1);
-	(*head)->prev = new;
-	new->next = *head;
+	else if (*head != NULL)
+	{
+		(*head)->prev = new;
+		new->next = *head;
+	}
 	*head = new;
 	return (0);
 }

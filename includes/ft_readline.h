@@ -67,6 +67,10 @@ void			detect_ctrl(char *ctrl, t_cupos *cursor, t_cmds **history);
 */
 int				if_keypad(char *ctrl, t_cupos *cursor, t_cmds **history);
 int				move_cursor_left(t_cupos *cursor);
+/*	ctrl_arrows.c
+**		- Detect if a arrow was pressed in combination with control key.
+*/
+int				if_ctrl_keypad(char *key, t_cupos *cursor, t_cmds **history);
 /*
 **	Logs the errors in file pointed by LOG_PATH macro.
 */

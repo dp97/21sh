@@ -74,5 +74,6 @@ int			if_keypad(char *ctrl, t_cupos *cursor, t_cmds **history)
 	else if (ft_strcmp(tgetstr("kl", 0), ctrl) == 0)
 		move_cursor_left(cursor);
 	else
+		return (0);
 	return (1);
 }

@@ -32,8 +32,11 @@ void	detect_ctrl(char *ctrl, t_cupos *cursor, t_cmds **history)
 		tty_disable_raw();
 		exit(EXIT_SUCCESS);
 	}
-	if_keypad(ctrl, cursor, history);
+	else if (if_keypad(ctrl, cursor, history))
+		return ;
+	else if (if_ctrl_keypad(ctrl, cursor, history))
+		return ;
 
 	//char *key = tgetstr("kl", 0);
-	//printf("/%d-%d-%d-%d-%d/", key[0], key[1], key[2], key[3], key[4]);
+	//printf("/%d-%c-%c-%c-%c-%c/", ctrl[0], ctrl[1], ctrl[2], ctrl[3], ctrl[4], ctrl[5]);
 }
