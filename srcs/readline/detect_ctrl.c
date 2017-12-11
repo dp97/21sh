@@ -12,7 +12,7 @@
 
 #include "ft_readline.h"
 
-void	detect_ctrl(char *ctrl, t_cupos *cursor, t_cmds **history)
+void	detect_ctrl(char *ctrl, t_cursor **cursor, t_cmds **history)
 {
 	if (ctrl[0] == 127)
 		del_char(cursor, 1, &((*history)->value));
@@ -34,6 +34,8 @@ void	detect_ctrl(char *ctrl, t_cupos *cursor, t_cmds **history)
 	else if (if_keypad(ctrl, cursor, history))
 		return ;
 	else if (if_ctrl_keypad(ctrl, cursor, history))
+		return ;
+	else if (if_msc_keypad(ctrl, cursor))
 		return ;
 
 	//char *key = tgetstr("kl", 0);

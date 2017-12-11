@@ -14,6 +14,8 @@
 
 void	ft_putstrstr(char *s1, char *s2)
 {
-	ft_putstr(s1);
-	ft_putstr(s2);
+	if (s1)
+		ft_putstr(s1);
+	if (s2)
+		ft_putstr(s2);
 }

@@ -13,48 +13,80 @@
 #include "ft_readline.h"
 #include "input_stream.h"
 
-void	infoo(char *key)
+void			ft_purge_cursor(t_cursor **cursor)
 {
-	char *c;
-    char t[3];
+	t_cursor	*tmp;
 
-    t[2] = '\0';
-    t[0]=' ';
-    while (ft_isprint(t[0]))
-    {
-            t[1] = ' ';
-            while (ft_isprint(t[1]))
-            {
-                    c = tgetstr(t, 0);
-                    if (ft_strequ(key, c))
-                    {
-                        ft_putstrstr("[", t);
-						ft_putstr("-");
-						ft_putstrstr(&c[1], "]");
-                    }
-                t[1]++;
-            }
-        t[0]++;
-    }
+	while ((*cursor)->prev)
+		*cursor = (*cursor)->prev;
+	while (*cursor)
+	{
+		tmp = *cursor;
+		*cursor = (*cursor)->next;
+		tmp->prev = NULL;
+		tmp->next = NULL;
+		free(*cursor);
+	}
 }
 
-int			print(t_cmds **history, t_cupos *cursor, char *line)
+void priint(int *a, int s)
+{
+	for(int i = 0; i < s; i++)
+		printf("(%d)", a[i]);
+}
+
+int			calc_pos(t_cursor *cursor)
+{
+	t_cursor	*tmp;
+	int		pos;
+	
+	pos = cursor->col - cursor->col_start;
+	tmp = cursor->prev;
+	while (tmp)
+	{
+		pos += tmp->col_end - tmp->col_start;
+		tmp = tmp->prev;
+	}
+	return (pos);
+}
+
+int			calc_pos_relative(t_cursor *cursor, int to)
+{
+	t_cursor	*tmp;
+	int			pos;
+
+	tmp = cursor;
+	pos = to - tmp->col_start;
+	tmp = tmp->prev;
+	while (tmp)
+	{
+		pos += tmp->col_end - tmp->col_start;
+		tmp = tmp->prev;
+	}
+	return (pos);
+}
+
+int			print(t_cmds **history, t_cursor **cursor, char *line)
 {
 	char	*tmp;
 	int		pos;
+	int		i;
 
 	tmp = line;
-	pos = (*cursor).col - (*cursor).col_start;
+	i = 0;
+	pos = calc_pos(*cursor);
 	while (*tmp)
+	{
 		if (ft_strichar(&((*history)->value), pos++, *tmp++))
 			ft_log("Insuficient memory for inserting a character.", 1);
+	}
 	ft_insert(line, cursor);
 }
 
 char			*ft_readline(void)
 {
 	t_cmds		*history;
-	t_cupos		cursor;
+	t_cursor	*cursor;
 	char		*in_memory;
 	char		key[10];
 
@@ -66,22 +98,56 @@ char			*ft_readline(void)
 		ft_log("Failed to initiate 'line'.", 1);
 		return (NULL);
 	}
+if ((cursor = (t_cursor *)malloc(sizeof(t_cursor))) == NULL)
+{
+	ft_log("Failed to initiate 'cursor'.", 1);
+	return (NULL);
+}
+	cursor->prev = NULL;
+	cursor->next = NULL;
+	cursor->col_start = ft_strlen(PROMPT);
+	cursor->col = cursor->col_start;
+	cursor->col_end = cursor->col;
 
 //	find();
 	init_terminal_data();
 	tty_enable_raw();
 
-	cursor.col_start = ft_strlen(PROMPT);
-	cursor.col = cursor.col_start;
-	cursor.col_end = cursor.col;
-
 	tputs(tgetstr("ks", 0), 1, ft_puti);
 	ft_bzero(key, 10);
 	ft_putstrstr("\n\r", PROMPT);
-	while (read(STDIN_FILENO, &key, 9) && key[0] != '\r')
+	while (read(STDIN_FILENO, &key, 9))
 	{
-//		printf("(%d-%d-%d-%d-%d-%d)", key[0], key[1], key[2], key[3], key[4], key[5]);
-		if (ft_isprint(key[0]))
+		if (ft_strcmp(key, "\r") == 0)
+		{
+			if (ft_lastchar(history->value) == '\\')
+			{
+				if (ft_strdchar(&(history->value), calc_pos(cursor) - 1))
+					ft_log("error when delete the'\\'", 1);
+				cursor->col--;
+				cursor->col_end--;
+//printf("{wtf.%s.%d}", history->value, calc_pos(cursor));
+
+				if ((cursor->next = (t_cursor *)malloc(sizeof(t_cursor))) == NULL)
+				{
+					ft_log("Failed to initiate 'cursor'.", 1);
+					return (NULL);
+				}
+				cursor->next->prev = cursor;
+				cursor = cursor->next;
+				cursor->next = NULL;
+
+				cursor->col_start = 2;
+				cursor->col = 2;
+				cursor->col_end = 2;
+				ft_putstr("\n\r> ");
+
+//priint(cursor.row, cursor.row_end);
+			}
+			else
+				break ;
+		}
+		else if (ft_isprint(key[0]))
 			print(&history, &cursor, key);
 		else
 		{
@@ -89,12 +155,15 @@ char			*ft_readline(void)
 			if_copy_paste(key, &cursor, &history, &in_memory);
 		}
 		ft_strclr(key);
+
 	}
+
 ft_putstrstr("\n\r", history->value);
 	if (history->value)
 		ft_update_history(history->value);
 	ft_purgecmds(&history);
-ft_strdel(&in_memory);
+	ft_purge_cursor(&cursor);
+	ft_strdel(&in_memory);
 	tputs(tgetstr("ke", 0), 1, ft_puti);
 	tty_disable_raw();
 	return (NULL);

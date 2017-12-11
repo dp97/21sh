@@ -27,20 +27,23 @@
 # include <fcntl.h>
 
 #include <stdio.h>
-typedef struct	s_cupos
+typedef struct		s_cursor
 {
-	int			row;
-	short		col_start;
-	int         col;
-	int			col_end;
-}				t_cupos;
+	short			col_start;
+	int         	col;
+	int				col_end;
+	struct s_cursor	*prev;
+	struct s_cursor	*next;
+}					t_cursor;
 
 void	fatal(char *pre_message, char *message);
 void	find();
 void        init_terminal_data(void);
 void	infoo(char *key);
 int    ft_puti(int c);
-int				print(t_cmds **history, t_cupos *cursor, char *line);
+int				print(t_cmds **history, t_cursor **cursor, char *line);
+int				calc_pos(t_cursor *cursor);
+int				calc_pos_relative(t_cursor *cursor, int to);
 /*
 **	tty.c
 **		- Handle the terminal device.
@@ -56,23 +59,23 @@ char			*ft_readline(void);
 **	exec_ctrl.c
 **		- Execute control characters.
 */
-void			ft_insert(char *line, t_cupos *cursor);
-int				del_char(t_cupos *cursor, short which, char **line);
+void			ft_insert(char *line, t_cursor **cursor);
+int				del_char(t_cursor **cursor, short which, char **line);
 /*
 **	detect_ctrl.c
 **		- Detect which control char was pressed.
 */
-void			detect_ctrl(char *ctrl, t_cupos *cursor, t_cmds **history);
+void			detect_ctrl(char *ctrl, t_cursor **cursor, t_cmds **history);
 /*
 ** 	arrows.c
 ** 		- Detect which arraw was pressed.
 */
-int				if_keypad(char *ctrl, t_cupos *cursor, t_cmds **history);
-int				move_cursor_left(t_cupos *cursor);
+int				if_keypad(char *ctrl, t_cursor **cursor, t_cmds **history);
+int				move_cursor_left(t_cursor **cursor);
 /*	ctrl_arrows.c
 **		- Detect if a arrow was pressed in combination with control key.
 */
-int				if_ctrl_keypad(char *key, t_cupos *cursor, t_cmds **history);
+int				if_ctrl_keypad(char *key, t_cursor **cursor, t_cmds **history);
 /*
 **	Logs the errors in file pointed by LOG_PATH macro.
 */
@@ -86,5 +89,9 @@ void			ft_update_history(char *line);
 /*	copy_paste.c
 **		- copy, cut and paste.
 */
-int				if_copy_paste(char *key, t_cupos *cursor, t_cmds **history, char **in_memory);
+int				if_copy_paste(char *key, t_cursor **cursor, t_cmds **history, char **in_memory);
+/*	msc_keypad.c
+**		- Handles 'Home', 'End' keys.
+*/
+int				if_msc_keypad(char *key, t_cursor **cursor);
 #endif

@@ -1,22 +1,22 @@
 #include "ft_readline.h"
 
-static char	*copycut_tillcursor(t_cupos *cursor, t_cmds **history)
+static char	*copycut_tillcursor(t_cursor **cursor, t_cmds **history)
 {
 	char	*copy;
 
-	copy = ft_strndup((*history)->value, (*cursor).col - (*cursor).col_start);
+	copy = ft_strndup((*history)->value, (*cursor)->col - (*cursor)->col_start);
 	while (del_char(cursor, 1, &((*history)->value)))
 		;
 	return (copy);
 }
 
-static void	ft_paste(char *line, t_cupos *cursor, t_cmds **history)
+static void	ft_paste(char *line, t_cursor *cursor, t_cmds **history)
 {
 	if (line)
 		print(history, cursor, line);
 }
 
-int			if_copy_paste(char *key, t_cupos *cursor, t_cmds **history, char **in_memory)
+int			if_copy_paste(char *key, t_cursor **cursor, t_cmds **history, char **in_memory)
 {
 	if (ft_strcmp("\x015", key) == 0)
 		*in_memory = copycut_tillcursor(cursor, history);

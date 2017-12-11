@@ -74,8 +74,7 @@ void		ft_purgecmds(t_cmds **head)
 	{
 		tmp = *head;
 		*head = (*head)->next;
-		if (tmp->value)
-			ft_strdel(&(tmp->value));
+		ft_strdel(&(tmp->value));
 		ft_memdel((void**)&tmp);
 	}
 }
