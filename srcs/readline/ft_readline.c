@@ -66,22 +66,22 @@ int			calc_pos_relative(t_cursor *cursor, int to)
 	return (pos);
 }
 
-int			print(t_cmds **history, t_cursor **cursor, char *line)
+int			print(t_cmds **history, t_cursor **cursor, char input)
 {
-	char	*tmp;
 	int		pos;
 	int		i;
 
-	tmp = line;
 	i = 0;
 	pos = calc_pos(*cursor);
-	while (*tmp)
+	if (ft_strichar(&((*history)->value), pos++, input))
 	{
-		if (ft_strichar(&((*history)->value), pos++, *tmp++))
-			ft_log("Insuficient memory for inserting a character.", 1);
+		ft_log("Insuficient memory for inserting a character.", 1);
+		return (1);
 	}
-	ft_insert(line, cursor);
+	ft_insert(input, cursor);
+	return (0);
 }
+static int	handle_input(char *input, t_cmds **history, t_cursor **cursor);
 
 char			*ft_readline(void)
 {
@@ -118,37 +118,11 @@ if ((cursor = (t_cursor *)malloc(sizeof(t_cursor))) == NULL)
 	ft_putstrstr("\n\r", PROMPT);
 	while (read(STDIN_FILENO, &key, 9))
 	{
-		if (ft_strcmp(key, "\r") == 0)
+		if (ft_isprint(key[0]) || key[0] == '\r')
 		{
-			if (ft_lastchar(history->value) == '\\')
-			{
-				if (ft_strdchar(&(history->value), calc_pos(cursor) - 1))
-					ft_log("error when delete the'\\'", 1);
-				cursor->col--;
-				cursor->col_end--;
-//printf("{wtf.%s.%d}", history->value, calc_pos(cursor));
-
-				if ((cursor->next = (t_cursor *)malloc(sizeof(t_cursor))) == NULL)
-				{
-					ft_log("Failed to initiate 'cursor'.", 1);
-					return (NULL);
-				}
-				cursor->next->prev = cursor;
-				cursor = cursor->next;
-				cursor->next = NULL;
-
-				cursor->col_start = 2;
-				cursor->col = 2;
-				cursor->col_end = 2;
-				ft_putstr("\n\r> ");
-
-//priint(cursor.row, cursor.row_end);
-			}
-			else
-				break ;
+			if (handle_input(key, &history, &cursor))
+				break;
 		}
-		else if (ft_isprint(key[0]))
-			print(&history, &cursor, key);
 		else
 		{
 			detect_ctrl(key, &cursor, &history);
@@ -167,4 +141,47 @@ ft_putstrstr("\n\r", history->value);
 	tputs(tgetstr("ke", 0), 1, ft_puti);
 	tty_disable_raw();
 	return (NULL);
+}
+
+static int	handle_input(char *input, t_cmds **history, t_cursor **cursor)
+{
+	int		i;
+
+	i = 0;
+	while (input[i])
+	{
+		if (input[i] == '\r')
+		{
+			if (ft_lastchar((*history)->value) == '\\')
+			{
+				if (ft_strdchar(&((*history)->value), calc_pos(*cursor) - 1))
+				{
+					ft_log("error when delete the'\\'", 1);
+					return (1);
+				}
+				(*cursor)->col--;
+				(*cursor)->col_end--;
+				if (((*cursor)->next = (t_cursor *)malloc(sizeof(t_cursor))) == NULL)
+				{
+					ft_log("Failed to initiate 'cursor'.", 1);
+					return (1);
+				}
+				(*cursor)->next->prev = *cursor;
+				(*cursor) = (*cursor)->next;
+				(*cursor)->next = NULL;
+
+				(*cursor)->col_start = 2;
+				(*cursor)->col = 2;
+				(*cursor)->col_end = 2;
+				ft_putstr("\n\r> ");
+			}
+			else
+				return (-1);
+		}
+		else if (ft_isprint(input[i]))
+			if (print(history, cursor, input[i]))
+				return (1);
+		++i;
+	}
+	return (0);
 }

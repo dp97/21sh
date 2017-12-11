@@ -62,14 +62,11 @@ int		del_char(t_cursor **cursor, short which, char **line)
 }
 
 /*	Enable insert mode and insert string by characters then disable the mode */
-void	ft_insert(char *line, t_cursor **cursor)
+void	ft_insert(char input, t_cursor **cursor)
 {
-	int	len;
-
-	len = ft_strlen(line);
 	ft_mode("im");
-	ft_putstr_fd(line, STDIN_FILENO);
+	ft_putchar_fd(input, STDIN_FILENO);
 	ft_mode("ei");
-	(*cursor)->col += len;
-	(*cursor)->col_end += len;
+	(*cursor)->col++;
+	(*cursor)->col_end++;
 }

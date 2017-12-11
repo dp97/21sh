@@ -41,7 +41,7 @@ void	find();
 void        init_terminal_data(void);
 void	infoo(char *key);
 int    ft_puti(int c);
-int				print(t_cmds **history, t_cursor **cursor, char *line);
+int				print(t_cmds **history, t_cursor **cursor, char input);
 int				calc_pos(t_cursor *cursor);
 int				calc_pos_relative(t_cursor *cursor, int to);
 /*
@@ -59,7 +59,7 @@ char			*ft_readline(void);
 **	exec_ctrl.c
 **		- Execute control characters.
 */
-void			ft_insert(char *line, t_cursor **cursor);
+void			ft_insert(char input, t_cursor **cursor);
 int				del_char(t_cursor **cursor, short which, char **line);
 /*
 **	detect_ctrl.c

@@ -38,11 +38,15 @@ static int	move_cursor_right(t_cursor **cursor)
 
 static void	change_input(t_cursor **cursor, char *line)
 {
+	char	*tmp;
+
+	tmp = line;
 	while (move_cursor_right(cursor))
 		;
 	while (del_char(cursor, 1, NULL))
 		;
-	ft_insert(line, cursor);
+	while (*tmp)
+		ft_insert(*tmp++, cursor);
 }
 
 static void	ft_history(t_cursor **cursor, t_cmds **history, short up)
