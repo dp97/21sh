@@ -29,11 +29,12 @@ t_cmds		*ft_cmdnew(char *value)
 	}
 	else
 		new->value = NULL;
+	new->prev = NULL;
 	new->next = NULL;
 	return (new);
 }
 
-void		ft_cmddel(t_cmds **head, int this)
+/*void		ft_cmddel(t_cmds **head, int this)
 {
 	t_cmds	*prev;
 	t_cmds	*todel;
@@ -63,7 +64,7 @@ void		ft_cmddel(t_cmds **head, int this)
 	if (todel->value)
 		ft_strdel(&(todel->value));
 	ft_memdel((void**)&todel);
-}
+}*/
 
 void		ft_purgecmds(t_cmds **head)
 {
@@ -73,13 +74,12 @@ void		ft_purgecmds(t_cmds **head)
 	{
 		tmp = *head;
 		*head = (*head)->next;
-		if (tmp->value)
-			ft_strdel(&(tmp->value));
+		ft_strdel(&(tmp->value));
 		ft_memdel((void**)&tmp);
 	}
 }
 
-int			ft_cmdadd(t_cmds **head, t_cmds *new)
+int			ft_cmdappend(t_cmds **head, t_cmds *new)
 {
 	t_cmds	*tmp;
 
@@ -95,6 +95,7 @@ int			ft_cmdadd(t_cmds **head, t_cmds *new)
 	{
 		if (tmp->next == NULL)
 		{
+			new->prev = tmp;
 			tmp->next = new;
 			return (0);
 		}
@@ -107,8 +108,11 @@ int				ft_cmdprepend(t_cmds **head, t_cmds *new)
 {
 	if (new == NULL)
 		return (1);
-	new->next = *head;
-	(*head)->prev = new;
+	else if (*head != NULL)
+	{
+		(*head)->prev = new;
+		new->next = *head;
+	}
 	*head = new;
 	return (0);
 }

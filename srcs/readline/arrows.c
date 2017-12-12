@@ -12,62 +12,62 @@
 
 #include "ft_readline.h"
 
-int	move_cursor_left(t_cupos *cursor)
+int	move_cursor_left(t_cursor **cursor)
 {
-	if ((*cursor).col_start < (*cursor).col)
+	if ((*cursor)->col_start < (*cursor)->col)
 	{
 		tputs(tgetstr("le", 0), 1, ft_puti);
-		(*cursor).col--;
+		(*cursor)->col--;
 		return (1);
 	}
 	return (0);
 }
 
-static int	move_cursor_right(t_cupos *cursor)
+static int	move_cursor_right(t_cursor **cursor)
 {
-	if ((*cursor).col < (*cursor).col_end)
+	if ((*cursor)->col < (*cursor)->col_end)
 	{
+		if (tgetstr("nd", 0) == NULL)
+			ft_log("no wayyy", 1);
 		tputs(tgetstr("nd", 0), 1, ft_puti);
-		(*cursor).col++;
+		(*cursor)->col++;
 		return (1);
 	}
 	return (0);
 }
 
-static void	change_input(t_cupos *cursor, char *line)
+static void	change_input(t_cursor **cursor, char *line)
 {
+	char	*tmp;
+
+	tmp = line;
 	while (move_cursor_right(cursor))
 		;
 	while (del_char(cursor, 1, NULL))
 		;
-	ft_insert(line, cursor);
+	while (*tmp)
+		ft_insert(*tmp++, cursor);
 }
 
-static void	ft_history(t_cupos *cursor, t_cmds *history, short up)
+static void	ft_history(t_cursor **cursor, t_cmds **history, short up)
 {
 	if (up)
 	{
-		if (history->next == NULL)
-			return;
-		history = history->next;
-		change_input(cursor, history->value);
+		if ((*history)->next == NULL)
+			return ;
+		*history = (*history)->next;
+		change_input(cursor, (*history)->value);
 	}
 	else
 	{
-		if (history->prev == NULL)
-			return;
-		history = history->prev;
-		change_input(cursor, history->value);
+		if ((*history)->prev == NULL)
+			return ;
+		*history = (*history)->prev;
+		change_input(cursor, (*history)->value);
 	}
-	change_input(cursor, history->value);
 }
 
-/*	TODO:
- *	implement ->prev;
- *	navigate hist adn edit line not history
- */
-
-int			if_keypad(char *ctrl, t_cupos *cursor, t_cmds *history)
+int			if_keypad(char *ctrl, t_cursor **cursor, t_cmds **history)
 {
 	if (ft_strcmp(tgetstr("ku", 0), ctrl) == 0)
 		ft_history(cursor, history, 1);

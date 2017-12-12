@@ -36,6 +36,8 @@ t_cmds		*ft_init_history(void)
 			break ;
 		}
 		tmp->value = line;
+		if (history)
+			history->prev = tmp;
 		tmp->next = history;
 		history = tmp;
 		line = NULL;
@@ -47,6 +49,9 @@ void		ft_update_history(char *line)
 {
 	int		fd;
 
+	if (line == NULL)
+		return ;
+	printf("{%s}", line);
 	fd = open(HISTORY_PATH, O_WRONLY | O_APPEND | O_CREAT , S_IRUSR | S_IWUSR);
 	if (fd < 0)
 		ft_log("Failed to open 'HISTORY_PATH'", 1);

@@ -12,15 +12,14 @@
 
 #include "ft_readline.h"
 
-void	detect_ctrl(char *ctrl, t_cupos *cursor, t_cmds **history)
+void	detect_ctrl(char *ctrl, t_cursor **cursor, t_cmds **history)
 {
-//	printf("{%c}", ctrl);
 	if (ctrl[0] == 127)
-		del_char(cursor, 1, history);
+		del_char(cursor, 1, &((*history)->value));
 	else if (ctrl[0] == 3)
 		ft_putstrstr("\n\r", PROMPT);
 	else if (ctrl[0] == 4)
-		del_char(cursor, 0, history);
+		del_char(cursor, 0, &((*history)->value));
 	else if (ctrl[0] == 6)
 	{
 		char c;
@@ -32,8 +31,13 @@ void	detect_ctrl(char *ctrl, t_cupos *cursor, t_cmds **history)
 		tty_disable_raw();
 		exit(EXIT_SUCCESS);
 	}
-	if_keypad(ctrl, cursor, *history);
+	else if (if_keypad(ctrl, cursor, history))
+		return ;
+	else if (if_ctrl_keypad(ctrl, cursor, history))
+		return ;
+	else if (if_msc_keypad(ctrl, cursor))
+		return ;
 
 	//char *key = tgetstr("kl", 0);
-	//printf("/%d-%d-%d-%d-%d/", key[0], key[1], key[2], key[3], key[4]);
+	//printf("/%d-%c-%c-%c-%c-%c/", ctrl[0], ctrl[1], ctrl[2], ctrl[3], ctrl[4], ctrl[5]);
 }

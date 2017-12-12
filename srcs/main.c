@@ -17,6 +17,7 @@ int		main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	(void)env;
-	ft_loop(env);
+	while(1)
+		ft_readline();
 	return (0);
 }
