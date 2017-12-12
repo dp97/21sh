@@ -152,7 +152,7 @@ static int	handle_input(char *input, t_cmds **history, t_cursor **cursor)
 	{
 		if (input[i] == '\r')
 		{
-			if (ft_lastchar((*history)->value) == '\\')
+			if (ft_strback((*history)->value, 1) == '\\' && ft_strback((*history)->value, 2) != '\\')
 			{
 				if (ft_strdchar(&((*history)->value), calc_pos(*cursor) - 1))
 				{

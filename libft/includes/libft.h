@@ -167,7 +167,7 @@ void				ft_foreach(char const *s, void (*f)(char));
  */
 int					ft_strdchar(char **s, int pos);
 int					ft_strichar(char **s, int pos, char c);
-/*	Return last char of the given string.
+/*	Return inverse indexed 'at'. see file...
 */
-char				ft_lastchar(char *s);
+char				ft_strback(char *s, int at);
 #endif
