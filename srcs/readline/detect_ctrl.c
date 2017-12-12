@@ -15,17 +15,11 @@
 void	detect_ctrl(char *ctrl, t_cursor **cursor, t_cmds **history)
 {
 	if (ctrl[0] == 127)
-		del_char(cursor, 1, history);
+		del_char(cursor, 1, &((*history)->value));
 	else if (ctrl[0] == 3)
 		ft_putstrstr("\n\r", PROMPT);
 	else if (ctrl[0] == 4)
-		del_char(cursor, 0, history);
-	else if (ctrl[0] == 6)
-	{
-		char c;
-		read(STDOUT_FILENO, &c, 1);
-		printf("<%d>", c);
-	}
+		del_char(cursor, 0, &((*history)->value));
 	else if (ctrl[0] == 5)
 	{
 		tty_disable_raw();

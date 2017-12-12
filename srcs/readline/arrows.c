@@ -72,19 +72,20 @@ static int	change_input(t_cursor **cursor, char **line, char *input)
 
 static int	ft_history(t_cursor **cursor, t_cmds **history, short up)
 {
+	char	*input;
+
 	if (up)
 	{
-		if ((*history)->next == NULL)
+		if ((input = ft_cmdgetnextvalue(*history)) == NULL)
 			return (RET_MIRR);
-		*history = (*history)->next;
+		return (change_input(cursor, &((*history)->value), input));
 	}
 	else
 	{
-		if ((*history)->prev == NULL)
+		if ((input = ft_cmdgetprevvalue(*history)) == NULL)
 			return (RET_MIRR);
-		*history = (*history)->prev;
+		return (change_input(cursor, &((*history)->value), input));
 	}
-	return (change_input(cursor, , ((*history)->value)));
 }
 
 int			if_keypad(char *ctrl, t_cursor **cursor, t_cmds **history)

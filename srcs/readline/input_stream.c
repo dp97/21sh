@@ -29,6 +29,7 @@ t_cmds		*ft_cmdnew(char *value)
 	}
 	else
 		new->value = NULL;
+	new->iscurrent = 0;
 	new->prev = NULL;
 	new->next = NULL;
 	return (new);
@@ -115,4 +116,48 @@ int				ft_cmdprepend(t_cmds **head, t_cmds *new)
 	}
 	*head = new;
 	return (0);
+}
+
+/*	Return value of current element and move current to next element.
+*/
+char			*ft_cmdgetnextvalue(t_cmds *head)
+{
+	t_cmds		*tmp;
+
+	tmp = head;
+	while (tmp)
+	{
+		if (tmp->iscurrent)
+		{
+			if (tmp->next)
+				break ;
+			tmp->iscurrent = 0;
+			tmp->next->iscurrent = 1;
+			return (tmp->next->value);
+		}
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
+/*	Return value of current element and move current to prev element.
+*/
+char			*ft_cmdgetprevvalue(t_cmds *head)
+{
+	t_cmds		*tmp;
+
+	tmp = head;
+	while (tmp)
+	{
+		if (tmp->iscurrent)
+		{
+			if (tmp->prev)
+				break ;
+			tmp->iscurrent = 0;
+			tmp->prev->iscurrent = 1;
+			return (tmp->prev->value);
+		}
+		tmp = tmp->prev;
+	}
+	return (NULL);
 }

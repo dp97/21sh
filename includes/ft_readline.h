@@ -63,7 +63,7 @@ char			*ft_readline(void);
 **		- Execute control characters.
 */
 void			ft_insert(char input, t_cursor **cursor);
-int				del_char(t_cursor **cursor, short which, t_cmds **history);
+int				del_char(t_cursor **cursor, short which, char **line);
 /*
 **	detect_ctrl.c
 **		- Detect which control char was pressed.

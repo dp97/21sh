@@ -35,12 +35,12 @@ static void	ft_mode(char *req)
 **	If 'which' is 1 then left char from cursor is deleted,
 **	else the char at cursor position is deleted.
 */
-int		del_char(t_cursor **cursor, short which, t_cmds **history)
+int		del_char(t_cursor **cursor, short which, char **input)
 {
 	char	**line;
 	int	position;
 
-	line = history ? &((*history)->value) : NULL;
+	line = input;
 	position = (*cursor)->col - (*cursor)->col_start;
 	if (which && move_cursor_left(cursor, NULL))
 	{

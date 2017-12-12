@@ -98,11 +98,12 @@ char			*ft_readline(void)
 		ft_log("Failed to initiate 'line'.", 1);
 		return (NULL);
 	}
-if ((cursor = (t_cursor *)malloc(sizeof(t_cursor))) == NULL)
-{
-	ft_log("Failed to initiate 'cursor'.", 1);
-	return (NULL);
-}
+	history->iscurrent = 1;
+	if ((cursor = (t_cursor *)malloc(sizeof(t_cursor))) == NULL)
+	{
+		ft_log("Failed to initiate 'cursor'.", 1);
+		return (NULL);
+	}
 	cursor->prev = NULL;
 	cursor->next = NULL;
 	cursor->col_start = ft_strlen(PROMPT);
@@ -179,7 +180,7 @@ static int	handle_input(char *input, t_cmds **history, t_cursor **cursor)
 				return (-1);
 		}
 		else if (ft_isprint(input[i]))
-			if (print(history, cursor, input[i]))
+			if (print(&((*history)->value), cursor, input[i]))
 				return (1);
 		++i;
 	}

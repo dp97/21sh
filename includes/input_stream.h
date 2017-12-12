@@ -40,8 +40,10 @@ void				ft_purgecmds(t_cmds **head);
 */
 int					ft_cmdappend(t_cmds **head, t_cmds *new);
 int					ft_cmdprepend(t_cmds **head, t_cmds *new);
-/*
-**	Delete a container at a given position in list.
+/*	Delete a container at a given position in list.
 */
 void				ft_cmddel(t_cmds **head, int this);
+
+char				*ft_cmdgetnextvalue(t_cmds *head);
+char				*ft_cmdgetprevvalue(t_cmds *head);
 #endif
