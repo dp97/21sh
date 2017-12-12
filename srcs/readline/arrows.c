@@ -6,24 +6,32 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/06 18:00:44 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/08 18:02:09 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/12 19:28:01 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_readline.h"
 
-int	move_cursor_left(t_cursor **cursor)
+int			move_cursor_left(t_cursor **cursor, t_cmds **history)
 {
 	if ((*cursor)->col_start < (*cursor)->col)
 	{
 		tputs(tgetstr("le", 0), 1, ft_puti);
 		(*cursor)->col--;
-		return (1);
+		return (RET_OK);
 	}
-	return (0);
+	else if (history && (*cursor)->col == (*cursor)->col_start && (*cursor)->prev)
+	{
+		if (if_shift_keypad("\e[1;2A", cursor, history) == 1)
+		{
+			if_msc_keypad(tgetstr("@7", 0), cursor);
+			return (RET_OK);
+		}
+	}
+	return (RET_MIRR);
 }
 
-static int	move_cursor_right(t_cursor **cursor)
+static int	move_cursor_right(t_cursor **cursor, t_cmds **history)
 {
 	if ((*cursor)->col < (*cursor)->col_end)
 	{
@@ -31,40 +39,52 @@ static int	move_cursor_right(t_cursor **cursor)
 			ft_log("no wayyy", 1);
 		tputs(tgetstr("nd", 0), 1, ft_puti);
 		(*cursor)->col++;
-		return (1);
+		return (RET_OK);
 	}
-	return (0);
+	else if (history && (*cursor)->col == (*cursor)->col_end && (*cursor)->next)
+	{
+		if (if_shift_keypad("\e[1;2B", cursor, history) == 1)
+		{
+			if_msc_keypad(tgetstr("kh", 0), cursor);
+			return (RET_OK);
+		}
+	}
+	return (RET_MIRR);
 }
 
-static void	change_input(t_cursor **cursor, char *line)
+static int	change_input(t_cursor **cursor, char **line, char *input)
 {
 	char	*tmp;
 
-	tmp = line;
-	while (move_cursor_right(cursor))
+	tmp = input;
+	while (move_cursor_right(cursor, NULL))
 		;
 	while (del_char(cursor, 1, NULL))
 		;
 	while (*tmp)
-		ft_insert(*tmp++, cursor);
+	{
+		if (print(line, cursor, *tmp) == RET_ERR)
+			return (RET_ERR);
+		tmp++;
+	}
+	return (RET_OK);
 }
 
-static void	ft_history(t_cursor **cursor, t_cmds **history, short up)
+static int	ft_history(t_cursor **cursor, t_cmds **history, short up)
 {
 	if (up)
 	{
 		if ((*history)->next == NULL)
-			return ;
+			return (RET_MIRR);
 		*history = (*history)->next;
-		change_input(cursor, (*history)->value);
 	}
 	else
 	{
 		if ((*history)->prev == NULL)
-			return ;
+			return (RET_MIRR);
 		*history = (*history)->prev;
-		change_input(cursor, (*history)->value);
 	}
+	return (change_input(cursor, , ((*history)->value)));
 }
 
 int			if_keypad(char *ctrl, t_cursor **cursor, t_cmds **history)
@@ -74,10 +94,10 @@ int			if_keypad(char *ctrl, t_cursor **cursor, t_cmds **history)
 	else if (ft_strcmp(tgetstr("kd", 0), ctrl) == 0)
 		ft_history(cursor, history, 0);
 	else if (ft_strcmp(tgetstr("kr", 0), ctrl) == 0)
-		move_cursor_right(cursor);
+		move_cursor_right(cursor, history);
 	else if (ft_strcmp(tgetstr("kl", 0), ctrl) == 0)
-		move_cursor_left(cursor);
+		move_cursor_left(cursor, history);
 	else
-		return (0);
+		return (RET_MIRR);
 	return (1);
 }

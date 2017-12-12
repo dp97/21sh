@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/07 17:56:19 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/08 17:45:39 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/12 19:28:05 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 # define PROMPT			"myShell$> "
 # define HISTORY_PATH	".history"
 # define LOG_PATH		".log"
+# define RET_OK		0
+# define RET_ERR	1
+# define RET_MIRR	-1
 # define STDIN	STDIN_FILENO
 # define STDOUT	STDOUT_FILENO
 # define STDERR	STDERR_FILENO
@@ -41,7 +44,7 @@ void	find();
 void        init_terminal_data(void);
 void	infoo(char *key);
 int    ft_puti(int c);
-int				print(t_cmds **history, t_cursor **cursor, char input);
+int				print(char **line, t_cursor **cursor, char input);
 int				calc_pos(t_cursor *cursor);
 int				calc_pos_relative(t_cursor *cursor, int to);
 /*
@@ -60,7 +63,7 @@ char			*ft_readline(void);
 **		- Execute control characters.
 */
 void			ft_insert(char input, t_cursor **cursor);
-int				del_char(t_cursor **cursor, short which, char **line);
+int				del_char(t_cursor **cursor, short which, t_cmds **history);
 /*
 **	detect_ctrl.c
 **		- Detect which control char was pressed.
@@ -71,11 +74,11 @@ void			detect_ctrl(char *ctrl, t_cursor **cursor, t_cmds **history);
 ** 		- Detect which arraw was pressed.
 */
 int				if_keypad(char *ctrl, t_cursor **cursor, t_cmds **history);
-int				move_cursor_left(t_cursor **cursor);
+int				move_cursor_left(t_cursor **cursor, t_cmds **history);
 /*	ctrl_arrows.c
 **		- Detect if a arrow was pressed in combination with control key.
 */
-int				if_ctrl_keypad(char *key, t_cursor **cursor, t_cmds **history);
+int				if_shift_keypad(char *key, t_cursor **cursor, t_cmds **history);
 /*
 **	Logs the errors in file pointed by LOG_PATH macro.
 */

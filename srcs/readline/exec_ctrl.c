@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/06 12:31:23 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/08 17:59:40 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/12 19:15:05 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,14 @@ static void	ft_mode(char *req)
 **	If 'which' is 1 then left char from cursor is deleted,
 **	else the char at cursor position is deleted.
 */
-int		del_char(t_cursor **cursor, short which, char **line)
+int		del_char(t_cursor **cursor, short which, t_cmds **history)
 {
+	char	**line;
 	int	position;
 
+	line = history ? &((*history)->value) : NULL;
 	position = (*cursor)->col - (*cursor)->col_start;
-	if (which && move_cursor_left(cursor))
+	if (which && move_cursor_left(cursor, NULL))
 	{
 		if (line)
 			if (ft_strdchar(line, position - 1))

@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/06 11:52:07 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/08 17:55:28 by dpetrov          ###   ########.fr       */
+/*   Updated: 2017/12/12 19:28:03 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,20 +66,20 @@ int			calc_pos_relative(t_cursor *cursor, int to)
 	return (pos);
 }
 
-int			print(t_cmds **history, t_cursor **cursor, char input)
+int			print(char **line, t_cursor **cursor, char input)
 {
 	int		pos;
 	int		i;
 
 	i = 0;
 	pos = calc_pos(*cursor);
-	if (ft_strichar(&((*history)->value), pos++, input))
+	if (ft_strichar(line, pos++, input))
 	{
 		ft_log("Insuficient memory for inserting a character.", 1);
-		return (1);
+		return (RET_ERR);
 	}
 	ft_insert(input, cursor);
-	return (0);
+	return (RET_OK);
 }
 static int	handle_input(char *input, t_cmds **history, t_cursor **cursor);
 

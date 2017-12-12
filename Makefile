@@ -6,7 +6,7 @@
 #    By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/06 09:37:16 by dpetrov           #+#    #+#              #
-#    Updated: 2017/12/08 16:58:30 by dpetrov          ###   ########.fr        #
+#    Updated: 2017/12/12 13:24:51 by dpetrov          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ SRCS	= main.c ft_loop.c execute.c launch.c \
 		  readline/tty.c readline/ft_readline.c readline/detect_ctrl.c \
 		  readline/exec_ctrl.c readline/history.c readline/init.c \
 		  readline/arrows.c readline/ft_log.c readline/input_stream.c \
-			readline/ctrl_arrows.c readline/copy_paste.c readline/msc_keypad.c
+		  readline/shift_arrows.c readline/copy_paste.c readline/msc_keypad.c
 
 OBJS			= $(SRCS:.c=.o)
 
