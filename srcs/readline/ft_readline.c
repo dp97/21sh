@@ -20,10 +20,16 @@ void priint(int *a, int s)
 }
 void		ft_reprint_line(char *line, t_cursor *cursor)
 {
+	int		restore;
+	
+	restore = (*cursor).col;
 	if_msc_keypad(HOME_KEY, cursor);
+	while ((*cursor).col_end --> (*cursor).col_start)
+		tputs(DELETE_CHAR, 1, ft_puti);
 	ft_putstr_fd(line, STDIN_FILENO);
-	(*cursor).col += ft_strlen(line);
-//	(*cursor).col_end += ft_strlen(line);
+	(*cursor).col = restore;
+	tputs(tgoto(CH_CURSOR_COL, 0, restore), 1, ft_puti);
+	(*cursor).col_end += ft_strlen(line) + 1;
 }
 
 int			print(char **line, t_cursor *cursor, char input)
@@ -32,7 +38,7 @@ int			print(char **line, t_cursor *cursor, char input)
 	int		i;
 
 	i = 0;
-	pos = (*cursor).col_end - (*cursor).col_start;
+	pos = (*cursor).col - (*cursor).col_start;
 	if (ft_strichar(line, pos, input))
 	{
 		ft_log("Insuficient memory for inserting a character.", 1);
@@ -75,10 +81,12 @@ line = ft_chainnew(NULL);
 		}
 		else
 		{
-			detect_ctrl(key, &cursor, &line);
+			if (arrows(key, &cursor, &line, history) == DONE)
+				;
+			else
+				detect_escape(key, &cursor, &line);
 		}
 		ft_strclr(key);
-
 	}
 
 ft_putstrstr("\n\r", line->value);
@@ -101,7 +109,7 @@ static int	handle_input(char *input, t_chain **history, t_cursor *cursor)
 		{
 			if (ft_lastchar((*history)->value) == '\\')
 			{
-				if (ft_strdchar(&((*history)->value), (*cursor).col_end - (*cursor).col_end - 1))
+				if (ft_strdchar(&((*history)->value), (*cursor).col - (*cursor).col_start - 1))
 				{
 					ft_log("error when delete the'\\'", 1);
 					return (1);

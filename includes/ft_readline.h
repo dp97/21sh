@@ -22,6 +22,7 @@
 # define DONE			0
 # define ERR			1
 # define NOTHING_DONE	2
+# define CH_CURSOR_COL	tgetstr("ch", 0)
 # define DELETE_CHAR	tgetstr("dc", 0)
 # define ARROW_LEFT		tgetstr("kl", 0)
 # define ARROW_RIGHT	tgetstr("kr", 0)
@@ -32,6 +33,7 @@
 # define SHIFT_UP		"\e[1;2A"
 # define SHIFT_DOWN		"\e[1;2B"
 # define CTRL_D_KEY		"\x4"
+# define CTRL_C_KEY		"\x3"
 # define BACKSPACE_KEY	"\x7F"
 # define HOME_KEY		tgetstr("kh", 0)
 # define END_KEY		tgetstr("@7", 0)
@@ -90,12 +92,12 @@ int				backspace_char(char **line, t_cursor *cursor);
 **	detect_ctrl.c
 **		- Detect which control char was pressed.
 */
-void			detect_ctrl(char *ctrl, t_cursor *cursor, t_chain **line);
+void			detect_escape(char *ctrl, t_cursor *cursor, t_chain **line);
 /*
 ** 	arrows.c
 ** 		- Detect which arraw was pressed.
 */
-int				arrows(char *ctrl, t_cursor *cursor, t_chain **line);
+int				arrows(char *ctrl, t_cursor *cursor, t_chain **line, t_chain *history);
 /*	shift_plus_arrows.c
 **		- Detect if a arrow was pressed in combination with control key.
 */
@@ -110,10 +112,6 @@ void			ft_log(char *msg, short critical);
 */
 t_chain			*ft_init_history(void);
 void			ft_update_history(char *line);
-/*	copy_paste.c
-**		- copy, cut and paste.
-*/
-int				if_copy_paste(char *key, t_cursor **cursor, t_chain **line, char **in_memory);
 /*	msc_keypad.c
 **		- Handles 'Home', 'End' keys.
 */

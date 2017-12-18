@@ -12,12 +12,12 @@
 
 #include "ft_readline.h"
 
-void	detect_ctrl(char *ctrl, t_cursor *cursor, t_chain **line)
+void	detect_escape(char *ctrl, t_cursor *cursor, t_chain **line)
 {
-	if (ft_strcmp(ctrl, BACKSPACE_KEY) == 0)
-		backspace_char(&(*line)->value, cursor);
-	else if (ctrl[0] == 3)
+	if (ft_strcmp(ctrl, CTRL_C_KEY) == 0)
 		ft_putstrstr("\n\r", PROMPT);
+	else if (ft_strcmp(ctrl, BACKSPACE_KEY) == 0)
+		backspace_char(&(*line)->value, cursor);
 	else if (ft_strcmp(ctrl, CTRL_D_KEY) == 0)
 		delete_char(&((*line)->value), cursor);
 	else if (ctrl[0] == 5)
@@ -25,11 +25,9 @@ void	detect_ctrl(char *ctrl, t_cursor *cursor, t_chain **line)
 		tty_disable_raw();
 		exit(EXIT_SUCCESS);
 	}
-	else if (arrows(ctrl, cursor, line) == RET_OK)
+	else if (shift_plus_arrows(ctrl, cursor, line) == DONE)
 		return ;
-	else if (shift_plus_arrows(ctrl, cursor, line))
-		return ;
-	else if (if_msc_keypad(ctrl, cursor))
+	else if (if_msc_keypad(ctrl, cursor) == DONE)
 		return ;
 
 	//char *key = tgetstr("kl", 0);

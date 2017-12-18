@@ -39,7 +39,7 @@ int		backspace_char(char **line, t_cursor *cursor)
 {
 	int	pos;
 
-	pos = (*cursor).col_end - (*cursor).col_start - 1;
+	pos = (*cursor).col - (*cursor).col_start - 1;
 	if (line && arrows(ARROW_LEFT, cursor, NULL) == 0)
 	{
 		if (ft_strdchar(line, pos))
@@ -55,7 +55,7 @@ int		delete_char(char **line, t_cursor *cursor)
 {
 	int	pos;
 
-	pos = (*cursor).col_end - (*cursor).col_start;
+	pos = (*cursor).col - (*cursor).col_start;
 	if (line && (*cursor).col < (*cursor).col_end)
 	{
 		if (ft_strdchar(line, pos))

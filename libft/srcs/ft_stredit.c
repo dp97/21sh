@@ -57,8 +57,7 @@ int			ft_strdchar(char **s, int pos)
 	if (pos > len || (new = ft_strnew(len - 1)) == NULL)
 		return (1);
 	ft_strncpy(new, *s, pos);
-	if ((*s)[pos])
-		ft_strcpy(&new[pos], &((*s)[pos + 1]));
+	ft_strcpy(&new[pos], &((*s)[pos + 1]));
 	ft_strdel(s);
 	*s = new;
 	return (0);
