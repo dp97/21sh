@@ -12,14 +12,14 @@
 
 #include "ft_readline.h"
 
-void	detect_ctrl(char *ctrl, t_cursor **cursor, t_chain **line)
+void	detect_ctrl(char *ctrl, t_cursor *cursor, t_chain **line)
 {
-	if (strcmp(ctrl, "\x7F") == 0)
-		del_char(cursor, 1, &((*line)->value));
+	if (ft_strcmp(ctrl, BACKSPACE_KEY) == 0)
+		backspace_char(&(*line)->value, cursor);
 	else if (ctrl[0] == 3)
 		ft_putstrstr("\n\r", PROMPT);
-	else if (ctrl[0] == 4)
-		del_char(cursor, 0, &((*line)->value));
+	else if (ft_strcmp(ctrl, CTRL_D_KEY) == 0)
+		delete_char(&((*line)->value), cursor);
 	else if (ctrl[0] == 5)
 	{
 		tty_disable_raw();

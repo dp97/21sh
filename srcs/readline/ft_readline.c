@@ -12,95 +12,52 @@
 
 #include "ft_readline.h"
 
-void			ft_purge_cursor(t_cursor **cursor)
-{
-	t_cursor	*tmp;
-
-	while ((*cursor)->prev)
-		*cursor = (*cursor)->prev;
-	while (*cursor)
-	{
-		tmp = *cursor;
-		*cursor = (*cursor)->next;
-		tmp->prev = NULL;
-		tmp->next = NULL;
-		free(*cursor);
-	}
-}
 
 void priint(int *a, int s)
 {
 	for(int i = 0; i < s; i++)
 		printf("(%d)", a[i]);
 }
-
-int			calc_pos(t_cursor *cursor)
+void		ft_reprint_line(char *line, t_cursor *cursor)
 {
-	t_cursor	*tmp;
-	int		pos;
-	
-	pos = cursor->col - cursor->col_start;
-	tmp = cursor->prev;
-	while (tmp)
-	{
-		pos += tmp->col_end - tmp->col_start;
-		tmp = tmp->prev;
-	}
-	return (pos);
+	if_msc_keypad(HOME_KEY, cursor);
+	ft_putstr_fd(line, STDIN_FILENO);
+	(*cursor).col += ft_strlen(line);
+//	(*cursor).col_end += ft_strlen(line);
 }
 
-int			calc_pos_relative(t_cursor *cursor, int to)
-{
-	t_cursor	*tmp;
-	int			pos;
-
-	tmp = cursor;
-	pos = to - tmp->col_start;
-	tmp = tmp->prev;
-	while (tmp)
-	{
-		pos += tmp->col_end - tmp->col_start;
-		tmp = tmp->prev;
-	}
-	return (pos);
-}
-
-int			print(char **line, t_cursor **cursor, char input)
+int			print(char **line, t_cursor *cursor, char input)
 {
 	int		pos;
 	int		i;
 
 	i = 0;
-	pos = calc_pos(*cursor);
-	if (ft_strichar(line, pos++, input))
+	pos = (*cursor).col_end - (*cursor).col_start;
+	if (ft_strichar(line, pos, input))
 	{
 		ft_log("Insuficient memory for inserting a character.", 1);
 		return (RET_ERR);
 	}
-	ft_insert(input, cursor);
+	(*cursor).col++;
+	(*cursor).col_end++;
+	ft_reprint_line(*line, cursor);
 	return (RET_OK);
 }
-static int	handle_input(char *input, t_chain **history, t_cursor **cursor);
+static int	handle_input(char *input, t_chain **history, t_cursor *cursor);
 
 char			*ft_readline(void)
 {
 	t_chain		*line;
 	t_chain		*history;
-	t_cursor	*cursor;
+	t_cursor	cursor;
 	char		key[10];
 
 	history = ft_init_history();
+line = ft_chainnew(NULL);
 
-	if ((cursor = (t_cursor *)malloc(sizeof(t_cursor))) == NULL)
-	{
-		ft_log("Failed to initiate 'cursor'.", 1);
-		return (NULL);
-	}
-	cursor->prev = NULL;
-	cursor->next = NULL;
-	cursor->col_start = ft_strlen(PROMPT);
-	cursor->col = cursor->col_start;
-	cursor->col_end = cursor->col;
+	cursor.col_start = ft_strlen(PROMPT);
+	cursor.col = cursor.col_start;
+	cursor.col_end = cursor.col;
 
 //	find();
 	init_terminal_data();
@@ -113,7 +70,7 @@ char			*ft_readline(void)
 	{
 		if (ft_isprint(key[0]) || key[0] == '\r')
 		{
-			if (handle_input(key, &history, &cursor))
+			if (handle_input(key, &line, &cursor))
 				break;
 		}
 		else
@@ -124,17 +81,16 @@ char			*ft_readline(void)
 
 	}
 
-ft_putstrstr("\n\r", history->value);
-	if (history->value)
-		ft_update_history(history->value);
+ft_putstrstr("\n\r", line->value);
+	if (line->value)
+		ft_update_history(line->value);
 ft_chainpurge(&history);
-	ft_purge_cursor(&cursor);
 	tputs(tgetstr("ke", 0), 1, ft_puti);
 	tty_disable_raw();
 	return (NULL);
 }
 
-static int	handle_input(char *input, t_chain **history, t_cursor **cursor)
+static int	handle_input(char *input, t_chain **history, t_cursor *cursor)
 {
 	int		i;
 
@@ -145,26 +101,13 @@ static int	handle_input(char *input, t_chain **history, t_cursor **cursor)
 		{
 			if (ft_lastchar((*history)->value) == '\\')
 			{
-				if (ft_strdchar(&((*history)->value), calc_pos(*cursor) - 1))
+				if (ft_strdchar(&((*history)->value), (*cursor).col_end - (*cursor).col_end - 1))
 				{
 					ft_log("error when delete the'\\'", 1);
 					return (1);
 				}
-				(*cursor)->col--;
-				(*cursor)->col_end--;
-				if (((*cursor)->next = (t_cursor *)malloc(sizeof(t_cursor))) == NULL)
-				{
-					ft_log("Failed to initiate 'cursor'.", 1);
-					return (1);
-				}
-				(*cursor)->next->prev = *cursor;
-				(*cursor) = (*cursor)->next;
-				(*cursor)->next = NULL;
-
-				(*cursor)->col_start = 2;
-				(*cursor)->col = 2;
-				(*cursor)->col_end = 2;
-				ft_putstr("\n\r> ");
+				(*cursor).col--;
+				(*cursor).col_end--;
 			}
 			else
 				return (-1);

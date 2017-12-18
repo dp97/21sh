@@ -13,7 +13,7 @@
 NAME	= 21sh
 
 CC		= -gcc
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= #-Wall -Wextra -Werror
 
 SRCS	= main.c ft_loop.c execute.c launch.c \
 		  ft_get_args.c check_dollar_1.c check_dollar_2.c err.c sig.c \
@@ -57,7 +57,7 @@ $(OBJ_PATH)%.o : $(SRC_PATH)%.c includes/*.h
 	@mkdir -p $(OBJ_PATH)/parser
 	@mkdir -p $(OBJ_PATH)/free_mem
 	@mkdir -p $(OBJ_PATH)/readline
-	$(CC) $(INCDIR) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCDIR) -c $< -o $@
 
 clean:
 	@make -C libft/ clean

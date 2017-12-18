@@ -35,40 +35,44 @@ static void	ft_mode(char *req)
 **	If 'which' is 1 then left char from cursor is deleted,
 **	else the char at cursor position is deleted.
 */
-int		del_char(t_cursor **cursor, short which, char **input)
+int		backspace_char(char **line, t_cursor *cursor)
 {
-	char	**line;
-	int	position;
+	int	pos;
 
-	line = input;
-	position = (*cursor)->col - (*cursor)->col_start;
-	if (which && arrows(ARROW_LEFT, cursor, NULL))
+	pos = (*cursor).col_end - (*cursor).col_start - 1;
+	if (line && arrows(ARROW_LEFT, cursor, NULL) == 0)
 	{
-		if (line)
-			if (ft_strdchar(line, position - 1))
-				return (0);
-		tputs(tgetstr("dc", 0), 1, ft_puti);
-		(*cursor)->col_end--;
-		return (1);
+		if (ft_strdchar(line, pos))
+			return (ERR);
+		tputs(DELETE_CHAR, 1, ft_puti);
+		(*cursor).col_end--;
+		return (DONE);
 	}
-	else if (which == 0 && (*cursor)->col < (*cursor)->col_end)
+	return (NOTHING_DONE);
+}
+
+int		delete_char(char **line, t_cursor *cursor)
+{
+	int	pos;
+
+	pos = (*cursor).col_end - (*cursor).col_start;
+	if (line && (*cursor).col < (*cursor).col_end)
 	{
-		if (line)
-			if (ft_strdchar(line, position))
-				return (0);
-		tputs(tgetstr("dc", 0), 1, ft_puti);
-		(*cursor)->col_end--;
-		return (1);
+		if (ft_strdchar(line, pos))
+			return (ERR);
+		tputs(DELETE_CHAR, 1, ft_puti);
+		(*cursor).col_end--;
+		return (DONE);
 	}
-	return (0);
+	return (NOTHING_DONE);
 }
 
 /*	Enable insert mode and insert string by characters then disable the mode */
-void	ft_insert(char input, t_cursor **cursor)
+void	ft_insert(char input, t_cursor *cursor)
 {
 	ft_mode("im");
 	ft_putchar_fd(input, STDIN_FILENO);
 	ft_mode("ei");
-	(*cursor)->col++;
-	(*cursor)->col_end++;
+	(*cursor).col++;
+	(*cursor).col_end++;
 }

@@ -21,9 +21,7 @@ int			ft_strichar(char **s, int pos, char c)
 {
 	char	*new;
 	int		len;
-	int		i;
 
-	i = 0;
 	len = ft_strlen(*s);
 	if (pos < 0 || pos > len + 1)
 		return (0);
@@ -48,7 +46,7 @@ int			ft_strdchar(char **s, int pos)
 	char	*new;
 	int		len;
 
-	if (!s || !*s)
+	if (!s || !*s || pos < 0)
 		return (1);
 	len = ft_strlen(*s);
 	if (len == 1)
@@ -56,10 +54,11 @@ int			ft_strdchar(char **s, int pos)
 		ft_strdel(s);
 		return (0);
 	}
-	if (pos > len || pos < 0 || (new = ft_strnew(len - 1)) == NULL)
+	if (pos > len || (new = ft_strnew(len - 1)) == NULL)
 		return (1);
-	ft_memcpy(new, *s, pos);
-	ft_memcpy(&new[pos], &((*s)[pos + 1]), len - pos);
+	ft_strncpy(new, *s, pos);
+	if ((*s)[pos])
+		ft_strcpy(&new[pos], &((*s)[pos + 1]));
 	ft_strdel(s);
 	*s = new;
 	return (0);

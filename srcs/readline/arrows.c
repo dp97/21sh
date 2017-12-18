@@ -12,69 +12,39 @@
 
 #include "ft_readline.h"
 
-static int	move_cursor_left(t_cursor **cursor, t_chain **line)
+static int	move_cursor_left(t_cursor *cursor, t_chain **line)
 {
-	if ((*cursor)->col_start < (*cursor)->col)
+	if ((*cursor).col_start < (*cursor).col)
 	{
 		tputs(tgetstr("le", 0), 1, ft_puti);
-		(*cursor)->col--;
+		(*cursor).col--;
 		return (RET_OK);
-	}
-	else if (line && (*cursor)->col == (*cursor)->col_start && (*cursor)->prev)
-	{
-		if (shift_plus_arrows(SHIFT_UP, cursor, line) == 1)
-		{
-			if_msc_keypad(tgetstr("@7", 0), cursor);
-			return (RET_OK);
-		}
 	}
 	return (RET_MIRR);
 }
 
-static int	move_cursor_right(t_cursor **cursor, t_chain **line)
+static int	move_cursor_right(t_cursor *cursor, t_chain **line)
 {
-	if ((*cursor)->col < (*cursor)->col_end)
+	if ((*cursor).col < (*cursor).col_end)
 	{
 		if (tgetstr("nd", 0) == NULL)
 			ft_log("no wayyy", 1);
 		tputs(tgetstr("nd", 0), 1, ft_puti);
-		(*cursor)->col++;
+		(*cursor).col++;
 		return (RET_OK);
-	}
-	else if (line && (*cursor)->col == (*cursor)->col_end && (*cursor)->next)
-	{
-		if (shift_plus_arrows(SHIFT_DOWN, cursor, line) == 1)
-		{
-			if_msc_keypad(tgetstr("kh", 0), cursor);
-			return (RET_OK);
-		}
 	}
 	return (RET_MIRR);
 }
 
 static int	change_input(t_cursor **cursor, char **line, char *input)
 {
-	char	*tmp;
-
-	tmp = input;
-	while (move_cursor_right(cursor, NULL))
-		;
-	while (del_char(cursor, 1, NULL))
-		;
-	while (*tmp)
-	{
-		if (print(line, cursor, *tmp) == RET_ERR)
-			return (RET_ERR);
-		tmp++;
-	}
-	return (RET_OK);
 }
 
-static int	ft_history(t_cursor **cursor, t_chain **line, short up)
+static int	ft_history(t_cursor *cursor, t_chain **line, short up)
 {
 }
 
-int			arrows(char *ctrl, t_cursor **cursor, t_chain **line)
+int			arrows(char *ctrl, t_cursor *cursor, t_chain **line)
 {
 	if (ft_strcmp(ARROW_UP, ctrl) == 0)
 		ft_history(cursor, line, 1);

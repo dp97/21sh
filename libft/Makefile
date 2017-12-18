@@ -56,7 +56,7 @@ $(NAME): $(OBJ)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c ./includes/*.h
 	@mkdir -p $(OBJ_PATH)
-	$(CC) $(INCDIR) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCDIR) -c $< -o $@
 
 clean:
 	@rm -rf $(OBJ_PATH)
