@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   shift_arrows.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/12 16:52:25 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/12 18:14:31 by dpetrov          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "ft_readline.h"
 
@@ -104,22 +93,22 @@ static int	move_cursor_one_line_down(t_cursor **cursor)
 	return (-1);
 }
 
-int			if_shift_keypad(char *key, t_cursor **cursor, t_cmds **history)
+int			shift_plus_arrows(char *ctrl, t_cursor **cursor, t_chain **line)
 {
-	char	*line;
+	char	*val;
 	int		ret;
 
 	ret = 0;
-	line = ft_strndup(&(*history)->value[calc_pos_relative(*cursor, (*cursor)->col_start)], \
+	val = ft_strndup(&(*line)->value[calc_pos_relative(*cursor, (*cursor)->col_start)], \
 						(*cursor)->col_end - (*cursor)->col_start);
-	if (ft_strequ("\e[1;2D", key))
-		ret = move_cursor_one_word_left(cursor, line);
-	else if (ft_strequ("\e[1;2C", key))
-		ret = move_cursor_one_word_right(cursor, line);
-	else if (ft_strequ("\e[1;2A", key))
+	if (ft_strcmp(SHIFT_LEFT, ctrl))
+		ret = move_cursor_one_word_left(cursor, val);
+	else if (ft_strequ(SHIFT_RIGHT, ctrl))
+		ret = move_cursor_one_word_right(cursor, val);
+	else if (ft_strequ(SHIFT_UP, ctrl))
 		ret = move_cursor_one_line_up(cursor);
-	else if (ft_strequ("\e[1;2B", key))
+	else if (ft_strequ(SHIFT_DOWN, ctrl))
 		ret = move_cursor_one_line_down(cursor);
-	ft_strdel(&line);
+	ft_strdel(&val);
 	return (ret);
 }

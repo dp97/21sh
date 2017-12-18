@@ -42,7 +42,7 @@ int		del_char(t_cursor **cursor, short which, char **input)
 
 	line = input;
 	position = (*cursor)->col - (*cursor)->col_start;
-	if (which && move_cursor_left(cursor, NULL))
+	if (which && arrows(ARROW_LEFT, cursor, NULL))
 	{
 		if (line)
 			if (ft_strdchar(line, position - 1))

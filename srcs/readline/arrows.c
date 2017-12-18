@@ -12,7 +12,7 @@
 
 #include "ft_readline.h"
 
-int			move_cursor_left(t_cursor **cursor, t_cmds **history)
+static int	move_cursor_left(t_cursor **cursor, t_chain **line)
 {
 	if ((*cursor)->col_start < (*cursor)->col)
 	{
@@ -20,9 +20,9 @@ int			move_cursor_left(t_cursor **cursor, t_cmds **history)
 		(*cursor)->col--;
 		return (RET_OK);
 	}
-	else if (history && (*cursor)->col == (*cursor)->col_start && (*cursor)->prev)
+	else if (line && (*cursor)->col == (*cursor)->col_start && (*cursor)->prev)
 	{
-		if (if_shift_keypad("\e[1;2A", cursor, history) == 1)
+		if (shift_plus_arrows(SHIFT_UP, cursor, line) == 1)
 		{
 			if_msc_keypad(tgetstr("@7", 0), cursor);
 			return (RET_OK);
@@ -31,7 +31,7 @@ int			move_cursor_left(t_cursor **cursor, t_cmds **history)
 	return (RET_MIRR);
 }
 
-static int	move_cursor_right(t_cursor **cursor, t_cmds **history)
+static int	move_cursor_right(t_cursor **cursor, t_chain **line)
 {
 	if ((*cursor)->col < (*cursor)->col_end)
 	{
@@ -41,9 +41,9 @@ static int	move_cursor_right(t_cursor **cursor, t_cmds **history)
 		(*cursor)->col++;
 		return (RET_OK);
 	}
-	else if (history && (*cursor)->col == (*cursor)->col_end && (*cursor)->next)
+	else if (line && (*cursor)->col == (*cursor)->col_end && (*cursor)->next)
 	{
-		if (if_shift_keypad("\e[1;2B", cursor, history) == 1)
+		if (shift_plus_arrows(SHIFT_DOWN, cursor, line) == 1)
 		{
 			if_msc_keypad(tgetstr("kh", 0), cursor);
 			return (RET_OK);
@@ -70,35 +70,21 @@ static int	change_input(t_cursor **cursor, char **line, char *input)
 	return (RET_OK);
 }
 
-static int	ft_history(t_cursor **cursor, t_cmds **history, short up)
+static int	ft_history(t_cursor **cursor, t_chain **line, short up)
 {
-	char	*input;
-
-	if (up)
-	{
-		if ((input = ft_cmdgetnextvalue(*history)) == NULL)
-			return (RET_MIRR);
-		return (change_input(cursor, &((*history)->value), input));
-	}
-	else
-	{
-		if ((input = ft_cmdgetprevvalue(*history)) == NULL)
-			return (RET_MIRR);
-		return (change_input(cursor, &((*history)->value), input));
-	}
 }
 
-int			if_keypad(char *ctrl, t_cursor **cursor, t_cmds **history)
+int			arrows(char *ctrl, t_cursor **cursor, t_chain **line)
 {
-	if (ft_strcmp(tgetstr("ku", 0), ctrl) == 0)
-		ft_history(cursor, history, 1);
-	else if (ft_strcmp(tgetstr("kd", 0), ctrl) == 0)
-		ft_history(cursor, history, 0);
-	else if (ft_strcmp(tgetstr("kr", 0), ctrl) == 0)
-		move_cursor_right(cursor, history);
-	else if (ft_strcmp(tgetstr("kl", 0), ctrl) == 0)
-		move_cursor_left(cursor, history);
+	if (ft_strcmp(ARROW_UP, ctrl) == 0)
+		ft_history(cursor, line, 1);
+	else if (ft_strcmp(ARROW_DOWN, ctrl) == 0)
+		ft_history(cursor, line, 0);
+	else if (ft_strcmp(ARROW_RIGHT, ctrl) == 0)
+		move_cursor_right(cursor, line);
+	else if (ft_strcmp(ARROW_LEFT, ctrl) == 0)
+		move_cursor_left(cursor, line);
 	else
 		return (RET_MIRR);
-	return (1);
+	return (RET_OK);
 }

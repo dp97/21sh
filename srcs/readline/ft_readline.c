@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "ft_readline.h"
-#include "input_stream.h"
 
 void			ft_purge_cursor(t_cursor **cursor)
 {
@@ -81,24 +80,17 @@ int			print(char **line, t_cursor **cursor, char input)
 	ft_insert(input, cursor);
 	return (RET_OK);
 }
-static int	handle_input(char *input, t_cmds **history, t_cursor **cursor);
+static int	handle_input(char *input, t_chain **history, t_cursor **cursor);
 
 char			*ft_readline(void)
 {
-	t_cmds		*history;
+	t_chain		*line;
+	t_chain		*history;
 	t_cursor	*cursor;
-	char		*in_memory;
 	char		key[10];
 
-	in_memory = NULL;
 	history = ft_init_history();
 
-	if (ft_cmdprepend(&history, ft_cmdnew(NULL)))
-	{
-		ft_log("Failed to initiate 'line'.", 1);
-		return (NULL);
-	}
-	history->iscurrent = 1;
 	if ((cursor = (t_cursor *)malloc(sizeof(t_cursor))) == NULL)
 	{
 		ft_log("Failed to initiate 'cursor'.", 1);
@@ -126,8 +118,7 @@ char			*ft_readline(void)
 		}
 		else
 		{
-			detect_ctrl(key, &cursor, &history);
-			if_copy_paste(key, &cursor, &history, &in_memory);
+			detect_ctrl(key, &cursor, &line);
 		}
 		ft_strclr(key);
 
@@ -136,15 +127,14 @@ char			*ft_readline(void)
 ft_putstrstr("\n\r", history->value);
 	if (history->value)
 		ft_update_history(history->value);
-	ft_purgecmds(&history);
+ft_chainpurge(&history);
 	ft_purge_cursor(&cursor);
-	ft_strdel(&in_memory);
 	tputs(tgetstr("ke", 0), 1, ft_puti);
 	tty_disable_raw();
 	return (NULL);
 }
 
-static int	handle_input(char *input, t_cmds **history, t_cursor **cursor)
+static int	handle_input(char *input, t_chain **history, t_cursor **cursor)
 {
 	int		i;
 

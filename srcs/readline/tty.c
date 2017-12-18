@@ -17,9 +17,9 @@ void	find(void)
 	char	*path;
 
 	printf("{%d}", ttyslot());
-	if (isatty(STDIN))
+	if (isatty(STDIN_FILENO))
 	{
-		if ((path = ttyname(STDIN)) == NULL)
+		if ((path = ttyname(STDIN_FILENO)) == NULL)
 			fatal("tty:", "Could not find terminal device.\n");
 	}
 	else

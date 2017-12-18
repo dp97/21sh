@@ -19,11 +19,15 @@
 # define RET_OK		0
 # define RET_ERR	1
 # define RET_MIRR	-1
-# define STDIN	STDIN_FILENO
-# define STDOUT	STDOUT_FILENO
-# define STDERR	STDERR_FILENO
+# define ARROW_LEFT		tgetstr("kl", 0)
+# define ARROW_RIGHT	tgetstr("kr", 0)
+# define ARROW_UP		tgetstr("ku", 0)
+# define ARROW_DOWN		tgetstr("kd", 0)
+# define SHIFT_LEFT		"\e[1;2D"
+# define SHIFT_RIGHT	"\e[1;2C"
+# define SHIFT_UP		"\e[1;2A"
+# define SHIFT_DOWN		"\e[1;2B"
 # include "libft.h"
-# include "input_stream.h"
 # include <termios.h>
 # include <sys/ioctl.h>
 # include <term.h>
@@ -39,6 +43,13 @@ typedef struct		s_cursor
 	struct s_cursor	*next;
 }					t_cursor;
 
+typedef struct		s_chain
+{
+	char			*value;
+	struct s_chain	*prev;
+	struct s_chain	*next;
+}					t_chain;
+
 void	fatal(char *pre_message, char *message);
 void	find();
 void        init_terminal_data(void);
@@ -47,6 +58,12 @@ int    ft_puti(int c);
 int				print(char **line, t_cursor **cursor, char input);
 int				calc_pos(t_cursor *cursor);
 int				calc_pos_relative(t_cursor *cursor, int to);
+/*
+**	s_chain.c
+**		- Fuctions to handle operations on s_chain.
+*/
+t_chain			*ft_chainnew(char *value);
+void			ft_chainpurge(t_chain **chain);
 /*
 **	tty.c
 **		- Handle the terminal device.
@@ -68,17 +85,16 @@ int				del_char(t_cursor **cursor, short which, char **line);
 **	detect_ctrl.c
 **		- Detect which control char was pressed.
 */
-void			detect_ctrl(char *ctrl, t_cursor **cursor, t_cmds **history);
+void			detect_ctrl(char *ctrl, t_cursor **cursor, t_chain **line);
 /*
 ** 	arrows.c
 ** 		- Detect which arraw was pressed.
 */
-int				if_keypad(char *ctrl, t_cursor **cursor, t_cmds **history);
-int				move_cursor_left(t_cursor **cursor, t_cmds **history);
-/*	ctrl_arrows.c
+int				arrows(char *ctrl, t_cursor **cursor, t_chain **line);
+/*	shift_plus_arrows.c
 **		- Detect if a arrow was pressed in combination with control key.
 */
-int				if_shift_keypad(char *key, t_cursor **cursor, t_cmds **history);
+int				shift_plus_arrows(char *ctrl, t_cursor **cursor, t_chain **line);
 /*
 **	Logs the errors in file pointed by LOG_PATH macro.
 */
@@ -87,12 +103,12 @@ void			ft_log(char *msg, short critical);
 **	history.c
 **		- Handle the history.
 */
-t_cmds			*ft_init_history(void);
+t_chain			*ft_init_history(void);
 void			ft_update_history(char *line);
 /*	copy_paste.c
 **		- copy, cut and paste.
 */
-int				if_copy_paste(char *key, t_cursor **cursor, t_cmds **history, char **in_memory);
+int				if_copy_paste(char *key, t_cursor **cursor, t_chain **line, char **in_memory);
 /*	msc_keypad.c
 **		- Handles 'Home', 'End' keys.
 */

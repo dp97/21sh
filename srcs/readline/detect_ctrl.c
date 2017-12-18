@@ -12,22 +12,22 @@
 
 #include "ft_readline.h"
 
-void	detect_ctrl(char *ctrl, t_cursor **cursor, t_cmds **history)
+void	detect_ctrl(char *ctrl, t_cursor **cursor, t_chain **line)
 {
-	if (ctrl[0] == 127)
-		del_char(cursor, 1, &((*history)->value));
+	if (strcmp(ctrl, "\x7F") == 0)
+		del_char(cursor, 1, &((*line)->value));
 	else if (ctrl[0] == 3)
 		ft_putstrstr("\n\r", PROMPT);
 	else if (ctrl[0] == 4)
-		del_char(cursor, 0, &((*history)->value));
+		del_char(cursor, 0, &((*line)->value));
 	else if (ctrl[0] == 5)
 	{
 		tty_disable_raw();
 		exit(EXIT_SUCCESS);
 	}
-	else if (if_keypad(ctrl, cursor, history))
+	else if (arrows(ctrl, cursor, line) == RET_OK)
 		return ;
-	else if (if_shift_keypad(ctrl, cursor, history))
+	else if (shift_plus_arrows(ctrl, cursor, line))
 		return ;
 	else if (if_msc_keypad(ctrl, cursor))
 		return ;

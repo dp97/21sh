@@ -12,10 +12,14 @@
 
 #include "ft_readline.h"
 
-t_cmds		*ft_init_history(void)
+/*
+**	Initiate history in s_chain struct in LIFO order.
+**	ERR: NULL returned.
+*/
+t_chain		*ft_init_history(void)
 {
-	t_cmds	*history;
-	t_cmds	*tmp;
+	t_chain	*history;
+	t_chain	*tmp;
 	char	*line;
 	int		fd;
 
@@ -29,9 +33,9 @@ t_cmds		*ft_init_history(void)
 	history = NULL;
 	while (get_next_line(fd, &line))
 	{
-		if ((tmp = ft_cmdnew(NULL)) == NULL)
+		if ((tmp = ft_chainnew(NULL)) == NULL)
 		{
-			free(line);
+			ft_strdel(&line);
 			ft_log("Not enough memory.", 1);
 			break ;
 		}
