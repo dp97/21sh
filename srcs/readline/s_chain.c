@@ -27,7 +27,7 @@ t_chain		*ft_chainnew(char *value)
 
 /*
 **	Append a new s_chain struct with value to NULL.
-**	and head pointer is moved in front of struct.
+**	and head pointer is moved to newly created element.
 */
 int			ft_chainadd_front(t_chain **head)
 {
@@ -43,6 +43,28 @@ int			ft_chainadd_front(t_chain **head)
 			return (ERR);
 		tmp->prev->next = tmp;
 		*head = tmp->prev;
+	}
+	return (DONE);
+}
+
+/*
+**	Prepend a new s_chain struct with value to NULL.
+**	and head pointer is moved to newly created element.
+*/
+int			ft_chainadd_back(t_chain **head)
+{
+	t_chain	*tmp;
+
+	if ((tmp = *head) == NULL)
+		return (((*head = ft_chainnew(NULL)) ? DONE : ERR));
+	else
+	{
+		while (tmp->next)
+			tmp = tmp->next;
+		if ((tmp->next = ft_chainnew(NULL)) == NULL)
+			return (ERR);
+		tmp->next->prev = tmp;
+		*head = tmp->next;
 	}
 	return (DONE);
 }

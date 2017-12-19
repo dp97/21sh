@@ -13,7 +13,9 @@
 #ifndef FT_READLINE_H
 # define FT_READLINE_H
 # define DEBUG			0
-# define PROMPT			"myShell$> "
+# define NEWLINE			"\n\r"
+# define PROMPT				"myShell$> "
+# define BACKSLASH_PROMPT	"$> "
 # define HISTORY_PATH	".history"
 # define LOG_PATH		".log"
 # define RET_OK		0
@@ -23,6 +25,8 @@
 # define ERR			1
 # define NOTHING_DONE	2
 # define CH_CURSOR_COL	tgetstr("ch", 0)
+# define CURSOR_UP		tgetstr("up", 0)
+# define CURSOR_DO		tgetstr("do", 0)
 # define DELETE_CHAR	tgetstr("dc", 0)
 # define ARROW_LEFT		tgetstr("kl", 0)
 # define ARROW_RIGHT	tgetstr("kr", 0)
@@ -75,6 +79,7 @@ void			ft_replace_line(char *line, t_cursor *cursor);
 t_chain			*ft_chainnew(char *value);
 void			ft_chainpurge(t_chain **chain);
 int				ft_chainadd_front(t_chain **head);
+int				ft_chainadd_back(t_chain **head);
 /*
 **	tty.c
 **		- Handle the terminal device.

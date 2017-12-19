@@ -12,6 +12,41 @@
 
 #include "ft_readline.h"
 
+/*	Extract and concatenate all s_chain 'value' field.
+*/
+char	 	*ft_assemble_line(t_chain *line)
+{
+	t_chain	*tmp;
+	char	*hold;
+	char	*result;
+
+	if ((tmp = line) == NULL)
+		return (NULL);
+	while (tmp->prev)
+		tmp = tmp->prev;
+	result = NULL;
+	while (tmp)
+	{
+		hold = result;
+		if ((result = ft_strjoin(hold, tmp->value)) == NULL && hold && tmp->value)
+		{
+			ft_log("ft_assemble_line: Insuficient memory.", 1);
+			ft_strdel(&result);
+			return (NULL);
+		}
+		ft_strdel(&hold);
+		tmp = tmp->next;
+	}
+	return (result);
+}
+
+void	ft_recalibrate_cursor(t_cursor *cursor, int col)
+{
+	(*cursor).col_start = col;
+	(*cursor).col = col;
+	(*cursor).col_end = col;
+}
+
 /*	Erarse the line on which cursor is positioned.
 */
 void		ft_erarse_line(t_cursor *cursor)
@@ -59,7 +94,7 @@ int			ft_insert_char(char **line, t_cursor *cursor, char input)
 	tputs(tgoto(CH_CURSOR_COL, 0, (*cursor).col), 1, ft_puti);
 	return (RET_OK);
 }
-static int	handle_input(char *input, t_chain **history, t_cursor *cursor);
+static int	printable_input(char *input, t_chain **history, t_cursor *cursor);
 
 char			*ft_readline(void)
 {
@@ -91,7 +126,7 @@ char			*ft_readline(void)
 	{
 		if (ft_isprint(key[0]) || key[0] == '\r')
 		{
-			if (handle_input(key, &line, &cursor))
+			if (printable_input(key, &line, &cursor))
 				break;
 		}
 		else
@@ -104,16 +139,19 @@ char			*ft_readline(void)
 		ft_strclr(key);
 	}
 
-ft_putstrstr("\n\r", line->value);
+char *result = ft_assemble_line(line);
+ft_putstrstr("\n\r", result);
 	if (line->value)
-		ft_update_history(line->value);
+		ft_update_history(result);
+ft_strdel(&result);
 ft_chainpurge(&history);
+ft_chainpurge(&line);
 	tputs(tgetstr("ke", 0), 1, ft_puti);
 	tty_disable_raw();
 	return (NULL);
 }
 
-static int	handle_input(char *input, t_chain **history, t_cursor *cursor)
+static int	printable_input(char *input, t_chain **line, t_cursor *cursor)
 {
 	int		i;
 
@@ -122,21 +160,29 @@ static int	handle_input(char *input, t_chain **history, t_cursor *cursor)
 	{
 		if (input[i] == '\r')
 		{
-			if (ft_lastchar((*history)->value) == '\\')
+			if (ft_lastchar((*line)->value) == '\\')
 			{
-				if (ft_strdchar(&((*history)->value), (*cursor).col - (*cursor).col_start - 1))
+				/*if (ft_strdchar(&((*history)->value), (*cursor).col - (*cursor).col_start - 1))
 				{
 					ft_log("error when delete the'\\'", 1);
 					return (1);
 				}
 				(*cursor).col--;
-				(*cursor).col_end--;
+				(*cursor).col_end--;*/
+				if (ft_chainadd_back(line) == ERR)
+				{
+					delete_char(&((*line)->value), cursor);
+					ft_log("printable_input: Insuficient memory for a new line.", 1);
+					return (1);
+				}
+				ft_recalibrate_cursor(cursor, ft_strlen(BACKSLASH_PROMPT));
+				ft_putstrstr(NEWLINE, BACKSLASH_PROMPT);
 			}
 			else
 				return (-1);
 		}
 		else if (ft_isprint(input[i]))
-			if (ft_insert_char(&((*history)->value), cursor, input[i]))
+			if (ft_insert_char(&((*line)->value), cursor, input[i]))
 				return (1);
 		++i;
 	}
