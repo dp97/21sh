@@ -34,29 +34,37 @@ static int	move_cursor_right(t_cursor *cursor, t_chain **line)
 	return (RET_MIRR);
 }
 
-static int	ft_history_up(t_cursor *cursor, t_chain **line, t_chain *history)
+static int	ft_history_up(t_cursor *cursor, t_chain **line, t_chain **history)
 {
-	if (history)
+	if (*history)
 	{
-		if (history->prev == NULL)
-		{
-			if ((history->prev = ft_chainnew(NULL)) == NULL)
-				return (ERR);
-			history->prev->next = history;
-			history->prev->value = (*line)->value;
-		}
-		ft_replace_line(history->value, cursor);
-		(*line)->value = history->value;
+		(*history)->value = (*line)->value;
+		if ((*history)->next == NULL)
+			return (NOTHING_DONE);
+		*history = (*history)->next;
+		ft_replace_line((*history)->value, cursor);
+		(*line)->value = (*history)->value;
 		return (DONE);
 	}
 	return (NOTHING_DONE);
 }
 
-static int	ft_history_do(t_cursor *cursor, t_chain **line, t_chain *history)
+static int	ft_history_do(t_cursor *cursor, t_chain **line, t_chain **history)
 {
+	if (*history)
+	{
+		(*history)->value = (*line)->value;
+		if ((*history)->prev == NULL)
+			return (NOTHING_DONE);
+		*history = (*history)->prev;
+		ft_replace_line((*history)->value, cursor);
+		(*line)->value = (*history)->value;
+		return (DONE);
+	}
+	return (NOTHING_DONE);
 }
 
-int			arrows(char *ctrl, t_cursor *cursor, t_chain **line, t_chain *history)
+int			arrows(char *ctrl, t_cursor *cursor, t_chain **line, t_chain **history)
 {
 	if (ft_strcmp(ARROW_UP, ctrl) == 0)
 		ft_history_up(cursor, line, history);

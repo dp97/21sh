@@ -27,13 +27,14 @@ t_chain		*ft_chainnew(char *value)
 
 /*
 **	Append a new s_chain struct with value to NULL.
+**	and head pointer is moved in front of struct.
 */
-int			ft_chainadd_front(t_chain *head)
+int			ft_chainadd_front(t_chain **head)
 {
 	t_chain	*tmp;
 
-	if ((tmp = head) == NULL)
-		return (((head = ft_chainnew(NULL)) ? DONE : ERR));
+	if ((tmp = *head) == NULL)
+		return (((*head = ft_chainnew(NULL)) ? DONE : ERR));
 	else
 	{
 		while (tmp->prev)
@@ -41,6 +42,7 @@ int			ft_chainadd_front(t_chain *head)
 		if ((tmp->prev = ft_chainnew(NULL)) == NULL)
 			return (ERR);
 		tmp->prev->next = tmp;
+		*head = tmp->prev;
 	}
 	return (DONE);
 }

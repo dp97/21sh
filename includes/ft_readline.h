@@ -74,7 +74,7 @@ void			ft_replace_line(char *line, t_cursor *cursor);
 */
 t_chain			*ft_chainnew(char *value);
 void			ft_chainpurge(t_chain **chain);
-int				ft_chainadd_front(t_chain *head);
+int				ft_chainadd_front(t_chain **head);
 /*
 **	tty.c
 **		- Handle the terminal device.
@@ -102,7 +102,7 @@ void			detect_escape(char *ctrl, t_cursor *cursor, t_chain **line);
 ** 	arrows.c
 ** 		- Detect which arraw was pressed.
 */
-int				arrows(char *ctrl, t_cursor *cursor, t_chain **line, t_chain *history);
+int				arrows(char *ctrl, t_cursor *cursor, t_chain **line, t_chain **history);
 /*	shift_plus_arrows.c
 **		- Detect if a arrow was pressed in combination with control key.
 */

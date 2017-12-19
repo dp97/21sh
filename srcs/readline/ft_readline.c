@@ -69,7 +69,7 @@ char			*ft_readline(void)
 	char		key[10];
 
 	history = ft_init_history();
-	if (ft_chainadd_front(history) == DONE)
+	if (ft_chainadd_front(&history) == ERR)
 	{
 		ft_log("ft_chainadd_front: Not enough memory.", 1);
 		return (NULL);
@@ -96,7 +96,7 @@ char			*ft_readline(void)
 		}
 		else
 		{
-			if (arrows(key, &cursor, &line, history) == DONE)
+			if (arrows(key, &cursor, &line, &history) == DONE)
 				;
 			else
 				detect_escape(key, &cursor, &line);
