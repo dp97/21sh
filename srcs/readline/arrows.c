@@ -36,12 +36,20 @@ static int	move_cursor_right(t_cursor *cursor, t_chain **line)
 
 static int	ft_history_up(t_cursor *cursor, t_chain **line, t_chain *history)
 {
-	if (history->prev)
+	if (history)
 	{
-		// TODO
-		(*cursor).col = (*cursor).col_start + ft_strlen(history->value);
-		ft_reprint_line(history->value, cursor);
+		if (history->prev == NULL)
+		{
+			if ((history->prev = ft_chainnew(NULL)) == NULL)
+				return (ERR);
+			history->prev->next = history;
+			history->prev->value = (*line)->value;
+		}
+		ft_replace_line(history->value, cursor);
+		(*line)->value = history->value;
+		return (DONE);
 	}
+	return (NOTHING_DONE);
 }
 
 static int	ft_history_do(t_cursor *cursor, t_chain **line, t_chain *history)

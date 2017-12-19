@@ -26,7 +26,27 @@ t_chain		*ft_chainnew(char *value)
 }
 
 /*
-**
+**	Append a new s_chain struct with value to NULL.
+*/
+int			ft_chainadd_front(t_chain *head)
+{
+	t_chain	*tmp;
+
+	if ((tmp = head) == NULL)
+		return (((head = ft_chainnew(NULL)) ? DONE : ERR));
+	else
+	{
+		while (tmp->prev)
+			tmp = tmp->prev;
+		if ((tmp->prev = ft_chainnew(NULL)) == NULL)
+			return (ERR);
+		tmp->prev->next = tmp;
+	}
+	return (DONE);
+}
+
+/*
+**	Delete/frees all nodes of s_chain struct.
 */
 void		ft_chainpurge(t_chain **chain)
 {

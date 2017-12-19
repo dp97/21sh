@@ -40,7 +40,7 @@ int		backspace_char(char **line, t_cursor *cursor)
 	int	pos;
 
 	pos = (*cursor).col - (*cursor).col_start - 1;
-	if (line && arrows(ARROW_LEFT, cursor, NULL) == 0)
+	if (line && arrows(ARROW_LEFT, cursor, NULL, NULL) == RET_OK)
 	{
 		if (ft_strdchar(line, pos))
 			return (ERR);

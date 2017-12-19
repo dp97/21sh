@@ -12,41 +12,51 @@
 
 #include "ft_readline.h"
 
-
-void priint(int *a, int s)
+/*	Erarse the line on which cursor is positioned.
+*/
+void		ft_erarse_line(t_cursor *cursor)
 {
-	for(int i = 0; i < s; i++)
-		printf("(%d)", a[i]);
-}
-void		ft_reprint_line(char *line, t_cursor *cursor)
-{
-	int		restore;
-	
-	restore = (*cursor).col;
 	if_msc_keypad(HOME_KEY, cursor);
+	(*cursor).col = (*cursor).col_start;
 	while ((*cursor).col_end --> (*cursor).col_start)
 		tputs(DELETE_CHAR, 1, ft_puti);
-	ft_putstr_fd(line, STDIN_FILENO);
-	(*cursor).col = restore;
-	tputs(tgoto(CH_CURSOR_COL, 0, restore), 1, ft_puti);
-	(*cursor).col_end += ft_strlen(line) + 1;
 }
 
-int			print(char **line, t_cursor *cursor, char input)
+/*	Print a string to STDIN and updates cursor respectively.
+*/
+void		ft_print_line(t_cursor *cursor, char *line)
+{
+	ft_putstr_fd(line, STDIN_FILENO);
+	(*cursor).col_end += ft_strlen(line) + 1;
+	(*cursor).col = (*cursor).col_end;
+	tputs(tgoto(CH_CURSOR_COL, 0, (*cursor).col), 1, ft_puti);
+}
+
+/*	Replace line on which cursor is positoned .
+*/
+void		ft_replace_line(char *line, t_cursor *cursor)
+{
+	ft_erarse_line(cursor);
+	ft_print_line(cursor, line);
+
+}
+
+int			ft_insert_char(char **line, t_cursor *cursor, char input)
 {
 	int		pos;
-	int		i;
+	int		restore;
 
-	i = 0;
 	pos = (*cursor).col - (*cursor).col_start;
 	if (ft_strichar(line, pos, input))
 	{
 		ft_log("Insuficient memory for inserting a character.", 1);
 		return (RET_ERR);
 	}
-	(*cursor).col++;
+	restore = ++(*cursor).col;
 	(*cursor).col_end++;
-	ft_reprint_line(*line, cursor);
+	ft_replace_line(*line, cursor);
+	(*cursor).col = restore;
+	tputs(tgoto(CH_CURSOR_COL, 0, (*cursor).col), 1, ft_puti);
 	return (RET_OK);
 }
 static int	handle_input(char *input, t_chain **history, t_cursor *cursor);
@@ -59,7 +69,12 @@ char			*ft_readline(void)
 	char		key[10];
 
 	history = ft_init_history();
-line = ft_chainnew(NULL);
+	if (ft_chainadd_front(history) == DONE)
+	{
+		ft_log("ft_chainadd_front: Not enough memory.", 1);
+		return (NULL);
+	}
+	line = ft_chainnew(NULL);
 
 	cursor.col_start = ft_strlen(PROMPT);
 	cursor.col = cursor.col_start;
@@ -121,7 +136,7 @@ static int	handle_input(char *input, t_chain **history, t_cursor *cursor)
 				return (-1);
 		}
 		else if (ft_isprint(input[i]))
-			if (print(&((*history)->value), cursor, input[i]))
+			if (ft_insert_char(&((*history)->value), cursor, input[i]))
 				return (1);
 		++i;
 	}

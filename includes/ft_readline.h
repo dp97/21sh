@@ -63,13 +63,18 @@ void	find();
 void        init_terminal_data(void);
 void	infoo(char *key);
 int    ft_puti(int c);
-int				print(char **line, t_cursor *cursor, char input);
+
+int				ft_insert_char(char **line, t_cursor *cursor, char input);
+void			ft_erarse_line(t_cursor *cursor);
+void			ft_print_line(t_cursor *cursor, char *line);
+void			ft_replace_line(char *line, t_cursor *cursor);
 /*
 **	s_chain.c
 **		- Fuctions to handle operations on s_chain.
 */
 t_chain			*ft_chainnew(char *value);
 void			ft_chainpurge(t_chain **chain);
+int				ft_chainadd_front(t_chain *head);
 /*
 **	tty.c
 **		- Handle the terminal device.
