@@ -36,15 +36,35 @@
 # define ARROW_RIGHT	tgetstr("kr", 0)
 # define ARROW_UP		tgetstr("ku", 0)
 # define ARROW_DOWN		tgetstr("kd", 0)
+
+# define ALT_B_KEY		""/*back one word*/
+# define ALT_D_KEY		""/*delete all from right of cursor*/
+# define ALT_F_KEY		""/*forward one word*/
+
 # define SHIFT_LEFT		"\e[1;2D"
 # define SHIFT_RIGHT	"\e[1;2C"
 # define SHIFT_UP		"\e[1;2A"
 # define SHIFT_DOWN		"\e[1;2B"
+
+# define CTRL_A_KEY		"\x"/*begin of line*/
+# define CTRL_E_KEY		"\x"/*end of line*/
+# define CTRL_F_KEY		"\x"/*forward one char*/
+# define CTRL_B_KEY		"\x"/*back one cahr*/
+# define CTRL_H_KEY		"\x8"
+# define CTRL_W_KEY		"\x"/*cutcopy word before cursor*/
+# define CTRL_K_KEY		"\x"/*....... part line after cursor*/
+# define CTRL_U_KEY		"\x"/*........ part line before cursor*/
+# define CTRL_Y_KEY		"\x"/*paste copied line from clipboard*/
 # define CTRL_D_KEY		"\x4"
 # define CTRL_C_KEY		"\x3"
-# define BACKSPACE_KEY	"\x7F"
+
+#define BACKSPACE	CTRL_H_KEY
+
+# define BACKSPACE_KEY	tgetstr("kb", 0)
+# define DELETE_KEY		tgetstr("kD", 0)
 # define HOME_KEY		tgetstr("kh", 0)
 # define END_KEY		tgetstr("@7", 0)
+
 # include "libft.h"
 # include <termios.h>
 # include <sys/ioctl.h>

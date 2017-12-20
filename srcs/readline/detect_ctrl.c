@@ -16,9 +16,9 @@ void	detect_escape(char *ctrl, t_cursor *cursor, t_chain **line)
 {
 	if (ft_strcmp(ctrl, CTRL_C_KEY) == 0)
 		ft_putstrstr("\n\r", PROMPT);
-	else if (ft_strcmp(ctrl, BACKSPACE_KEY) == 0)
+	else if (ft_strcmp(ctrl, BACKSPACE_KEY) == 0 || ft_strcmp(ctrl, BACKSPACE) == 0)
 		backspace_char(&(*line)->value, cursor);
-	else if (ft_strcmp(ctrl, CTRL_D_KEY) == 0)
+	else if (ft_strcmp(ctrl, CTRL_D_KEY) == 0 || ft_strcmp(ctrl, DELETE_KEY) == 0)
 		delete_char(&((*line)->value), cursor);
 	else if (ctrl[0] == 5)
 	{
