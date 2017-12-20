@@ -38,12 +38,14 @@ static int	ft_history_up(t_cursor *cursor, t_chain **line, t_chain **history)
 {
 	if (*history)
 	{
-		(*history)->value = (*line)->value;
+		ft_strdel(&((*history)->value));
+		(*history)->value = ft_strdup((*line)->value);
 		if ((*history)->next == NULL)
 			return (NOTHING_DONE);
 		*history = (*history)->next;
 		ft_replace_line((*history)->value, cursor);
-		(*line)->value = (*history)->value;
+		ft_strdel(&((*line)->value));
+		(*line)->value = ft_strdup((*history)->value);
 		return (DONE);
 	}
 	return (NOTHING_DONE);
@@ -53,12 +55,14 @@ static int	ft_history_do(t_cursor *cursor, t_chain **line, t_chain **history)
 {
 	if (*history)
 	{
-		(*history)->value = (*line)->value;
+		ft_strdel(&((*history)->value));
+		(*history)->value = ft_strdup((*line)->value);
 		if ((*history)->prev == NULL)
 			return (NOTHING_DONE);
 		*history = (*history)->prev;
 		ft_replace_line((*history)->value, cursor);
-		(*line)->value = (*history)->value;
+		ft_strdel(&((*line)->value));
+		(*line)->value = ft_strdup((*history)->value);
 		return (DONE);
 	}
 	return (NOTHING_DONE);

@@ -25,7 +25,7 @@ void	detect_escape(char *ctrl, t_cursor *cursor, t_chain **line)
 		tty_disable_raw();
 		exit(EXIT_SUCCESS);
 	}
-	else if (shift_plus_arrows(ctrl, cursor, line) == DONE)
+	else if (shift_plus_arrows(ctrl, cursor, line) != NO_MATCH)
 		return ;
 	else if (if_msc_keypad(ctrl, cursor) == DONE)
 		return ;

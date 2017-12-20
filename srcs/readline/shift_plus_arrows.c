@@ -1,7 +1,7 @@
 
 #include "ft_readline.h"
 
-static void	move_cursor_one_word_left(t_cursor *cursor, char *line)
+static int	move_cursor_one_word_left(t_cursor *cursor, char *line)
 {
 	int		pos;
 	int		by;
@@ -22,9 +22,12 @@ static void	move_cursor_one_word_left(t_cursor *cursor, char *line)
 	}
 	if (by)
 		tputs(tgoto(tgetstr("LE", 0), 0, by), 1, ft_puti);
+	else
+		return (NOTHING_DONE);
+	return (DONE);
 }
 
-static void	move_cursor_one_word_right(t_cursor *cursor, char *line)
+static int	move_cursor_one_word_right(t_cursor *cursor, char *line)
 {
 	int		pos;
 	int		by;
@@ -45,9 +48,12 @@ static void	move_cursor_one_word_right(t_cursor *cursor, char *line)
 	}
 	if (by)
 		tputs(tgoto(tgetstr("RI", 0), 0, by), 1, ft_puti);
+	else
+		return (NOTHING_DONE);
+	return (DONE);
 }
 
-static void	move_cursor_one_line_up(t_cursor *cursor, t_chain **line)
+static int	move_cursor_one_line_up(t_cursor *cursor, t_chain **line)
 {
 	if ((*line)->prev)
 	{
@@ -61,9 +67,12 @@ static void	move_cursor_one_line_up(t_cursor *cursor, t_chain **line)
 		tputs(CURSOR_UP, 1, ft_puti);
 		tputs(tgoto(CH_CURSOR_COL, 0, (*cursor).col), 1, ft_puti);
 	}
+	else
+		return (NOTHING_DONE);
+	return (DONE);
 }
 
-static void	move_cursor_one_line_down(t_cursor *cursor, t_chain **line)
+static int	move_cursor_one_line_down(t_cursor *cursor, t_chain **line)
 {
 	if ((*line)->next)
 	{
@@ -77,19 +86,20 @@ static void	move_cursor_one_line_down(t_cursor *cursor, t_chain **line)
 		tputs(CURSOR_DO, 1, ft_puti);
 		tputs(tgoto(CH_CURSOR_COL, 0, (*cursor).col), 1, ft_puti);
 	}
+	else
+		return (NOTHING_DONE);
+	return (DONE);
 }
 
 int			shift_plus_arrows(char *ctrl, t_cursor *cursor, t_chain **line)
 {
 	if (ft_strcmp(SHIFT_LEFT, ctrl) == 0)
-		move_cursor_one_word_left(cursor, (*line)->value);
+		return (move_cursor_one_word_left(cursor, (*line)->value));
 	else if (ft_strcmp(SHIFT_RIGHT, ctrl) == 0)
-		move_cursor_one_word_right(cursor, (*line)->value);
+		return (move_cursor_one_word_right(cursor, (*line)->value));
 	else if (ft_strcmp(SHIFT_UP, ctrl) == 0)
-		move_cursor_one_line_up(cursor, line);
+		return (move_cursor_one_line_up(cursor, line));
 	else if (ft_strcmp(SHIFT_DOWN, ctrl) == 0)
-		move_cursor_one_line_down(cursor, line);
-	else
-		return (NOTHING_DONE);
-	return (DONE);
+		return (move_cursor_one_line_down(cursor, line));
+	return (NO_MATCH);
 }

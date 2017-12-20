@@ -24,6 +24,7 @@
 # define DONE			0
 # define ERR			1
 # define NOTHING_DONE	2
+# define NO_MATCH		3
 # define CH_CURSOR_COL	tgetstr("ch", 0)
 # define CURSOR_UP		tgetstr("up", 0)
 # define CURSOR_DO		tgetstr("do", 0)
@@ -78,8 +79,10 @@ void			ft_replace_line(char *line, t_cursor *cursor);
 */
 t_chain			*ft_chainnew(char *value);
 void			ft_chainpurge(t_chain **chain);
-int				ft_chainadd_front(t_chain **head);
-int				ft_chainadd_back(t_chain **head);
+int				ft_chainadd_front(t_chain **chain);
+int				ft_chainadd_back(t_chain **chain);
+void			ft_chain_gethead(t_chain **chain);
+t_chain			*ft_chain_gettail(t_chain *chain);
 /*
 **	tty.c
 **		- Handle the terminal device.

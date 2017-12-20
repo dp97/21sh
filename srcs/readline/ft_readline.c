@@ -151,6 +151,24 @@ ft_chainpurge(&line);
 	return (NULL);
 }
 
+static int	check_for_backslash(t_chain **line)
+{
+	t_chain	*clast;
+
+	if ((clast = ft_chain_gettail(*line)) == NULL)
+		;
+	else if (ft_lastchar(clast->value) == '\\')
+		return (DONE);
+	return (NOTHING_DONE);
+}
+
+static int	move_cursor_toend(t_chain **line, t_cursor *cursor)
+{
+	while (shift_plus_arrows(SHIFT_DOWN, cursor, line) == DONE)
+		;
+	if_msc_keypad(END_KEY, cursor);
+}
+
 static int	printable_input(char *input, t_chain **line, t_cursor *cursor)
 {
 	int		i;
@@ -160,7 +178,7 @@ static int	printable_input(char *input, t_chain **line, t_cursor *cursor)
 	{
 		if (input[i] == '\r')
 		{
-			if (ft_lastchar((*line)->value) == '\\')
+			if (check_for_backslash(line) == DONE)
 			{
 				/*if (ft_strdchar(&((*history)->value), (*cursor).col - (*cursor).col_start - 1))
 				{
@@ -179,7 +197,10 @@ static int	printable_input(char *input, t_chain **line, t_cursor *cursor)
 				ft_putstrstr(NEWLINE, BACKSLASH_PROMPT);
 			}
 			else
+			{
+				move_cursor_toend(line, cursor);
 				return (-1);
+			}
 		}
 		else if (ft_isprint(input[i]))
 			if (ft_insert_char(&((*line)->value), cursor, input[i]))

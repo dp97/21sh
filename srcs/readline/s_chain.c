@@ -1,6 +1,8 @@
 #include "ft_readline.h"
 
 /*
+**		WARNING: Circular struct not suported!
+**
 **	Create a new struct of type s_chain and return it.
 **	On error NULL is returned.
 */
@@ -76,6 +78,7 @@ void		ft_chainpurge(t_chain **chain)
 {
 	t_chain	*tmp;
 
+	ft_chain_gethead(chain);
 	while (*chain)
 	{
 		tmp = *chain;
@@ -85,4 +88,27 @@ void		ft_chainpurge(t_chain **chain)
 		ft_strdel(&tmp->value);
 		free(tmp);
 	}
+}
+
+/*
+**	Change pointer to point to the first element of the list.
+*/
+void		ft_chain_gethead(t_chain **chain)
+{
+	if (*chain == NULL)
+		return ;
+	while ((*chain)->prev)
+		*chain = (*chain)->prev;
+}
+
+/*
+**	Return the last element of the list.
+*/
+t_chain		*ft_chain_gettail(t_chain *chain)
+{
+	if (chain == NULL)
+		return NULL;
+	while (chain->next)
+		chain = chain->next;
+	return (chain);
 }
