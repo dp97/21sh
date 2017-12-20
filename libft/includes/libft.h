@@ -170,4 +170,15 @@ int					ft_strichar(char **s, int pos, char c);
 /*	Return last char of the given string.
 */
 char				ft_lastchar(char *s);
+
+
+/*
+**	return a new reversed copy of s.
+*/
+char				*ft_strrev(const char *s);
+/*
+**	Refer to file for description.
+*/
+int					ft_strrevcmp(const char *s1, const char *s2);
+int					ft_strrevncmp(const char *s1, const char *s2, size_t n);
 #endif

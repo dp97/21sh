@@ -61,12 +61,11 @@ int			ft_chainadd_back(t_chain **head)
 		return (((*head = ft_chainnew(NULL)) ? DONE : ERR));
 	else
 	{
-		while (tmp->next)
-			tmp = tmp->next;
+		tmp = ft_chain_gettail(tmp);
 		if ((tmp->next = ft_chainnew(NULL)) == NULL)
 			return (ERR);
-		tmp->next->prev = tmp;
 		*head = tmp->next;
+		(*head)->prev = tmp;
 	}
 	return (DONE);
 }
@@ -78,7 +77,7 @@ void		ft_chainpurge(t_chain **chain)
 {
 	t_chain	*tmp;
 
-	ft_chain_gethead(chain);
+	*chain = ft_chain_gethead(*chain);
 	while (*chain)
 	{
 		tmp = *chain;
@@ -93,12 +92,13 @@ void		ft_chainpurge(t_chain **chain)
 /*
 **	Change pointer to point to the first element of the list.
 */
-void		ft_chain_gethead(t_chain **chain)
+t_chain		*ft_chain_gethead(t_chain *chain)
 {
-	if (*chain == NULL)
-		return ;
-	while ((*chain)->prev)
-		*chain = (*chain)->prev;
+	if (chain == NULL)
+		return (NULL);
+	while (chain->prev)
+		chain = chain->prev;
+	return (chain);
 }
 
 /*
@@ -107,7 +107,7 @@ void		ft_chain_gethead(t_chain **chain)
 t_chain		*ft_chain_gettail(t_chain *chain)
 {
 	if (chain == NULL)
-		return NULL;
+		return (NULL);
 	while (chain->next)
 		chain = chain->next;
 	return (chain);

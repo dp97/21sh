@@ -21,10 +21,13 @@
 # define RET_OK		0
 # define RET_ERR	1
 # define RET_MIRR	-1
+# define YES	1
+# define NO		0
 # define DONE			0
 # define ERR			1
 # define NOTHING_DONE	2
-# define NO_MATCH		3
+# define MATCH			3
+# define NO_MATCH		4
 # define CH_CURSOR_COL	tgetstr("ch", 0)
 # define CURSOR_UP		tgetstr("up", 0)
 # define CURSOR_DO		tgetstr("do", 0)
@@ -73,6 +76,7 @@ int				ft_insert_char(char **line, t_cursor *cursor, char input);
 void			ft_erarse_line(t_cursor *cursor);
 void			ft_print_line(t_cursor *cursor, char *line);
 void			ft_replace_line(char *line, t_cursor *cursor);
+int				check_for_backslashend(t_chain *line, short last);
 /*
 **	s_chain.c
 **		- Fuctions to handle operations on s_chain.
@@ -81,7 +85,7 @@ t_chain			*ft_chainnew(char *value);
 void			ft_chainpurge(t_chain **chain);
 int				ft_chainadd_front(t_chain **chain);
 int				ft_chainadd_back(t_chain **chain);
-void			ft_chain_gethead(t_chain **chain);
+t_chain			*ft_chain_gethead(t_chain *chain);
 t_chain			*ft_chain_gettail(t_chain *chain);
 /*
 **	tty.c

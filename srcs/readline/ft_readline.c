@@ -28,6 +28,8 @@ char	 	*ft_assemble_line(t_chain *line)
 	while (tmp)
 	{
 		hold = result;
+		if (check_for_backslashend(tmp, NO) == MATCH)
+			tmp->value[ft_strlen(tmp->value) - 1] = '\0';
 		if ((result = ft_strjoin(hold, tmp->value)) == NULL && hold && tmp->value)
 		{
 			ft_log("ft_assemble_line: Insuficient memory.", 1);
@@ -151,15 +153,33 @@ ft_chainpurge(&line);
 	return (NULL);
 }
 
-static int	check_for_backslash(t_chain **line)
+/*
+**	Check if in the end of the string is an extra '\'.
+**	'short' = 0 is current t_chain struct, else it shearch on last struct.
+*/
+int	check_for_backslashend(t_chain *line, short last)
 {
 	t_chain	*clast;
+	int		len;
+	int		odd;
 
-	if ((clast = ft_chain_gettail(*line)) == NULL)
-		;
-	else if (ft_lastchar(clast->value) == '\\')
-		return (DONE);
-	return (NOTHING_DONE);
+	if (last)
+	{
+		if ((clast = ft_chain_gettail(line)) == NULL)
+			return (NOTHING_DONE);
+	}
+	else
+		clast = line;
+	if (clast->value == NULL)
+		return (NOTHING_DONE);
+	odd = 0;
+	len = ft_strlen(clast->value) - 1;
+	while (len >= 0 && clast->value[len] == '\\')
+	{
+		odd++;
+		len--;
+	}
+	return (odd % 2 ? MATCH : NO_MATCH);
 }
 
 static int	move_cursor_toend(t_chain **line, t_cursor *cursor)
@@ -178,29 +198,27 @@ static int	printable_input(char *input, t_chain **line, t_cursor *cursor)
 	{
 		if (input[i] == '\r')
 		{
-			if (check_for_backslash(line) == DONE)
+			move_cursor_toend(line, cursor);
+
+			if (check_for_backslashend(*line, YES) == MATCH)
 			{
 				/*if (ft_strdchar(&((*history)->value), (*cursor).col - (*cursor).col_start - 1))
 				{
 					ft_log("error when delete the'\\'", 1);
 					return (1);
-				}
-				(*cursor).col--;
-				(*cursor).col_end--;*/
+				}*/
 				if (ft_chainadd_back(line) == ERR)
 				{
 					delete_char(&((*line)->value), cursor);
 					ft_log("printable_input: Insuficient memory for a new line.", 1);
 					return (1);
 				}
+
 				ft_recalibrate_cursor(cursor, ft_strlen(BACKSLASH_PROMPT));
 				ft_putstrstr(NEWLINE, BACKSLASH_PROMPT);
 			}
 			else
-			{
-				move_cursor_toend(line, cursor);
 				return (-1);
-			}
 		}
 		else if (ft_isprint(input[i]))
 			if (ft_insert_char(&((*line)->value), cursor, input[i]))
