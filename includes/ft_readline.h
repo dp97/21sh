@@ -46,19 +46,26 @@
 # define SHIFT_UP		"\e[1;2A"
 # define SHIFT_DOWN		"\e[1;2B"
 
-# define CTRL_A_KEY		"\x"/*begin of line*/
-# define CTRL_E_KEY		"\x"/*end of line*/
+# define CTRL_A_KEY		"\x1"/*begin of line*/
+# define CTRL_E_KEY		"\x5"/*end of line*/
 # define CTRL_F_KEY		"\x"/*forward one char*/
 # define CTRL_B_KEY		"\x"/*back one cahr*/
 # define CTRL_H_KEY		"\x8"
-# define CTRL_W_KEY		"\x"/*cutcopy word before cursor*/
-# define CTRL_K_KEY		"\x"/*....... part line after cursor*/
-# define CTRL_U_KEY		"\x"/*........ part line before cursor*/
-# define CTRL_Y_KEY		"\x"/*paste copied line from clipboard*/
+# define CTRL_W_KEY		"\x17"/*cutcopy word before cursor*/
+# define CTRL_K_KEY		"\xB"/*....... part line after cursor*/
+# define CTRL_U_KEY		"\x15"/*........ part line before cursor*/
+# define CTRL_Y_KEY		"\x19"/*paste copied line from clipboard*/
 # define CTRL_D_KEY		"\x4"
 # define CTRL_C_KEY		"\x3"
 
-#define BACKSPACE	CTRL_H_KEY
+# define BACKSPACE	CTRL_H_KEY
+# define CC_BACK_W	CTRL_W_KEY
+# define CC_FRONT	CTRL_K_KEY
+# define CC_BACK	CTRL_U_KEY
+# define CC_PASTE	CTRL_Y_KEY
+# define A_LEFT_W	SHIFT_LEFT
+# define M_BEGIN	CTRL_A_KEY
+# define M_END		CTRL_E_KEY
 
 # define BACKSPACE_KEY	tgetstr("kb", 0)
 # define DELETE_KEY		tgetstr("kD", 0)
@@ -91,12 +98,18 @@ void	find();
 void        init_terminal_data(void);
 void	infoo(char *key);
 int    ft_puti(int c);
-
+int		ft_posinstr(t_cursor cursor);
 int				ft_insert_char(char **line, t_cursor *cursor, char input);
 void			ft_erarse_line(t_cursor *cursor);
 void			ft_print_line(t_cursor *cursor, char *line);
 void			ft_replace_line(char *line, t_cursor *cursor);
 int				check_for_backslashend(t_chain *line, short last);
+
+/*
+**	cut_copy_paste.c
+**		- Functions to handle cuting, copying and paste.
+*/
+int				cut_copy_paste(char *ctrl, t_chain *line, t_cursor *cursor);
 /*
 **	s_chain.c
 **		- Fuctions to handle operations on s_chain.

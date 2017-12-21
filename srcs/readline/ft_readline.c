@@ -49,6 +49,11 @@ void	ft_recalibrate_cursor(t_cursor *cursor, int col)
 	(*cursor).col_end = col;
 }
 
+int		ft_posinstr(t_cursor cursor)
+{
+	return (cursor.col - cursor.col_start);
+}
+
 /*	Erarse the line on which cursor is positioned.
 */
 void		ft_erarse_line(t_cursor *cursor)

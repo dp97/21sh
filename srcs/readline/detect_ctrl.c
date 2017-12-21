@@ -29,7 +29,9 @@ void	detect_escape(char *ctrl, t_cursor *cursor, t_chain **line)
 		return ;
 	else if (if_msc_keypad(ctrl, cursor) == DONE)
 		return ;
+	else if (cut_copy_paste(ctrl, *line, cursor) == MATCH)
+		return ;
 
 	//char *key = tgetstr("kl", 0);
-	//printf("/%d-%c-%c-%c-%c-%c/", ctrl[0], ctrl[1], ctrl[2], ctrl[3], ctrl[4], ctrl[5]);
+//	printf("/%d-%c-%c-%c-%c-%c/", ctrl[0], ctrl[1], ctrl[2], ctrl[3], ctrl[4], ctrl[5]);
 }
