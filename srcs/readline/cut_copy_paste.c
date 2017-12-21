@@ -1,5 +1,5 @@
 #include "ft_readline.h"
-char	*hmc(char *s, short assign);
+char	*clipboard(char *s, short assign);
 
 static void	cut_copy_backword(t_chain *line, t_cursor *cursor)
 {
@@ -10,7 +10,7 @@ static void	cut_copy_backword(t_chain *line, t_cursor *cursor)
 	col = ft_posinstr(*cursor);
 	shift_plus_arrows(A_LEFT_W, cursor, &line);
 	col -= ft_posinstr(*cursor);
-	hmc(ft_strsub(line->value, ft_posinstr(*cursor), col), YES);
+	clipboard(ft_strsub(line->value, ft_posinstr(*cursor), col), YES);
 	while (0 <= --col)
 		delete_char(&line->value, cursor);
 }
@@ -19,7 +19,7 @@ static void	yank_to_line(char **line, t_cursor *cursor)
 {
 	char	*yank;
 
-	if ((yank = hmc(NULL, NO)) == NULL)	
+	if ((yank = clipboard(NULL, NO)) == NULL)	
 		return ;
 	while (*yank)
 		ft_insert_char(line, cursor, *yank++);
@@ -29,7 +29,7 @@ static void	cut_copy_backall(char **line, t_cursor *cursor)
 {
 	if ((*cursor).col == (*cursor).col_start)
 		return ;
-	hmc(ft_strsub(*line, 0, ft_posinstr(*cursor)), YES);
+	clipboard(ft_strsub(*line, 0, ft_posinstr(*cursor)), YES);
 	while (backspace_char(line, cursor) == DONE)
 		;
 }
@@ -38,7 +38,7 @@ static void	cut_copy_frontall(char **line, t_cursor *cursor)
 {
 	if ((*cursor).col == (*cursor).col_end)
 		return ;
-	hmc(ft_strsub(*line, ft_posinstr(*cursor), ft_strlen(*line) - ft_posinstr(*cursor)), YES);
+	clipboard(ft_strsub(*line, ft_posinstr(*cursor), ft_strlen(*line) - ft_posinstr(*cursor)), YES);
 	while ((*cursor).col < (*cursor).col_end)
 		delete_char(line, cursor);
 }

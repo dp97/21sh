@@ -1,9 +1,11 @@
+#include "ft_readline.h"
+
 /*
 **	HOLD MY CHAR
 **		- Alternative to Global variables.
 **	if assign is non 0 then  value is assigned to it.
 */
-char	*hmc(char *s, short assign)
+char	*clipboard(char *s, short assign)
 {
 	static char	*here;
 

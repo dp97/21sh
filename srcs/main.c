@@ -14,10 +14,19 @@
 
 int		main(int argc, char **argv, char **env)
 {
+	char	*line;
 	(void)argc;
 	(void)argv;
 	(void)env;
 	while(1)
-		ft_readline();
+	{
+		line = ft_readline();
+		if (ft_strcmp(line, "exit") == 0)
+		{
+			 ft_strdel(&line);
+			break ;
+		}
+		ft_strdel(&line);
+	}
 	return (0);
 }

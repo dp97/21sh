@@ -149,12 +149,11 @@ char			*ft_readline(void)
 char *result = ft_assemble_line(line);
 ft_putstrstr("\n\r", result);
 ft_update_history(result);
-ft_strdel(&result);
 ft_chainpurge(&history);
 ft_chainpurge(&line);
 	tputs(tgetstr("ke", 0), 1, ft_puti);
 	tty_disable_raw();
-	return (NULL);
+	return (result);
 }
 
 /*

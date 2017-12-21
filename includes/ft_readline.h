@@ -50,13 +50,13 @@
 # define CTRL_E_KEY		"\x5"/*end of line*/
 # define CTRL_F_KEY		"\x"/*forward one char*/
 # define CTRL_B_KEY		"\x"/*back one cahr*/
-# define CTRL_H_KEY		"\x8"
+# define CTRL_H_KEY		"\x8"/*backspace char*/
 # define CTRL_W_KEY		"\x17"/*cutcopy word before cursor*/
 # define CTRL_K_KEY		"\xB"/*....... part line after cursor*/
 # define CTRL_U_KEY		"\x15"/*........ part line before cursor*/
 # define CTRL_Y_KEY		"\x19"/*paste copied line from clipboard*/
-# define CTRL_D_KEY		"\x4"
-# define CTRL_C_KEY		"\x3"
+# define CTRL_D_KEY		"\x4"/*delete char+exit shell*/
+# define CTRL_C_KEY		"\x3"/*Cancel command+kill process*/
 
 # define BACKSPACE	CTRL_H_KEY
 # define CC_BACK_W	CTRL_W_KEY
