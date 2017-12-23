@@ -16,6 +16,8 @@
 # define NEWLINE			"\n\r"
 # define PROMPT				"myShell$> "
 # define BACKSLASH_PROMPT	"$> "
+# define QUOTE_PROMPT		"quote> "
+# define DQUOTE_PROMPT		"dquote> "
 # define HISTORY_PATH	".history"
 # define LOG_PATH		".log"
 # define RET_OK		0
@@ -72,6 +74,10 @@
 # define HOME_KEY		tgetstr("kh", 0)
 # define END_KEY		tgetstr("@7", 0)
 
+typedef short	t_flag;
+# define QUOTE_FLAG		1
+# define DQUOTE_FLAG	2
+
 # include "libft.h"
 # include <termios.h>
 # include <sys/ioctl.h>
@@ -105,6 +111,11 @@ void			ft_print_line(t_cursor *cursor, char *line);
 void			ft_replace_line(char *line, t_cursor *cursor);
 int				check_for_backslashend(t_chain *line, short last);
 
+/*
+**	quotes.c
+**		- Parse all lines for quotes and double quotes.
+*/
+void			proccess_line_for_quotes(t_chain *line, t_flag *flags);
 /*
 **	cut_copy_paste.c
 **		- Functions to handle cuting, copying and paste.

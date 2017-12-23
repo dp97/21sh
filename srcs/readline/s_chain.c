@@ -94,11 +94,13 @@ void		ft_chainpurge(t_chain **chain)
 */
 t_chain		*ft_chain_gethead(t_chain *chain)
 {
-	if (chain == NULL)
+	t_chain	*head;
+
+	if ((head = chain) == NULL)
 		return (NULL);
-	while (chain->prev)
-		chain = chain->prev;
-	return (chain);
+	while (head->prev)
+		head = head->prev;
+	return (head);
 }
 
 /*
@@ -106,9 +108,11 @@ t_chain		*ft_chain_gethead(t_chain *chain)
 */
 t_chain		*ft_chain_gettail(t_chain *chain)
 {
-	if (chain == NULL)
+	t_chain	*tail;
+
+	if ((tail = chain) == NULL)
 		return (NULL);
-	while (chain->next)
-		chain = chain->next;
-	return (chain);
+	while (tail->next)
+		tail = tail->next;
+	return (tail);
 }

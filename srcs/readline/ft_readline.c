@@ -192,33 +192,48 @@ static int	move_cursor_toend(t_chain **line, t_cursor *cursor)
 	if_msc_keypad(END_KEY, cursor);
 }
 
+static int	add_new_line(t_chain **line, t_cursor *cursor, char *prompt)
+{
+	if (ft_chainadd_back(line) == ERR)
+	{
+		delete_char(&((*line)->value), cursor);
+		ft_log("printable_input: Insuficient memory for a new line.", 1);
+		return (ERR);
+	}
+	ft_recalibrate_cursor(cursor, ft_strlen(prompt));
+	ft_putstrstr(NEWLINE, prompt);
+	return (DONE);
+}
+
 static int	printable_input(char *input, t_chain **line, t_cursor *cursor)
 {
+	t_flag	flags;
 	int		i;
 
 	i = 0;
+	flags = 0;
 	while (input[i])
 	{
 		if (input[i] == '\r')
 		{
 			move_cursor_toend(line, cursor);
 
-			if (check_for_backslashend(*line, YES) == MATCH)
-			{
-				/*if (ft_strdchar(&((*history)->value), (*cursor).col - (*cursor).col_start - 1))
-				{
-					ft_log("error when delete the'\\'", 1);
-					return (1);
-				}*/
-				if (ft_chainadd_back(line) == ERR)
-				{
-					delete_char(&((*line)->value), cursor);
-					ft_log("printable_input: Insuficient memory for a new line.", 1);
-					return (1);
-				}
+			proccess_line_for_quotes(*line, &flags);
 
-				ft_recalibrate_cursor(cursor, ft_strlen(BACKSLASH_PROMPT));
-				ft_putstrstr(NEWLINE, BACKSLASH_PROMPT);
+			if (flags & QUOTE_FLAG)
+			{
+				if (add_new_line(line, cursor, QUOTE_PROMPT) == ERR)
+					return (1);
+			}
+			else if (flags & DQUOTE_FLAG)
+			{
+				if (add_new_line(line, cursor, DQUOTE_PROMPT) == ERR)
+					return (1);
+			}
+			else if (check_for_backslashend(*line, YES) == MATCH)
+			{
+				if (add_new_line(line, cursor, BACKSLASH_PROMPT) == ERR)
+					return (1);
 			}
 			else
 				return (-1);
