@@ -28,7 +28,7 @@ SRCS	= main.c ft_loop.c execute.c launch.c \
 		  readline/arrows.c readline/ft_log.c readline/s_chain.c \
 		  readline/shift_plus_arrows.c readline/msc_keypad.c \
 			readline/cut_copy_paste.c readline/clipboard.c \
-			readline/quotes.c
+			readline/quotes.c readline/delete_keys.c
 
 OBJS			= $(SRCS:.c=.o)
 

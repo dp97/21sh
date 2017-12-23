@@ -12,26 +12,27 @@
 
 #include "ft_readline.h"
 
-void	detect_escape(char *ctrl, t_cursor *cursor, t_chain **line)
+int		detect_escape(char *ctrl, t_cursor *cursor, t_chain **line)
 {
+	int	ret;
+
 	if (ft_strcmp(ctrl, CTRL_C_KEY) == 0)
 		ft_putstrstr("\n\r", PROMPT);
-	else if (ft_strcmp(ctrl, BACKSPACE_KEY) == 0 || ft_strcmp(ctrl, BACKSPACE) == 0)
-		backspace_char(&(*line)->value, cursor);
-	else if (ft_strcmp(ctrl, CTRL_D_KEY) == 0 || ft_strcmp(ctrl, DELETE_KEY) == 0)
-		delete_char(&((*line)->value), cursor);
 	else if (ctrl[0] == 5)
 	{
 		tty_disable_raw();
 		exit(EXIT_SUCCESS);
 	}
+	else if ((ret = delete_keys(ctrl, &((*line)->value), cursor)) != NO_MATCH)
+		return (ret);
 	else if (shift_plus_arrows(ctrl, cursor, line) != NO_MATCH)
-		return ;
+		return (MATCH);
 	else if (if_msc_keypad(ctrl, cursor) == DONE)
-		return ;
+		return (MATCH);
 	else if (cut_copy_paste(ctrl, *line, cursor) == MATCH)
-		return ;
+		return (MATCH);
 
 	//char *key = tgetstr("kl", 0);
 //	printf("/%d-%c-%c-%c-%c-%c/", ctrl[0], ctrl[1], ctrl[2], ctrl[3], ctrl[4], ctrl[5]);
+	return (MATCH);
 }

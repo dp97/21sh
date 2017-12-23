@@ -28,3 +28,10 @@ void	ft_log(char *msg, short critical)
 	write(fd, "\n", 1);
 	close(fd);
 }
+
+void	ft_puterr(char *pre_message, char *message)
+{
+	if (pre_message)
+		ft_putstr_fd(pre_message, STDERR_FILENO);
+	ft_putendl_fd(message, STDERR_FILENO);
+}

@@ -14,6 +14,7 @@
 # define FT_READLINE_H
 # define DEBUG			0
 # define NEWLINE			"\n\r"
+# define NAME				"21sh"
 # define PROMPT				"myShell$> "
 # define BACKSLASH_PROMPT	"$> "
 # define QUOTE_PROMPT		"quote> "
@@ -30,6 +31,7 @@
 # define NOTHING_DONE	2
 # define MATCH			3
 # define NO_MATCH		4
+# define EXIT			5
 # define CH_CURSOR_COL	tgetstr("ch", 0)
 # define CURSOR_UP		tgetstr("up", 0)
 # define CURSOR_DO		tgetstr("do", 0)
@@ -48,16 +50,16 @@
 # define SHIFT_UP		"\e[1;2A"
 # define SHIFT_DOWN		"\e[1;2B"
 
-# define CTRL_A_KEY		"\x1"/*begin of line*/
-# define CTRL_E_KEY		"\x5"/*end of line*/
+# define CTRL_A_KEY		"\x1"	/*begin of line*/
+# define CTRL_E_KEY		"\x5"	/*end of line*/
 # define CTRL_F_KEY		"\x"/*forward one char*/
 # define CTRL_B_KEY		"\x"/*back one cahr*/
-# define CTRL_H_KEY		"\x8"/*backspace char*/
-# define CTRL_W_KEY		"\x17"/*cutcopy word before cursor*/
-# define CTRL_K_KEY		"\xB"/*....... part line after cursor*/
-# define CTRL_U_KEY		"\x15"/*........ part line before cursor*/
-# define CTRL_Y_KEY		"\x19"/*paste copied line from clipboard*/
-# define CTRL_D_KEY		"\x4"/*delete char+exit shell*/
+# define CTRL_H_KEY		"\x8"	/*backspace char*/
+# define CTRL_W_KEY		"\x17"	/*cutcopy word before cursor*/
+# define CTRL_K_KEY		"\xB"	/*....... part line after cursor*/
+# define CTRL_U_KEY		"\x15"	/*........ part line before cursor*/
+# define CTRL_Y_KEY		"\x19"	/*paste copied line from clipboard*/
+# define CTRL_D_KEY		"\x4"	/*delete char+exit shell*/
 # define CTRL_C_KEY		"\x3"/*Cancel command+kill process*/
 
 # define BACKSPACE	CTRL_H_KEY
@@ -77,6 +79,8 @@
 typedef short	t_flag;
 # define QUOTE_FLAG		1
 # define DQUOTE_FLAG	2
+# define EXIT_FLAG		4
+# define CANCEL_FLAG	8
 
 # include "libft.h"
 # include <termios.h>
@@ -111,6 +115,10 @@ void			ft_print_line(t_cursor *cursor, char *line);
 void			ft_replace_line(char *line, t_cursor *cursor);
 int				check_for_backslashend(t_chain *line, short last);
 
+/*
+**
+*/
+int				delete_keys(char *ctrl, char **l, t_cursor *cursor);
 /*
 **	quotes.c
 **		- Parse all lines for quotes and double quotes.
@@ -153,7 +161,7 @@ int				backspace_char(char **line, t_cursor *cursor);
 **	detect_ctrl.c
 **		- Detect which control char was pressed.
 */
-void			detect_escape(char *ctrl, t_cursor *cursor, t_chain **line);
+int			detect_escape(char *ctrl, t_cursor *cursor, t_chain **line);
 /*
 ** 	arrows.c
 ** 		- Detect which arraw was pressed.
@@ -166,6 +174,7 @@ int				shift_plus_arrows(char *ctrl, t_cursor *cursor, t_chain **line);
 /*
 **	Logs the errors in file pointed by LOG_PATH macro.
 */
+void			ft_puterr(char *pre_message, char *message);
 void			ft_log(char *msg, short critical);
 /*
 **	history.c

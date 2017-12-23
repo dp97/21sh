@@ -30,42 +30,7 @@ static void	ft_mode(char *req)
 	tputs(code, 1, ft_puti);
 }
 
-/*
-**	Delete a char from input stream.
-**	If 'which' is 1 then left char from cursor is deleted,
-**	else the char at cursor position is deleted.
-*/
-int		backspace_char(char **line, t_cursor *cursor)
-{
-	int	pos;
 
-	pos = (*cursor).col - (*cursor).col_start - 1;
-	if (line && arrows(ARROW_LEFT, cursor, NULL, NULL) == RET_OK)
-	{
-		if (ft_strdchar(line, pos))
-			return (ERR);
-		tputs(DELETE_CHAR, 1, ft_puti);
-		(*cursor).col_end--;
-		return (DONE);
-	}
-	return (NOTHING_DONE);
-}
-
-int		delete_char(char **line, t_cursor *cursor)
-{
-	int	pos;
-
-	pos = (*cursor).col - (*cursor).col_start;
-	if (line && (*cursor).col < (*cursor).col_end)
-	{
-		if (ft_strdchar(line, pos))
-			return (ERR);
-		tputs(DELETE_CHAR, 1, ft_puti);
-		(*cursor).col_end--;
-		return (DONE);
-	}
-	return (NOTHING_DONE);
-}
 
 /*	Enable insert mode and insert string by characters then disable the mode */
 void	ft_insert(char input, t_cursor *cursor)

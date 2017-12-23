@@ -101,15 +101,17 @@ int			ft_insert_char(char **line, t_cursor *cursor, char input)
 	tputs(tgoto(CH_CURSOR_COL, 0, (*cursor).col), 1, ft_puti);
 	return (RET_OK);
 }
-static int	printable_input(char *input, t_chain **history, t_cursor *cursor);
+static int	printable_input(char *input, t_chain **history, t_cursor *cursor, t_flag *flags);
 
 char			*ft_readline(void)
 {
+	t_flag		flags;
 	t_chain		*line;
 	t_chain		*history;
 	t_cursor	cursor;
 	char		key[10];
 
+	flags = 0;
 	history = ft_init_history();
 	if (ft_chainadd_front(&history) == ERR)
 	{
@@ -133,15 +135,18 @@ char			*ft_readline(void)
 	{
 		if (ft_isprint(key[0]) || key[0] == '\r')
 		{
-			if (printable_input(key, &line, &cursor))
+			if (printable_input(key, &line, &cursor, &flags))
 				break;
 		}
 		else
 		{
 			if (arrows(key, &cursor, &line, &history) == DONE)
 				;
-			else
-				detect_escape(key, &cursor, &line);
+			else if (detect_escape(key, &cursor, &line) == EXIT)
+			{
+				flags |= EXIT_FLAG;
+				break ;
+			}
 		}
 		ft_strclr(key);
 	}
@@ -151,9 +156,19 @@ ft_putstrstr("\n\r", result);
 ft_update_history(result);
 ft_chainpurge(&history);
 ft_chainpurge(&line);
-	tputs(tgetstr("ke", 0), 1, ft_puti);
-	tty_disable_raw();
-	return (result);
+tputs(tgetstr("ke", 0), 1, ft_puti);
+tty_disable_raw();
+
+if (flags & QUOTE_FLAG)
+	ft_puterr(NAME, ": unexpected EOF while looking for matching `''.");
+else if (flags & DQUOTE_FLAG)
+	ft_puterr(NAME, ": unexpected EOF while looking for matching `\"'.");
+else if (flags & EXIT_FLAG)
+{
+ft_strdel(&result);	
+	result = ft_strdup("exit");
+}
+return (result);
 }
 
 /*
@@ -205,38 +220,39 @@ static int	add_new_line(t_chain **line, t_cursor *cursor, char *prompt)
 	return (DONE);
 }
 
-static int	printable_input(char *input, t_chain **line, t_cursor *cursor)
+static int	printable_input(char *input, t_chain **line, t_cursor *cursor, t_flag *flags)
 {
-	t_flag	flags;
 	int		i;
 
 	i = 0;
-	flags = 0;
+	*flags = 0;
 	while (input[i])
 	{
 		if (input[i] == '\r')
 		{
-			move_cursor_toend(line, cursor);
+			proccess_line_for_quotes(*line, flags);
 
-			proccess_line_for_quotes(*line, &flags);
-
-			if (flags & QUOTE_FLAG)
+			if (*flags & QUOTE_FLAG)
 			{
 				if (add_new_line(line, cursor, QUOTE_PROMPT) == ERR)
 					return (1);
 			}
-			else if (flags & DQUOTE_FLAG)
+			else if (*flags & DQUOTE_FLAG)
 			{
 				if (add_new_line(line, cursor, DQUOTE_PROMPT) == ERR)
 					return (1);
 			}
-			else if (check_for_backslashend(*line, YES) == MATCH)
-			{
-				if (add_new_line(line, cursor, BACKSLASH_PROMPT) == ERR)
-					return (1);
-			}
 			else
-				return (-1);
+			{
+				move_cursor_toend(line, cursor);
+				if (check_for_backslashend(*line, YES) == MATCH)
+				{
+					if (add_new_line(line, cursor, BACKSLASH_PROMPT) == ERR)
+						return (1);
+				}
+				else
+					return (-1);
+			}
 		}
 		else if (ft_isprint(input[i]))
 			if (ft_insert_char(&((*line)->value), cursor, input[i]))
