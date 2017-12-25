@@ -25,6 +25,6 @@ int			if_msc_keypad(char *key, t_cursor *cursor)
 	else if (ft_strcmp(END_KEY, key) == 0)
 		move_cursor_end_line(cursor);
 	else
-		return (NOTHING_DONE);
-	return (DONE);
+		return (NO_MATCH);
+	return (MATCH);
 }

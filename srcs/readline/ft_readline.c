@@ -120,9 +120,7 @@ char			*ft_readline(void)
 	}
 	line = ft_chainnew(NULL);
 
-	cursor.col_start = ft_strlen(PROMPT);
-	cursor.col = cursor.col_start;
-	cursor.col_end = cursor.col;
+	ft_recalibrate_cursor(&cursor, ft_strlen(PROMPT));
 
 //	find();
 	init_terminal_data();
@@ -142,11 +140,8 @@ char			*ft_readline(void)
 		{
 			if (arrows(key, &cursor, &line, &history) == DONE)
 				;
-			else if (detect_escape(key, &cursor, &line) == EXIT)
-			{
-				flags |= EXIT_FLAG;
+			else if (detect_escape(key, &cursor, &line, &flags) == EXIT)
 				break ;
-			}
 		}
 		ft_strclr(key);
 	}
@@ -165,9 +160,11 @@ else if (flags & DQUOTE_FLAG)
 	ft_puterr(NAME, ": unexpected EOF while looking for matching `\"'.");
 else if (flags & EXIT_FLAG)
 {
-ft_strdel(&result);	
+	ft_strdel(&result);
 	result = ft_strdup("exit");
 }
+else if (flags & CANCEL_FLAG)
+	ft_strdel(&result);
 return (result);
 }
 

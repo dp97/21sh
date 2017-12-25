@@ -41,10 +41,6 @@
 # define ARROW_UP		tgetstr("ku", 0)
 # define ARROW_DOWN		tgetstr("kd", 0)
 
-# define ALT_B_KEY		""/*back one word*/
-# define ALT_D_KEY		""/*delete all from right of cursor*/
-# define ALT_F_KEY		""/*forward one word*/
-
 # define SHIFT_LEFT		"\e[1;2D"
 # define SHIFT_RIGHT	"\e[1;2C"
 # define SHIFT_UP		"\e[1;2A"
@@ -52,15 +48,13 @@
 
 # define CTRL_A_KEY		"\x1"	/*begin of line*/
 # define CTRL_E_KEY		"\x5"	/*end of line*/
-# define CTRL_F_KEY		"\x"/*forward one char*/
-# define CTRL_B_KEY		"\x"/*back one cahr*/
 # define CTRL_H_KEY		"\x8"	/*backspace char*/
 # define CTRL_W_KEY		"\x17"	/*cutcopy word before cursor*/
 # define CTRL_K_KEY		"\xB"	/*....... part line after cursor*/
 # define CTRL_U_KEY		"\x15"	/*........ part line before cursor*/
 # define CTRL_Y_KEY		"\x19"	/*paste copied line from clipboard*/
 # define CTRL_D_KEY		"\x4"	/*delete char+exit shell*/
-# define CTRL_C_KEY		"\x3"/*Cancel command+kill process*/
+# define CTRL_C_KEY		"\x3"	/*Cancel command + kill process*/
 
 # define BACKSPACE	CTRL_H_KEY
 # define CC_BACK_W	CTRL_W_KEY
@@ -161,7 +155,7 @@ int				backspace_char(char **line, t_cursor *cursor);
 **	detect_ctrl.c
 **		- Detect which control char was pressed.
 */
-int			detect_escape(char *ctrl, t_cursor *cursor, t_chain **line);
+int				detect_escape(char *ctrl, t_cursor *cursor, t_chain **line, t_flag *flags);
 /*
 ** 	arrows.c
 ** 		- Detect which arraw was pressed.

@@ -23,7 +23,8 @@ int		main(int argc, char **argv, char **env)
 		line = ft_readline();
 		if (ft_strcmp(line, "exit") == 0)
 		{
-			 ft_strdel(&line);
+			ft_putstr(line);
+			ft_strdel(&line);
 			break ;
 		}
 		ft_strdel(&line);
