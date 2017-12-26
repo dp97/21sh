@@ -181,4 +181,7 @@ char				*ft_strrev(const char *s);
 */
 int					ft_strrevcmp(const char *s1, const char *s2);
 int					ft_strrevncmp(const char *s1, const char *s2, size_t n);
+/*	deletes s and return new copy with c aappended to it.
+*/
+char				*ft_straddch(char *s, char c);
 #endif

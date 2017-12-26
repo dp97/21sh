@@ -16,7 +16,6 @@
 **	Edit a string:
 **		1 - insert a char at a given position, error on insuficient memory.
 */
-#include<stdio.h>
 int			ft_strichar(char **s, int pos, char c)
 {
 	char	*new;

@@ -11,6 +11,16 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "tokening.h"
+
+void printt(t_token *t)
+{
+	while (t)
+	{
+		printf("{%s}\n", t->value);
+		t = t->next;
+	}
+}
 
 int		main(int argc, char **argv, char **env)
 {
@@ -27,7 +37,9 @@ int		main(int argc, char **argv, char **env)
 			ft_strdel(&line);
 			break ;
 		}
+		printt(tokening(line));
 		ft_strdel(&line);
+		break;
 	}
 	return (0);
 }
