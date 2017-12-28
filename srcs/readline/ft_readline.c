@@ -147,7 +147,6 @@ char			*ft_readline(void)
 	}
 
 char *result = ft_assemble_line(line);
-ft_putstrstr("\n\r", result);
 ft_update_history(result);
 ft_chainpurge(&history);
 ft_chainpurge(&line);

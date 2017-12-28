@@ -15,13 +15,7 @@ NAME	= 21sh
 CC		= -gcc
 CFLAGS	= #-Wall -Wextra -Werror
 
-SRCS	= main.c ft_loop.c execute.c launch.c \
-		  ft_get_args.c check_dollar_1.c check_dollar_2.c err.c sig.c \
-		  parser/quotes.c parser/wildcard.c \
-		  parser/home_symbol.c parser/parser.c \
-		  builtins/env.c builtins/echo.c builtins/cd.c builtins/exit.c \
-		  builtins/setenv.c builtins/history.c \
-		  free_mem/free_2d.c free_mem/free_1d.c free_mem/free_the_chain.c \
+SRCS	= main.c err.c \
 		  \
 		  readline/tty.c readline/ft_readline.c readline/detect_ctrl.c \
 		  readline/exec_ctrl.c readline/history.c readline/init.c \
@@ -29,7 +23,8 @@ SRCS	= main.c ft_loop.c execute.c launch.c \
 		  readline/shift_plus_arrows.c readline/msc_keypad.c \
 			readline/cut_copy_paste.c readline/clipboard.c \
 			readline/quotes.c readline/delete_keys.c \
-			token_recognition/tokening.c
+			token_recognition/tokening.c \
+		execute/execute.c execute/path.c
 
 OBJS			= $(SRCS:.c=.o)
 
@@ -56,9 +51,7 @@ $(NAME): $(OBJ) $(DEPS)
 
 $(OBJ_PATH)%.o : $(SRC_PATH)%.c includes/*.h
 	@mkdir -p $(OBJ_PATH)
-	@mkdir -p $(OBJ_PATH)/builtins
-	@mkdir -p $(OBJ_PATH)/parser
-	@mkdir -p $(OBJ_PATH)/free_mem
+	@mkdir -p $(OBJ_PATH)/execute
 	@mkdir -p $(OBJ_PATH)/readline
 	@mkdir -p $(OBJ_PATH)/token_recognition
 	$(CC) $(CFLAGS) $(INCDIR) -c $< -o $@

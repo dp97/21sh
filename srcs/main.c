@@ -12,12 +12,14 @@
 
 #include "minishell.h"
 #include "tokening.h"
+#include "ft_readline.h"
+#include "execute.h"
 
 void printt(t_token *t)
 {
 	while (t)
 	{
-		printf("{%s}\n", t->value);
+			printf("{%s} %d\n", t->value, t->type);
 		t = t->next;
 	}
 }
@@ -31,15 +33,15 @@ int		main(int argc, char **argv, char **env)
 	while(1)
 	{
 		line = ft_readline();
-		if (ft_strcmp(line, "exit") == 0)
+		ft_putstrstr("\n", line);
+		if (execute(tokening(line), NULL) == EXIT)
 		{
 			ft_putstr(line);
 			ft_strdel(&line);
 			break ;
 		}
-		printt(tokening(line));
+		//printt(tokening(line));
 		ft_strdel(&line);
-		break;
 	}
 	return (0);
 }

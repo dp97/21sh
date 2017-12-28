@@ -32,6 +32,7 @@
 # define MATCH			3
 # define NO_MATCH		4
 # define EXIT			5
+
 # define CH_CURSOR_COL	tgetstr("ch", 0)
 # define CURSOR_UP		tgetstr("up", 0)
 # define CURSOR_DO		tgetstr("do", 0)

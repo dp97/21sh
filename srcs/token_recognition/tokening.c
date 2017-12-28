@@ -18,24 +18,27 @@ void	append_token(t_token **tokens, short type)
 {
 	while ((*tokens)->next)
 		*tokens = (*tokens)->next;
-	(*tokens)->next = new_token(NULL, type);
-	*tokens = (*tokens)->next;
+	if ((*tokens)->value)
+	{
+		(*tokens)->next = new_token(NULL, type);
+		*tokens = (*tokens)->next;
+	}
 }
 
 t_token		*tokening(char *line)
 {
 	t_token	*tokens;
 	t_token	*t;
-	char	prev;
+	short	prev;
 	char	curr;
 	short	flags;
 	int		pos;
 	char 	foper[] = {';', '|', '<', '>'};
 
-	prev = '\0';
+	prev = 0;
 	pos = 0;
 	flags = 0;
-	if ((tokens = (t_token *)malloc(sizeof(t_token))) == NULL)
+	if ((tokens = new_token(NULL, 0)) == NULL)
 		return (NULL);
 	t = tokens;
 	while (1)
@@ -43,31 +46,44 @@ t_token		*tokening(char *line)
 		curr = *line;
 		if (curr == '\0')
 			return (tokens);
-		else if (ft_memchr(foper, curr, sizeof(foper)) != NULL && !(QUOTED_FLAG & flags))
+/*2,3*/	else if (prev == OPERATOR_T && !(QUOTED_FLAG & flags))
 		{
-			if (t)
+			if (curr == '<' || curr == '>')
+				t->value = ft_straddch(t->value, curr);
+			else
 			{
-				append_token(&t, OPERATOR_T);
-				ft_strichar(&(t->value), pos++, curr);
+				prev = DELIMIT;
+				continue ;
 			}
 		}
-		else if (curr == '\n' && !(QUOTED_FLAG & flags))
-			append_token(&t, 0);
-		else if (curr == ' ' && !(QUOTED_FLAG & flags))
-			append_token(&t, 0);
-		else if (t->type & WORD_T)
+/*4*/	else if ((curr == '\\' || curr == '\'' || curr == '\"') && !(QUOTED_FLAG & flags))
+		{
 			t->value = ft_straddch(t->value, curr);
-		else if (curr == '#')
+			flags |= QUOTED_FLAG;
+		}
+		else if (ft_memchr(foper, curr, sizeof(foper)) != NULL && !(QUOTED_FLAG & flags))
+		{
+			prev = OPERATOR_T;
+			append_token(&t, OPERATOR_T);
+			t->value = ft_straddch(t->value, curr);
+		}
+		else if (curr == '\n' && !(QUOTED_FLAG & flags))//delimiter
+			prev = DELIMIT;
+		else if (curr == ' ' && !(QUOTED_FLAG & flags))//delimiter
+			prev = DELIMIT;
+		else if (prev == WORD_T)//add to word
+			t->value = ft_straddch(t->value, curr);
+		else if (curr == '#')//comments
 		{
 			while ((curr = *line) && curr != '\n')
 				line++;
 		}
 		else
 		{
+			prev = WORD_T;
 			append_token(&t, WORD_T);
 			t->value = ft_straddch(t->value, curr);
 		}
-		prev = curr;
 		line++;
 	}
 	return (NULL);

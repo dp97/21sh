@@ -5,6 +5,8 @@
 # define EOI	'\0'
 # define QUOTED_FLAG	1
 
+# define DELIMIT		0
+
 # define OPERATOR_T		1
 # define WORD_T			2
 
