@@ -12,6 +12,19 @@
 
 #include "minishell.h"
 
+int		ret_error(char *pmsg, char *msg, int code)
+{
+	ft_putstr_fd(NAME, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	if (pmsg)
+	{
+		ft_putstr_fd(pmsg, STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+	}
+	ft_putstr_fd(msg, STDERR_FILENO);
+	return (code);
+}
+
 int		check_error(char *pre_message, char *message)
 {
 	if (pre_message)

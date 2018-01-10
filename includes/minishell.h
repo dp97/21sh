@@ -27,6 +27,7 @@
 # define MATCH			3
 # define NO_MATCH		4
 # define EXIT			5
+# define NAME	"21sh"
 
 # define PATH_MAX	4096
 # define FIFO_SIZE	100

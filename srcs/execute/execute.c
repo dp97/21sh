@@ -63,6 +63,34 @@ char	**get_arguments_vector(t_cmd *cmd)
 	return (argv);
 }
 
+static int	ft_execve(char *pathname, char **argv, char **env)
+{
+	pid_t	pid;
+	int		status;
+	
+	if (access(pathname, X_OK))
+		return (ret_error(pathname, "Permission denied.", 1));
+
+	pid = fork();
+	if (pid == -1)
+		return (ret_error("fork", "Failed to initiate a child process.", ERR));
+
+	if (pid == 0)//parent
+	{
+		while (1)
+		{
+			wait(&status);
+			if (WIFEXITED(status))
+				break ;
+		}
+	}
+	else//child;
+	{
+		execve(pathname, argv, env);
+		return (ret_error("execve", "Failed.", ERR));
+	}
+	return (DONE);
+}
 
 /*
 **	Execute commands according tp POSSIX 1003.1 standart.
@@ -71,12 +99,14 @@ int			execute(t_cmd *cmds, char **env)
 {
 	t_cmd	*cmd;
 	char	**argv;
+	char	*exec;
 	int		ret_code;
 
 	ret_code = 0;
 	cmd = cmds;
 	argv = get_arguments_vector(cmd);
 	if (ft_strchr(cmd->value, '/') == NULL)
+	{
 		if ((ret_code = search_in_builtin(cmd->value, argv)) != NO_MATCH)
 			free(argv);
 		else if (0)
@@ -85,11 +115,12 @@ int			execute(t_cmd *cmds, char **env)
 			;// case c
 		else
 		{
-			if ((ret_code = search_in_path(cmd->value)) != NO_MATCH)
-				;
+			if ((exec = search_in_path(cmd->value)) != NULL)
+				ret_code = ft_execve(exec, argv, env);
 			else
-				;//exit with 127
+				return (ret_error(cmd->value, "Command not found.", 127));
 		}
+	}
 	else
 		;
 	return (ret_code);

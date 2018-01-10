@@ -33,7 +33,7 @@ int		main(int argc, char **argv, char **env)
 	while(1)
 	{
 		line = ft_readline();
-		ft_putstrstr("\n", line);
+		ft_putchar('\n');
 		if (execute(tokening(line), NULL) == EXIT)
 		{
 			ft_putstr(line);

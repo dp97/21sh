@@ -84,6 +84,9 @@ void				ft_strclr(char *s);
 /*	Takes as a parameter the address of a string that need to be
  *	freed with free(3), then sets its pointer to NULL. */
 void				ft_strdel(char **as);
+/*	Frees an array of strings.
+*/
+void				ft_2dstrdel(char **as);
 /*	Allocates (with malloc(3)) and returns a “fresh” memory
  *	area. The memory allocated is initialized to 0. If the allocation
  *	fails, the function returns NULL. */
