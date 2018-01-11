@@ -8,13 +8,14 @@
 # define EXIT			5
 # include "libft.h"
 # include "tokening.h"
+# include "parser.h"
 # include <sys/wait.h>
 
 int		ret_error(char *pmsg, char *msg, int code);
 /*
 **	execute.c	- Execute all commands in order.
 */
-int		execute(char **cmds, char **env);
+int		execute(t_cmd *cmds, char **env);
 char	*search_in_path(char *name);
 /*
 **	builtin.c	- Run builtin programs.

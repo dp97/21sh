@@ -29,7 +29,7 @@ int		main(int argc, char **argv, char **env)
 {
 	char	*line;
 	t_token	*tokens;
-	char	**cmds;
+	t_cmd	*cmds;
 	int		code;
 	(void)argc;
 	(void)argv;
@@ -42,9 +42,11 @@ int		main(int argc, char **argv, char **env)
 		ft_strdel(&line);
 
 		cmds = parser(tokens);
-		ft_deltokens(&tokens);
+
 
 		code = execute(cmds, env);
+		ft_deltokens(&tokens);
+		ft_delcmds(&cmds);
 
 		if (code == EXIT)
 		{

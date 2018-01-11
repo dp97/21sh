@@ -29,7 +29,7 @@ SRCS	= main.c err.c \
 		execute/execute.c execute/path.c execute/builtin.c \
 		execute/ft_execve.c \
 		\
-		parser/parser.c
+		parser/parser.c parser/delcmds.c
 
 OBJS			= $(SRCS:.c=.o)
 

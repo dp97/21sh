@@ -14,6 +14,12 @@
 # define PARSER_H
 # include "libft.h"
 # include "tokening.h"
+typedef struct		s_cmd
+{
+	char			**value;
+	struct s_cmd	*next;
+}					t_cmd;
 
-char	**parser(t_token *cmd);
+t_cmd				*parser(t_token *cmd);
+void				ft_delcmds(t_cmd **cmds);
 #endif
