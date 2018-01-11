@@ -12,12 +12,8 @@
 
 #ifndef PARSER_H
 # define PARSER_H
-# include "minishell.h"
-# include <dirent.h>
+# include "libft.h"
+# include "tokening.h"
 
-int	parser(char **arg, char **env, char *token, int *count);
-int	handle_quotes(char **arg, char *token, int *pos);
-int	find_match(char *s1, char *s2);
-int	handle_home_dir(char **arg, char **env, char *token, int *pos);
-int	ft_wildcard(char **arg, char *token, int *pos);
+char	**parser(t_token *cmd);
 #endif

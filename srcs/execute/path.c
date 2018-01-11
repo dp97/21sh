@@ -6,6 +6,8 @@ char		*search_in_path(char *name)
 	char	*search;
 	int		i;
 
+	if (!name)
+		return (NULL);
 	i = 0;
 	search = NULL;
 	path = ft_strsplit(getenv("PATH"), ':');

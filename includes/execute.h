@@ -9,10 +9,19 @@
 # include "libft.h"
 # include "tokening.h"
 # include <sys/wait.h>
-typedef struct s_token t_cmd;
 
 int		ret_error(char *pmsg, char *msg, int code);
-int		execute(t_cmd *cmds, char **env);
+/*
+**	execute.c	- Execute all commands in order.
+*/
+int		execute(char **cmds, char **env);
 char	*search_in_path(char *name);
-int		ret_error(char *pmsg, char *msg, int code);
+/*
+**	builtin.c	- Run builtin programs.
+*/
+int		search_in_builtin(char *name, char **argv);
+/*
+**	ft_execve.c - Run programs from path.
+*/
+int		ft_execve(char *pathname, char **argv, char **env);
 #endif

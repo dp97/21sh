@@ -23,8 +23,13 @@ SRCS	= main.c err.c \
 		  readline/shift_plus_arrows.c readline/msc_keypad.c \
 			readline/cut_copy_paste.c readline/clipboard.c \
 			readline/quotes.c readline/delete_keys.c \
-			token_recognition/tokening.c \
-		execute/execute.c execute/path.c
+		\
+		token_recognition/tokening.c token_recognition/deltokens.c\
+		\
+		execute/execute.c execute/path.c execute/builtin.c \
+		execute/ft_execve.c \
+		\
+		parser/parser.c
 
 OBJS			= $(SRCS:.c=.o)
 

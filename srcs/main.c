@@ -14,6 +14,7 @@
 #include "tokening.h"
 #include "ft_readline.h"
 #include "execute.h"
+#include "parser.h"
 
 void printt(t_token *t)
 {
@@ -27,21 +28,30 @@ void printt(t_token *t)
 int		main(int argc, char **argv, char **env)
 {
 	char	*line;
+	t_token	*tokens;
+	char	**cmds;
+	int		code;
 	(void)argc;
 	(void)argv;
-	(void)env;
 	while(1)
 	{
 		line = ft_readline();
 		ft_putchar('\n');
-		if (execute(tokening(line), NULL) == EXIT)
+		
+		tokens = tokening(line);
+		ft_strdel(&line);
+
+		cmds = parser(tokens);
+		ft_deltokens(&tokens);
+
+		code = execute(cmds, env);
+
+		if (code == EXIT)
 		{
-			ft_putstr(line);
-			ft_strdel(&line);
+			ft_putstr("exit\n");
 			break ;
 		}
 		//printt(tokening(line));
-		ft_strdel(&line);
 	}
 	return (0);
 }
