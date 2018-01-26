@@ -6,7 +6,7 @@
 #    By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/06 09:37:16 by dpetrov           #+#    #+#              #
-#    Updated: 2017/12/12 13:24:51 by dpetrov          ###   ########.fr        #
+#    Updated: 2018/01/26 13:36:34 by dpetrov          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,15 +23,15 @@ SRCS	= main.c err.c msc.c \
 		  readline/shift_plus_arrows.c readline/msc_keypad.c \
 			readline/cut_copy_paste.c readline/clipboard.c \
 			readline/quotes.c readline/delete_keys.c \
-		\
-		token_recognition/tokening.c token_recognition/deltokens.c\
-		\
-		execute/execute.c execute/path.c execute/builtin.c \
-		execute/ft_execve.c \
-		\
-		parser/parser.c parser/delcmds.c \
-		\
-		builtins/cd.c builtins/ft_setenv.c
+			\
+			token_recognition/tokening.c token_recognition/deltokens.c\
+			\
+			execute/execute.c execute/path.c execute/builtin.c \
+			execute/ft_execve.c \
+			\
+			parser/parser.c parser/delcmds.c \
+			\
+			builtins/cd.c builtins/ft_setenv.c
 
 OBJS			= $(SRCS:.c=.o)
 
@@ -61,6 +61,8 @@ $(OBJ_PATH)%.o : $(SRC_PATH)%.c includes/*.h
 	@mkdir -p $(OBJ_PATH)/execute
 	@mkdir -p $(OBJ_PATH)/readline
 	@mkdir -p $(OBJ_PATH)/token_recognition
+	@mkdir -p $(OBJ_PATH)/parser
+	@mkdir -p $(OBJ_PATH)/builtins
 	$(CC) $(CFLAGS) $(INCDIR) -c $< -o $@
 
 clean:

@@ -30,9 +30,9 @@ ft_putstr(t);
 		return (-1);
 	n = 0;
 	while (n < i)
-		environ[n] = tmp[n++];
-	environ[n++] = new;
-	environ[n] = NULL;
+		environ[n] = tmp[n];
+	environ[++n] = new;
+	environ[++n] = NULL;
 	free(tmp);
 	return (DONE);
 }
