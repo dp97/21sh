@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/07 17:56:19 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/12 19:28:05 by dpetrov          ###   ########.fr       */
+/*   Updated: 2018/01/26 13:50:27 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@
 
 # define SHIFT_LEFT		"\e[1;2D"
 # define SHIFT_RIGHT	"\e[1;2C"
-# define SHIFT_UP		"\e[1;2A"
+# define SHIFT_UP			"\e[1;2A"
 # define SHIFT_DOWN		"\e[1;2B"
 
 # define CTRL_A_KEY		"\x1"	/*begin of line*/
@@ -66,7 +66,7 @@
 # define M_BEGIN	CTRL_A_KEY
 # define M_END		CTRL_E_KEY
 
-# define BACKSPACE_KEY	tgetstr("kb", 0)
+# define BACKSPACE_KEY	"\x7F"
 # define DELETE_KEY		tgetstr("kD", 0)
 # define HOME_KEY		tgetstr("kh", 0)
 # define END_KEY		tgetstr("@7", 0)

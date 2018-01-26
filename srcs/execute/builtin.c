@@ -5,6 +5,7 @@ int	search_in_builtin(char *name, char **cmd, char **env)
 {
 	int		ret;
 
+	ret = NO_MATCH;
 	if (ft_strcmp(name, "exit") == 0)
 		return (EXIT);
 	else if (ft_strcmp(name, "cd") == 0)
@@ -23,5 +24,5 @@ int	search_in_builtin(char *name, char **cmd, char **env)
 		ret = 0;//ft_history(&history);
 	else if (ft_strcmp(args[0], ":") == 0)
 		return (1);*/
-	return (NO_MATCH);
+	return (ret);
 }

@@ -22,6 +22,7 @@ int		ret_error(char *pmsg, char *msg, int code)
 		ft_putstr_fd(": ", STDERR_FILENO);
 	}
 	ft_putstr_fd(msg, STDERR_FILENO);
+	ft_putchar('\n');
 	return (code);
 }
 

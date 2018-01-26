@@ -15,11 +15,6 @@ static int	ft_envadd(char *name, char *new)
 		t = environ[i];
 		if (ft_strncmp(t, name, ft_strlen(name)) == 0)
 		{
-ft_putstr(t);
-
-			//free(&environ[i]);
-//return ;
-
 			environ[i] = new;
 			return (DONE);
 		}

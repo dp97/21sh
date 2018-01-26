@@ -49,7 +49,7 @@ t_cmd		*parser(t_token *line)
 		i = 0;
 		if ((argc = count_argc(&l)) == 0)
 			continue ;
-		if ((val = (char **)malloc(sizeof(char*) * (argc + 1))) == NULL)
+		if ((val = (char **)malloc(sizeof(char *) * (argc + 1))) == NULL)
 			return (NULL);
 		while (i < argc)
 		{

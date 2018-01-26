@@ -22,7 +22,7 @@ int		main(int argc, char **argv, char **env)
 	char	*line;
 	t_token	*tokens;
 	t_cmd	*cmds;
-	int		code;
+	int		status;
 	(void)argc;
 	(void)argv;
 	while(1)
@@ -31,18 +31,23 @@ int		main(int argc, char **argv, char **env)
 //ft_putstr(getenv("HELLO"));
 		line = ft_readline();
 		ft_putchar('\n');
-		
+		if (line == NULL)
+		{
+			ft_strdel(&line);
+			continue ;
+		}
+
 		tokens = tokening(line);
 		ft_strdel(&line);
 
 		cmds = parser(tokens);
 
 
-		code = execute(cmds, env);
+		status = execute(cmds, env);
 		ft_deltokens(&tokens);
 		ft_delcmds(&cmds);
 
-		if (code == EXIT)
+		if (status == EXIT)
 		{
 			ft_putstr("exit\n");
 			break ;

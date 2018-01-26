@@ -29,7 +29,7 @@ int			execute(t_cmd *cmds, char **env)
 		if (ft_strchr(cmd_name, '/') == NULL)
 		{
 			if ((ret_code = search_in_builtin(cmd_name, argv, env)) != NO_MATCH)
-				free(argv);
+				;
 			else if (0)
 				;// case b
 			else if (0)

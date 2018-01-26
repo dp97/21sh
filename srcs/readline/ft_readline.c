@@ -128,7 +128,7 @@ char			*ft_readline(void)
 
 	tputs(tgetstr("ks", 0), 1, ft_puti);
 	ft_bzero(key, 10);
-	ft_putstrstr("\n\r", PROMPT);
+	ft_putstrstr("", PROMPT);
 	while (read(STDIN_FILENO, &key, 9))
 	{
 		if (ft_isprint(key[0]) || key[0] == '\r')
@@ -201,6 +201,7 @@ static int	move_cursor_toend(t_chain **line, t_cursor *cursor)
 	while (shift_plus_arrows(SHIFT_DOWN, cursor, line) == DONE)
 		;
 	if_msc_keypad(END_KEY, cursor);
+	return (DONE);
 }
 
 static int	add_new_line(t_chain **line, t_cursor *cursor, char *prompt)
@@ -227,7 +228,6 @@ static int	printable_input(char *input, t_chain **line, t_cursor *cursor, t_flag
 		if (input[i] == '\r')
 		{
 			proccess_line_for_quotes(*line, flags);
-
 			if (*flags & QUOTE_FLAG)
 			{
 				if (add_new_line(line, cursor, QUOTE_PROMPT) == ERR)

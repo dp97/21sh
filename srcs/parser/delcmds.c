@@ -5,13 +5,13 @@
 */
 void		ft_delcmds(t_cmd **cmds)
 {
-	t_cmd	*t;
+	t_cmd	*del;
 
 	while (*cmds)
 	{
-		t = *cmds;
+		del = *cmds;
 		*cmds = (*cmds)->next;
-		free(t->value);
-		free(t);
+		free(del->value);
+		free(del);
 	}
 }
