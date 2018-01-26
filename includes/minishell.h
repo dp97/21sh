@@ -45,15 +45,6 @@ void				sig_handler(int signo);
 //void				set_null_id(t_cmd *history);
 void				capture_time(char *buf);
 /*
-**	Builtins !
-*/
-//int					ft_exit(char **args);
-//int					ft_cd(char **args, char **env);
-//int					ft_env(char **args, char **env);
-//int					ft_setenv(char **args, char **env);
-//int					ft_unsetenv(char **args, char **env);
-//int					ft_echo(char ***argv);
-/*
 **	My Builtins ! + BONUS
 */
 int					ft_printenv(char **args, char **env);
@@ -63,4 +54,9 @@ char				*ft_getenv(char *name, char **env);
 **  ERROR PRINTING !!!
 */
 int					check_error(char *pre_message, char *message);
+int		ret_error(char *pmsg, char *msg, int code);
+/*	msc.c
+**	Concatenate a path, a slash and name.
+*/
+char		*pathcat(char *p, char *n);
 #endif

@@ -15,15 +15,7 @@
 #include "ft_readline.h"
 #include "execute.h"
 #include "parser.h"
-
-void printt(t_token *t)
-{
-	while (t)
-	{
-			printf("{%s} %d\n", t->value, t->type);
-		t = t->next;
-	}
-}
+#include "builtins.h"
 
 int		main(int argc, char **argv, char **env)
 {
@@ -35,6 +27,8 @@ int		main(int argc, char **argv, char **env)
 	(void)argv;
 	while(1)
 	{
+//ft_setenv("HELLO", "testing...",1);
+//ft_putstr(getenv("HELLO"));
 		line = ft_readline();
 		ft_putchar('\n');
 		
@@ -53,7 +47,6 @@ int		main(int argc, char **argv, char **env)
 			ft_putstr("exit\n");
 			break ;
 		}
-		//printt(tokening(line));
 	}
 	return (0);
 }

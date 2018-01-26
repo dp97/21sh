@@ -1,14 +1,15 @@
 #include "execute.h"
+#include "builtins.h"
 
-int	search_in_builtin(char *name, char **argv)
+int	search_in_builtin(char *name, char **cmd, char **env)
 {
 	int		ret;
 
 	if (ft_strcmp(name, "exit") == 0)
 		return (EXIT);
-	/*else if (ft_strcmp(args[0], "cd") == 0)
-		ret = ft_cd(args, env);
-	else if (ft_strcmp(args[0], "echo") == 0)
+	else if (ft_strcmp(name, "cd") == 0)
+		ret = builtin_cd(cmd, env);
+	/*else if (ft_strcmp(args[0], "echo") == 0)
 		ret = ft_echo(&args);
 	else if (ft_strcmp(args[0], "env") == 0)
 		ret = ft_env(args, env);

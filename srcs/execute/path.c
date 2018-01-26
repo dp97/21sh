@@ -10,7 +10,8 @@ char		*search_in_path(char *name)
 		return (NULL);
 	i = 0;
 	search = NULL;
-	path = ft_strsplit(getenv("PATH"), ':');
+	if ((path = ft_strsplit(getenv("PATH"), ':')) == NULL)
+		return (NULL);
 	while (path[i])
 	{
 		path[i] = ft_straddch(path[i], '/');

@@ -20,7 +20,7 @@ char	*search_in_path(char *name);
 /*
 **	builtin.c	- Run builtin programs.
 */
-int		search_in_builtin(char *name, char **argv);
+int		search_in_builtin(char *name, char **argv, char **env);
 /*
 **	ft_execve.c - Run programs from path.
 */

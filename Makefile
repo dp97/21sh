@@ -15,7 +15,7 @@ NAME	= 21sh
 CC		= -gcc
 CFLAGS	= #-Wall -Wextra -Werror
 
-SRCS	= main.c err.c \
+SRCS	= main.c err.c msc.c \
 		  \
 		  readline/tty.c readline/ft_readline.c readline/detect_ctrl.c \
 		  readline/exec_ctrl.c readline/history.c readline/init.c \
@@ -29,7 +29,9 @@ SRCS	= main.c err.c \
 		execute/execute.c execute/path.c execute/builtin.c \
 		execute/ft_execve.c \
 		\
-		parser/parser.c parser/delcmds.c
+		parser/parser.c parser/delcmds.c \
+		\
+		builtins/cd.c builtins/ft_setenv.c
 
 OBJS			= $(SRCS:.c=.o)
 
