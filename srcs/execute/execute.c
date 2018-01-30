@@ -52,9 +52,9 @@ int			execute(t_cmd *cmds, char **env)
 	while (cmd)
 	{
 		argv = cmd->value;
+		//decomplex_the_command(argv);
 		execute_cmd(argv, env);
 		cmd = cmd->next;
 	}
-
 	return (ret_code);
 }

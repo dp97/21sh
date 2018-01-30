@@ -39,6 +39,7 @@ int   piping(char **first_cmd, char **second_cmd, char **env)
     close(fildes[1]);
     dup2(fildes[0], STDIN_FILENO);
     close(fildes[0]);
+    
     execute_cmd(second_cmd, env);
     exit(EXIT_SUCCESS);
   }
