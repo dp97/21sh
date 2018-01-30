@@ -12,12 +12,39 @@
 
 #include "execute.h"
 
+int		execute_cmd(char **cmds, char **env)
+{
+	char	*cmd_name;
+	char	*in_path;
+	int		ret_code;
+
+	cmd_name = *cmds;
+	ret_code = 0;
+	if (ft_strchr(cmd_name, '/') == NULL)
+	{
+		if ((ret_code = search_in_builtin(cmd_name, cmds, env)) != NO_MATCH)
+			;
+		else if (0)
+			;// case b
+		else if (0)
+			;// case c
+		else
+		{
+			if ((in_path = search_in_path(cmd_name)) != NULL)
+				ret_code = ft_execve(in_path, cmds, env);
+			else
+				return (ret_error(cmd_name, "Command not found.", 127));
+		}
+	}
+	else
+		;
+		return (ret_code);
+}
+
 int			execute(t_cmd *cmds, char **env)
 {
 	t_cmd	*cmd;
 	char	**argv;
-	char	*in_path;
-	char 	*cmd_name;
 	int		ret_code;
 
 	ret_code = 0;
@@ -25,26 +52,9 @@ int			execute(t_cmd *cmds, char **env)
 	while (cmd)
 	{
 		argv = cmd->value;
-		cmd_name = *argv;
-		if (ft_strchr(cmd_name, '/') == NULL)
-		{
-			if ((ret_code = search_in_builtin(cmd_name, argv, env)) != NO_MATCH)
-				;
-			else if (0)
-				;// case b
-			else if (0)
-				;// case c
-			else
-			{
-				if ((in_path = search_in_path(cmd_name)) != NULL)
-					ret_code = ft_execve(in_path, argv, env);
-				else
-					return (ret_error(cmd_name, "Command not found.", 127));
-			}
-		}
-		else
-			;
+		execute_cmd(argv, env);
 		cmd = cmd->next;
 	}
+
 	return (ret_code);
 }

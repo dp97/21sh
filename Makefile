@@ -6,7 +6,7 @@
 #    By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/06 09:37:16 by dpetrov           #+#    #+#              #
-#    Updated: 2018/01/26 13:36:34 by dpetrov          ###   ########.fr        #
+#    Updated: 2018/01/30 12:36:13 by dpetrov          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ SRCS	= main.c err.c msc.c \
 			token_recognition/tokening.c token_recognition/deltokens.c\
 			\
 			execute/execute.c execute/path.c execute/builtin.c \
-			execute/ft_execve.c \
+			execute/ft_execve.c execute/pipe.c \
 			\
 			parser/parser.c parser/delcmds.c \
 			\

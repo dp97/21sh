@@ -1,6 +1,6 @@
 #include "builtins.h"
 
-char		*ft_assemblepath(char **comp, int count)
+static char		*ft_assemblepath(char **comp, int count)
 {
 	char	*path;
 	char	*temp;
@@ -8,11 +8,15 @@ char		*ft_assemblepath(char **comp, int count)
 	int		i;
 
 	size = 0;
+	path = NULL;
 	while (i < count)
 	{
-		temp = path;
-		if (comp[i])
+		if (comp[i] != NULL)
 		{
+			temp = path;
+			path = ft_strjoin(path, "/");
+			ft_strdel(&temp);
+			temp = path;
 			path = ft_strjoin(path, comp[i]);
 			ft_strdel(&temp);
 		}
@@ -21,34 +25,42 @@ char		*ft_assemblepath(char **comp, int count)
 	return (path);
 }
 
-char 		*ft_tocanonform(char *path)
+static char 		*ft_tocanonform(char *path)
 {
 	char	**components;
-	char	*component;
-	int		i;
-	int		c;
+	char	*cpath;
+	int		curr;
+	int		prev;
 
-	i = 0;
+	if (!path)
+		return (NULL);
+	curr = 0;
 	components = ft_strsplit(path, '/');
-	while (components[i])
+	while (components[curr])
 	{
-		component = components[i++];
-		if (ft_strcmp(component, ".") == 0)
-			ft_strdel(&component);
-		else if (ft_strcmp(component, "..") == 0)
+		if (ft_strcmp(components[curr], ".") == 0)
+			ft_strdel(&components[curr]);
+		else if (ft_strcmp(components[curr], "..") == 0)
 		{
-			c = i;
-			while (c > 0 && components[--c] == NULL)
-				;
-			if (c >= 0)
+			prev = curr;
+			while (--prev >= 0)
 			{
-				ft_strdel(&components[c]);
-				ft_strdel(&component);
+				if (components[prev])
+				{
+					if (components[prev])
+						ft_strdel(&components[prev]);
+					if (components[curr])
+						ft_strdel(&components[curr]);
+					break ;
+				}
 			}
 		}
+		curr++;
 	}
 	ft_strdel(&path);
-	return (ft_assemblepath(components, i));
+	cpath = ft_assemblepath(components, curr);
+	free(components);
+	return (cpath ? cpath : ft_strdup("/"));
 }
 
 int	builtin_cd(char **cmd, char **env)
@@ -63,21 +75,25 @@ int	builtin_cd(char **cmd, char **env)
 	home = getenv("HOME");
 	if ((pwd = getenv("PWD")) == NULL)
 		return (ret_error("cd", "Failed to get 'PWD' env.", ERR));
-
-	if (operand == NULL && home == NULL)//1
+	if (operand == NULL && home == NULL)
 		return (DONE);
-	if (operand == NULL && home)//2
+	if (operand == NULL && home)
 		curpath = ft_strdup(home);
-	if (operand[0] == '/')//3
-		curpath = ft_strdup(operand);//goto 7
-	if (ft_strncmp(operand, "..", 2) == 0 || ft_strncmp(operand, ".", 1) == 0)//4
-		;//nan goto 6
-	curpath = pathcat(pwd, operand);//6
-	curpath = ft_tocanonform(curpath);//8
-	if (chdir(curpath))//9
+	else if (ft_strcmp(operand, "-") == 0)
 	{
-		perror("ww");
-		return (ret_error("chdir", curpath, ERR));
+		curpath = ft_strdup(getenv("OLDPWD"));
+		ft_putendl(curpath);
+	}
+	else if (operand[0] == '/')
+		curpath = ft_strdup(operand);
+	else
+		curpath = pathcat(pwd, operand);
+	curpath = ft_tocanonform(curpath);
+	if (chdir(curpath))
+	{
+		perror(operand);
+		ft_strdel(&curpath);
+		return (ERR);
 	}
 	ft_setenv("OLDPWD", pwd, 1);
 	ft_setenv("PWD", curpath, 1);
