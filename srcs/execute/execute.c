@@ -44,18 +44,35 @@ int		execute_cmd(char **cmds, char **env)
 int			execute(t_cmd *cmds, char **env)
 {
 	t_cmd	*cmd;
+	t_scmd	*curr;
 	char	**argv;
 	int		ret_code;
+	int		in;
+	int		out;
 
 	ret_code = 0;
 	cmd = cmds;
+	in = STDIN_FILENO;
+	out = STDOUT_FILENO;
 	while (cmd)
 	{
-		argv = cmd->by_one->argv;
+		curr = cmd->by_one;
+		argv = curr->argv;
+
 		//ft_put2str(argv, '+');
 
-		//decomplex_the_command(argv);
-		ret_code = execute_cmd(argv, env);
+		if (curr->ioe != -1)
+		{
+	ft_putstr("[io]");
+			if (curr->ioe == TO_PIPE)
+				in = piping(argv, env);
+			else if (curr->ioe == FROM_PIPE)
+				get_input_from(in, argv, env);
+		}
+		else
+			ret_code = execute_cmd(argv, env);
+
+
 		cmd = cmd->next;
 	}
 	return (ret_code);

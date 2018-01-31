@@ -12,7 +12,7 @@ static int	detect_simple_cmd(t_token *l, int *flag)
 	}
 	if (c == 0 && l == NULL)
 		return (-1);
-	else if (l && 0 == ft_strcmp(l->value, ";"))
+	if (l && 0 == ft_strcmp(l->value, ";"))
 		*flag = SEPARATOR;
 	else if (l && 0 == ft_strcmp(l->value, "|"))
 		*flag = PIPE;
@@ -24,6 +24,8 @@ static int	detect_simple_cmd(t_token *l, int *flag)
 		*flag = OUT;
 	else if (l && 0 == ft_strcmp(l->value, ">>"))
 		*flag = DOUT;
+	else
+		*flag = -1;
 	return (c);
 }
 

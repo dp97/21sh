@@ -17,7 +17,8 @@ int		ret_error(char *pmsg, char *msg, int code);
 */
 int		execute(t_cmd *cmds, char **env);
 int		execute_cmd(char **cmds, char **env);
-int   piping(char **first_cmd, char **second_cmd, char **env);
+int   piping(char **cmd, char **env);
+int get_input_from(int descriptor, char **argv, char **env);
 /*
 **  path.c  - Search command location in system.
 */

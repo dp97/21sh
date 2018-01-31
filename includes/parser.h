@@ -18,17 +18,15 @@
 # define DIN		3
 # define OUT		4
 # define DOUT		5
-# define STD_NEXT	6
-# define STD_PREV	7
+# define FROM_PIPE	6
+# define TO_PIPE	7
 # include "libft.h"
 # include "tokening.h"
 # include "minishell.h"
 typedef struct		s_scmd
 {
 	char			**argv;
-	int				in;
-	int				out;
-	int				err;
+	int				ioe;
 	struct s_scmd	*next;
 }					t_scmd;
 

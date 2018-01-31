@@ -4,8 +4,8 @@ static void set_ioe(t_scmd *first, t_scmd *second, int ioe)
 {
     if (ioe == PIPE)
     {
-        second->in = STD_PREV;
-        first->out = STD_NEXT;
+        first->ioe = TO_PIPE;
+        second->ioe = FROM_PIPE;
     }
 }
 
@@ -17,9 +17,7 @@ t_scmd		*new_scmd(void)
     if (new)
     {
         new->argv = NULL;
-        new->in = STDIN_FILENO;
-		new->out = STDOUT_FILENO;
-		new->err = STDERR_FILENO;
+        new->ioe = -1;
         new->next = NULL;
     }
     return (new);
