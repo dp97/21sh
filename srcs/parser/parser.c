@@ -49,11 +49,10 @@ t_cmd		*parser(t_token *line)
 		cmd = new_cmd();
 		flag = -1;
 		prev_flag = -1;
-		while ((count = detect_simple_cmd(l, &flag)) != -1 && flag != SEPARATOR)
+		while ((count = detect_simple_cmd(l, &flag)) != -1)
 		{
 			simple_cmd = new_scmd();
 			simple_cmd->argv = (char **)malloc(sizeof(char *) * (count + 1));
-		printf("[%d]\n", count);
 			i = 0;
 			while (i < count)
 			{
@@ -65,12 +64,11 @@ t_cmd		*parser(t_token *line)
 				l = l->next;
 			if ((cmd->by_one = add_scmd(cmd->by_one, simple_cmd, prev_flag)) == NULL)
 				return (NULL);
-			prev_flag = flag;
+			if ((prev_flag = flag) == SEPARATOR)
+				break ;
 		}
-		if (l)
-			l = l->next;
 		head = add_cmd(head, cmd);
-		if (count == -1)
+		if (count == -1 || l == NULL)
 			break ;
 	}
 	return (head);

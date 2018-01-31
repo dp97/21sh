@@ -51,11 +51,8 @@ int			execute(t_cmd *cmds, char **env)
 	cmd = cmds;
 	while (cmd)
 	{
-		ft_putstr("[A]");
-		if (cmd->by_one)
-			argv = cmd->by_one->argv;
-ft_putstr("[B]");
-		ft_put2str(argv, '+');
+		argv = cmd->by_one->argv;
+		//ft_put2str(argv, '+');
 
 		//decomplex_the_command(argv);
 		ret_code = execute_cmd(argv, env);

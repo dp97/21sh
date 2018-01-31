@@ -39,10 +39,10 @@ t_scmd      *add_scmd(t_scmd *head, t_scmd *new, int ioe)
         return (new);
     }
     tmp = head;
-    while (tmp->next)
-        tmp = tmp->next;
-    tmp->next = new;
+    while (head->next)
+        head = head->next;
+    head->next = new;
     if (ioe != -1)
-        set_ioe(tmp, tmp->next, ioe);
+        set_ioe(head, head->next, ioe);
     return (tmp);
 }
