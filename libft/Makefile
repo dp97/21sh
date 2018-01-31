@@ -33,7 +33,7 @@ SRCS		= ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_strlen.c \
 		  ft_strndup.c ft_str_case.c ft_strapnd.c ft_putstrstr.c \
 		  ft_foreach.c ft_stredit.c get_next_line.c ft_lastchar.c \
 			ft_strrev.c ft_strrevcmp.c ft_strrevncmp.c ft_straddch.c \
-			ft_2dstrdel.c
+			ft_2dstrdel.c ft_put2str.c
 
 OBJS        = $(SRCS:.c=.o)
 

@@ -1,67 +1,77 @@
 #include "parser.h"
 
-static void	ft_append(t_cmd **head, t_cmd *cmd)
+static int	detect_simple_cmd(t_token *l, int *flag)
 {
-	t_cmd	*t;
-
-	if (*head == NULL)
-	{
-		*head = cmd;
-		return ;
-	}
-	t = *head;
-	while (t->next)
-		t = t->next;
-	t->next = cmd;
-}
-
-static int	count_argc(t_token **l)
-{
-	t_token	*t;
 	int		c;
 
 	c = 0;
-	while (*l && ft_strcmp((*l)->value, ";") == 0)
-		*l = (*l)->next;
-	t = *l;
-	while (t && ft_strcmp(t->value, ";"))
+	while (l && l->type != OPERATOR_T)
 	{
+		l = l->next;
 		c++;
-		t = t->next;
 	}
+	if (c == 0 && l == NULL)
+		return (-1);
+	else if (l && 0 == ft_strcmp(l->value, ";"))
+		*flag = SEPARATOR;
+	else if (l && 0 == ft_strcmp(l->value, "|"))
+		*flag = PIPE;
+	else if (l && 0 == ft_strcmp(l->value, "<"))
+		*flag = IN;
+	else if (l && 0 == ft_strcmp(l->value, "<<"))
+		*flag = DIN;
+	else if (l && 0 == ft_strcmp(l->value, ">"))
+		*flag = OUT;
+	else if (l && 0 == ft_strcmp(l->value, ">>"))
+		*flag = DOUT;
 	return (c);
 }
 
+/*
+**	Parser: parse the token struct and split commamnd
+**	into simple commands.
+*/
 t_cmd		*parser(t_token *line)
 {
 	t_token	*l;
 	t_cmd	*head;
-	t_cmd	*cmds;
-	char	**val;
-	int		argc;
+	t_cmd	*cmd;
+	t_scmd	*simple_cmd;
+	int		count;
 	int		i;
+	int		prev_flag;
+	int		flag;
 
-	cmds = NULL;
 	l = line;
 	head = NULL;
-	while (l)
+	while (1)
 	{
-		i = 0;
-		if ((argc = count_argc(&l)) == 0)
-			continue ;
-		if ((val = (char **)malloc(sizeof(char *) * (argc + 1))) == NULL)
-			return (NULL);
-		while (i < argc)
+		cmd = new_cmd();
+		flag = -1;
+		prev_flag = -1;
+		while ((count = detect_simple_cmd(l, &flag)) != -1 && flag != SEPARATOR)
 		{
-			val[i++] = l->value;
-			l = l->next;
+			simple_cmd = new_scmd();
+			simple_cmd->argv = (char **)malloc(sizeof(char *) * (count + 1));
+		printf("[%d]\n", count);
+			i = 0;
+			while (i < count)
+			{
+				simple_cmd->argv[i++] = ft_strdup(l->value);
+				l = l->next;
+			}
+			simple_cmd->argv[i] = NULL;
+			if (l)
+				l = l->next;
+			if ((cmd->by_one = add_scmd(cmd->by_one, simple_cmd, prev_flag)) == NULL)
+				return (NULL);
+			prev_flag = flag;
 		}
-		val[i] = NULL;
-		if ((cmds = (t_cmd *)malloc(sizeof(t_cmd))) == NULL)
-			return (NULL);
-		cmds->value = val;
-		cmds->next = NULL;
-		ft_append(&head, cmds);
+		if (l)
+			l = l->next;
+		head = add_cmd(head, cmd);
+		if (count == -1)
+			break ;
 	}
 	return (head);
 }

@@ -4,7 +4,7 @@ int			ft_execve(char *pathname, char **argv, char **env)
 {
 	pid_t	pid;
 	int		status;
-	
+
 	if (access(pathname, X_OK))
 		return (ret_error(pathname, "Permission denied.", 1));
 
@@ -32,7 +32,8 @@ int			ft_execve(char *pathname, char **argv, char **env)
 	else//child;
 	{
 		execve(pathname, argv, env);
-		return (ret_error("execve", "Failed.", ERR));
+		ret_error("execve", "Failed.", ERR);
+		exit(ERR);
 	}
 	return (DONE);
 }

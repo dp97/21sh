@@ -187,4 +187,8 @@ int					ft_strrevncmp(const char *s1, const char *s2, size_t n);
 /*	deletes s and return new copy with c aappended to it.
 */
 char				*ft_straddch(char *s, char c);
+/*
+**  Print a 2d string array. del is delimiter.
+*/
+void			ft_put2str(char **ss, char del);
 #endif

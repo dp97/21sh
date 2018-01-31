@@ -38,7 +38,7 @@ int		execute_cmd(char **cmds, char **env)
 	}
 	else
 		;
-		return (ret_code);
+	return (ret_code);
 }
 
 int			execute(t_cmd *cmds, char **env)
@@ -51,9 +51,14 @@ int			execute(t_cmd *cmds, char **env)
 	cmd = cmds;
 	while (cmd)
 	{
-		argv = cmd->value;
+		ft_putstr("[A]");
+		if (cmd->by_one)
+			argv = cmd->by_one->argv;
+ft_putstr("[B]");
+		ft_put2str(argv, '+');
+
 		//decomplex_the_command(argv);
-		execute_cmd(argv, env);
+		ret_code = execute_cmd(argv, env);
 		cmd = cmd->next;
 	}
 	return (ret_code);

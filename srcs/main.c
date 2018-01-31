@@ -41,10 +41,11 @@ int		main(int argc, char **argv, char **env)
 		ft_strdel(&line);
 
 		cmds = parser(tokens);
-
+		if (cmds == NULL)
+			continue ;
+		ft_deltokens(&tokens);
 
 		status = execute(cmds, env);
-		ft_deltokens(&tokens);
 		ft_delcmds(&cmds);
 
 		if (status == EXIT)

@@ -6,7 +6,7 @@
 #    By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/06 09:37:16 by dpetrov           #+#    #+#              #
-#    Updated: 2018/01/30 12:36:13 by dpetrov          ###   ########.fr        #
+#    Updated: 2018/01/31 13:57:05 by dpetrov          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,17 +21,17 @@ SRCS	= main.c err.c msc.c \
 		  readline/exec_ctrl.c readline/history.c readline/init.c \
 		  readline/arrows.c readline/ft_log.c readline/s_chain.c \
 		  readline/shift_plus_arrows.c readline/msc_keypad.c \
-			readline/cut_copy_paste.c readline/clipboard.c \
-			readline/quotes.c readline/delete_keys.c \
-			\
-			token_recognition/tokening.c token_recognition/deltokens.c\
-			\
-			execute/execute.c execute/path.c execute/builtin.c \
-			execute/ft_execve.c execute/pipe.c \
-			\
-			parser/parser.c parser/delcmds.c \
-			\
-			builtins/cd.c builtins/ft_setenv.c
+		  readline/cut_copy_paste.c readline/clipboard.c \
+		  readline/quotes.c readline/delete_keys.c \
+		  \
+		  token_recognition/tokening.c token_recognition/deltokens.c\
+		  \
+		  execute/execute.c execute/path.c execute/builtin.c \
+		  execute/ft_execve.c execute/pipe.c \
+		  \
+		  parser/parser.c parser/scmdhelper.c parser/cmdhelper.c \
+		  \
+		  builtins/cd.c builtins/ft_setenv.c
 
 OBJS			= $(SRCS:.c=.o)
 

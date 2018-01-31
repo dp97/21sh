@@ -1,0 +1,34 @@
+#include "parser.h"
+
+t_cmd		*new_cmd(void)
+{
+    t_cmd	*new;
+
+	new = (t_cmd *)malloc(sizeof(t_cmd));
+	if (new)
+	{
+		new->by_one = NULL;
+		new->next = NULL;
+	}
+	return (new);
+}
+
+t_cmd	*add_cmd(t_cmd *head, t_cmd *new)
+{
+	t_cmd	*tmp;
+
+	if (head == NULL)
+		return (new);
+	tmp = head;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new;
+	return (tmp);
+}
+
+/*
+**	actual strings from value was freed by ft_deltokens!!!
+*/
+void		ft_delcmds(t_cmd **cmds)
+{
+}
