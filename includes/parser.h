@@ -37,7 +37,8 @@ typedef struct		s_cmd
 }					t_cmd;
 
 t_cmd				*parser(t_token *cmd);
-void				ft_delcmds(t_cmd **cmds);
+void 				purge_cmd(t_cmd *cmd);
+void 				purge_scmd(t_scmd *scmd);
 /*
 **	Handleres for t_scmd and t_cmd structures.
 */

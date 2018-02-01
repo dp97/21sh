@@ -61,7 +61,7 @@ int			execute(t_cmd *cmds, char **env)
 		argv = curr->argv;
 ft_putchar(a++);
 		//ft_put2str(argv, '+');
-
+printf("{%d}", curr->ioe);
 		if (curr->ioe != -1)
 		{
 	ft_putstr("[io]");

@@ -51,16 +51,30 @@ t_cmd		*parser(t_token *line)
 		cmd = new_cmd();
 		if (cmd == NULL)
 		{
-			ret_error("malloc", "Not enough memory.", ERR);
-			purge_cmd(&cmd);
+			ret_error("#1 parser", "Not enough memory.", ERR);
+			purge_cmd(cmd);
 			return (NULL);
 		}
 		flag = -1;
 		prev_flag = -1;
-		while ((count = detect_simple_cmd(l, &flag)) != -1 && flag != SEPARATOR)
+		while ((count = detect_simple_cmd(l, &flag)) != -1)
 		{
 			simple_cmd = new_scmd();
+			if (simple_cmd == NULL)
+			{
+				ret_error("#2 parser", "Not enough memory.", ERR);
+				purge_scmd(cmd->by_one);
+				purge_cmd(cmd);
+				return (NULL);
+			}
 			simple_cmd->argv = (char **)malloc(sizeof(char *) * (count + 1));
+			if (simple_cmd->argv == NULL)
+			{
+				ret_error("#3 parser", "Not enough memory.", ERR);
+				purge_scmd(cmd->by_one);
+				purge_cmd(cmd);
+				return (NULL);
+			}
 			i = 0;
 			while (i < count)
 			{
@@ -68,20 +82,20 @@ t_cmd		*parser(t_token *line)
 				l = l->next;
 			}
 			simple_cmd->argv[i] = NULL;
-			if (l)
+			if (l && l->type == OPERATOR_T)
 				l = l->next;
 			if ((cmd->by_one = add_scmd(cmd->by_one, simple_cmd, prev_flag)) == NULL)
+			{
+				purge_scmd(cmd->by_one);
+				purge_cmd(cmd);
 				return (NULL);
+			}
 			if ((prev_flag = flag) == SEPARATOR)
 				break ;
 		}
-		ft_putstr("[-]");
 		head = add_cmd(head, cmd);
 		if (count == -1 || l == NULL)
-		{
-			printf("[%d:%d]\n", flag, count);
 			break ;
-		}
 	}
 	return (head);
 }

@@ -25,10 +25,3 @@ t_cmd	*add_cmd(t_cmd *head, t_cmd *new)
 	head->next = new;
 	return (tmp);
 }
-
-/*
-**	actual strings from value was freed by ft_deltokens!!!
-*/
-void		ft_delcmds(t_cmd **cmds)
-{
-}
