@@ -20,6 +20,8 @@
 # define DOUT		5
 # define FROM_PIPE	6
 # define TO_PIPE	7
+# define TO_FILE	8
+# define ATO_FILE	9
 # include "libft.h"
 # include "tokening.h"
 # include "minishell.h"

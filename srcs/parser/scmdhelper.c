@@ -7,6 +7,10 @@ static void set_ioe(t_scmd *first, t_scmd *second, int ioe)
         first->ioe[1] = TO_PIPE;
         second->ioe[0] = FROM_PIPE;
     }
+    else if (ioe == OUT)
+        first->ioe[1] = TO_FILE;
+    else if (ioe == DOUT)
+        first->ioe[1] = ATO_FILE;
 }
 
 t_scmd		*new_scmd(void)

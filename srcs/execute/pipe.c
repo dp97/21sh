@@ -20,7 +20,7 @@ int get_input_from(int descriptor[3], char **argv, char **env)
 fildes[0] = -1;
 fildes[1] = -1;
 
-    if (descriptor[1] != INVALID_FD)
+    if (descriptor[1] == TO_PIPE)
     {
         if (pipe(fildes) == -1)
         {
@@ -29,6 +29,8 @@ fildes[1] = -1;
         }
         descriptor[1] = fildes[1];
     }
+    if (descriptor[1] != INVALID_FD && fcntl(descriptor[1], F_GETFL) == -1)
+        return (ret_error(0, "Output is not a valid descriptor.", ERR));
     if (descriptor[0] != INVALID_FD && fcntl(descriptor[0], F_GETFL) == -1)
         return (ret_error(0, "Input is not a valid descriptor.", ERR));
 
@@ -55,6 +57,7 @@ fildes[1] = -1;
     //waitpid(pid, 0, 0);
 
     //close(fildes[0]);
+    close(descriptor[0]);
     close(descriptor[1]);
 
     descriptor[0] = (fildes[0] != INVALID_FD) ? fildes[0] : -1;

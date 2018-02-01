@@ -57,8 +57,15 @@ int			execute_scmd(t_scmd *scmd, char **env)
 		// {
 		// 	get_input_from(ioe, argv, env);
 		// }
-		if (command->ioe[1] != INVALID_FD)
+		if (command->ioe[1] == TO_PIPE)
 			ioe[1] = TO_PIPE;
+		else if (command->ioe[1] == TO_FILE)
+		{
+			if (command->next == NULL)
+				return (ERR);
+			if ((ioe[1] = get_file(command->next->argv[0])) == -1)
+				return (ERR);
+		}
 
 		if (command->ioe[0] != INVALID_FD || command->ioe[1] != INVALID_FD)
 		{
@@ -85,6 +92,8 @@ int			execute(t_cmd *cmds, char **env)
 		ret_code = execute_scmd(cmd->by_one, env);
 		if (ret_code == EXIT)
 			return (EXIT);
+		else if (ret_code == ERR)
+			return (ERR);
 		cmd = cmd->next;
 	}
 	return (ret_code);

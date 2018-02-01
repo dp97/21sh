@@ -23,6 +23,10 @@ int		search_and_run(char **cmds, char **env);
 int   piping(char **cmd, char **env);
 int get_input_from(int descriptor[3], char **argv, char **env);
 /*
+**  open file for writing in it.
+*/
+int get_file(char *name);
+/*
 **  path.c  - Search command location in system.
 */
 char	*search_in_path(char *name);
