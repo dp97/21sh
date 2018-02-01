@@ -54,11 +54,12 @@ int			execute(t_cmd *cmds, char **env)
 	cmd = cmds;
 	in = STDIN_FILENO;
 	out = STDOUT_FILENO;
+	char a='a';
 	while (cmd)
 	{
 		curr = cmd->by_one;
 		argv = curr->argv;
-
+ft_putchar(a++);
 		//ft_put2str(argv, '+');
 
 		if (curr->ioe != -1)
@@ -70,8 +71,10 @@ int			execute(t_cmd *cmds, char **env)
 				get_input_from(in, argv, env);
 		}
 		else
+		{
+			ft_putstr("[no]");
 			ret_code = execute_cmd(argv, env);
-
+		}
 
 		cmd = cmd->next;
 	}

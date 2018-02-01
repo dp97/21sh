@@ -49,9 +49,15 @@ t_cmd		*parser(t_token *line)
 	while (1)
 	{
 		cmd = new_cmd();
+		if (cmd == NULL)
+		{
+			ret_error("malloc", "Not enough memory.", ERR);
+			purge_cmd(&cmd);
+			return (NULL);
+		}
 		flag = -1;
 		prev_flag = -1;
-		while ((count = detect_simple_cmd(l, &flag)) != -1)
+		while ((count = detect_simple_cmd(l, &flag)) != -1 && flag != SEPARATOR)
 		{
 			simple_cmd = new_scmd();
 			simple_cmd->argv = (char **)malloc(sizeof(char *) * (count + 1));
@@ -69,9 +75,13 @@ t_cmd		*parser(t_token *line)
 			if ((prev_flag = flag) == SEPARATOR)
 				break ;
 		}
+		ft_putstr("[-]");
 		head = add_cmd(head, cmd);
 		if (count == -1 || l == NULL)
+		{
+			printf("[%d:%d]\n", flag, count);
 			break ;
+		}
 	}
 	return (head);
 }
