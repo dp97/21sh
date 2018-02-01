@@ -20,8 +20,8 @@ t_cmd	*add_cmd(t_cmd *head, t_cmd *new)
 	if (head == NULL)
 		return (new);
 	tmp = head;
-	while (head->next)
-		head = head->next;
-	head->next = new;
-	return (tmp);
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new;
+	return (head);
 }

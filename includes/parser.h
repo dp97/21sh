@@ -26,7 +26,7 @@
 typedef struct		s_scmd
 {
 	char			**argv;
-	int				ioe;
+	int				ioe[3];
 	struct s_scmd	*next;
 }					t_scmd;
 

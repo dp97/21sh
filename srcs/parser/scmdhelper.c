@@ -4,8 +4,8 @@ static void set_ioe(t_scmd *first, t_scmd *second, int ioe)
 {
     if (ioe == PIPE)
     {
-        first->ioe = TO_PIPE;
-        second->ioe = FROM_PIPE;
+        first->ioe[1] = TO_PIPE;
+        second->ioe[0] = FROM_PIPE;
     }
 }
 
@@ -17,7 +17,9 @@ t_scmd		*new_scmd(void)
     if (new)
     {
         new->argv = NULL;
-        new->ioe = -1;
+        new->ioe[0] = -1;
+        new->ioe[1] = -1;
+        new->ioe[2] = -1;
         new->next = NULL;
     }
     return (new);
@@ -37,10 +39,10 @@ t_scmd      *add_scmd(t_scmd *head, t_scmd *new, int ioe)
         return (new);
     }
     tmp = head;
-    while (head->next)
-        head = head->next;
-    head->next = new;
+    while (tmp->next)
+        tmp = tmp->next;
+    tmp->next = new;
     if (ioe != -1)
-        set_ioe(head, head->next, ioe);
-    return (tmp);
+        set_ioe(tmp, tmp->next, ioe);
+    return (head);
 }

@@ -12,7 +12,7 @@
 
 #include "execute.h"
 
-int		execute_cmd(char **cmds, char **env)
+int		search_and_run(char **cmds, char **env)
 {
 	char	*cmd_name;
 	char	*in_path;
@@ -41,41 +41,50 @@ int		execute_cmd(char **cmds, char **env)
 	return (ret_code);
 }
 
+int			execute_scmd(t_scmd *scmd, char **env)
+{
+	t_scmd	*command;
+	char	**argv;
+	int		ioe[3];
+
+	command = scmd;
+	ioe[0] = INVALID_FD;
+	ioe[1] = INVALID_FD;
+	while (command)
+	{
+		argv = command->argv;
+		// if (command->ioe[0] != INVALID_FD)
+		// {
+		// 	get_input_from(ioe, argv, env);
+		// }
+		if (command->ioe[1] != INVALID_FD)
+			ioe[1] = TO_PIPE;
+
+		if (command->ioe[0] != INVALID_FD || command->ioe[1] != INVALID_FD)
+		{
+			if (get_input_from(ioe, argv, env) == EXIT)
+				return (EXIT);
+		}
+		else
+			if (search_and_run(argv, env) == EXIT)
+				return (EXIT);
+		command = command->next;
+	}
+	return (DONE);
+}
+
 int			execute(t_cmd *cmds, char **env)
 {
 	t_cmd	*cmd;
-	t_scmd	*curr;
-	char	**argv;
 	int		ret_code;
-	int		in;
-	int		out;
 
 	ret_code = 0;
 	cmd = cmds;
-	in = STDIN_FILENO;
-	out = STDOUT_FILENO;
-	char a='a';
 	while (cmd)
 	{
-		curr = cmd->by_one;
-		argv = curr->argv;
-ft_putchar(a++);
-		//ft_put2str(argv, '+');
-printf("{%d}", curr->ioe);
-		if (curr->ioe != -1)
-		{
-	ft_putstr("[io]");
-			if (curr->ioe == TO_PIPE)
-				in = piping(argv, env);
-			else if (curr->ioe == FROM_PIPE)
-				get_input_from(in, argv, env);
-		}
-		else
-		{
-			ft_putstr("[no]");
-			ret_code = execute_cmd(argv, env);
-		}
-
+		ret_code = execute_scmd(cmd->by_one, env);
+		if (ret_code == EXIT)
+			return (EXIT);
 		cmd = cmd->next;
 	}
 	return (ret_code);

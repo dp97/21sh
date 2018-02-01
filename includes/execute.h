@@ -1,5 +1,6 @@
 #ifndef EXECUTE_H
 # define EXECUTE_H
+# define INVALID_FD     -1
 # define DONE			0
 # define ERR			1
 # define NOTHING_DONE	2
@@ -9,6 +10,8 @@
 # include "libft.h"
 # include "tokening.h"
 # include "parser.h"
+#include <fcntl.h>
+#include <errno.h>
 # include <sys/wait.h>
 
 int		ret_error(char *pmsg, char *msg, int code);
@@ -16,9 +19,9 @@ int		ret_error(char *pmsg, char *msg, int code);
 **	execute.c	- Entry Point.
 */
 int		execute(t_cmd *cmds, char **env);
-int		execute_cmd(char **cmds, char **env);
+int		search_and_run(char **cmds, char **env);
 int   piping(char **cmd, char **env);
-int get_input_from(int descriptor, char **argv, char **env);
+int get_input_from(int descriptor[3], char **argv, char **env);
 /*
 **  path.c  - Search command location in system.
 */
