@@ -1,1 +1,12 @@
 im very glad
+21sh
+Makefile
+author
+includes
+info.txt
+libft
+objs
+srcs
+test
+test1
+txt

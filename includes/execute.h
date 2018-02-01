@@ -25,7 +25,7 @@ int get_input_from(int descriptor[3], char **argv, char **env);
 /*
 **  open file for writing in it.
 */
-int get_file(char *name);
+int get_file(char *name, int append);
 /*
 **  path.c  - Search command location in system.
 */

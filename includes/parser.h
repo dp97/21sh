@@ -22,6 +22,8 @@
 # define TO_PIPE	7
 # define TO_FILE	8
 # define ATO_FILE	9
+# define FROM_FILE	10
+# define FROM_HEREFILE	11
 # include "libft.h"
 # include "tokening.h"
 # include "minishell.h"

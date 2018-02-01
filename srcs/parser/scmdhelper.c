@@ -11,6 +11,10 @@ static void set_ioe(t_scmd *first, t_scmd *second, int ioe)
         first->ioe[1] = TO_FILE;
     else if (ioe == DOUT)
         first->ioe[1] = ATO_FILE;
+    // else if (ioe == IN)
+    //     first->ioe[0] = FROM_FILE;
+    // else if (ioe == IN)
+    //     first->ioe[0] = FROM_HEREFILE;
 }
 
 t_scmd		*new_scmd(void)

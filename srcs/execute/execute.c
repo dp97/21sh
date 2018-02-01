@@ -53,17 +53,14 @@ int			execute_scmd(t_scmd *scmd, char **env)
 	while (command)
 	{
 		argv = command->argv;
-		// if (command->ioe[0] != INVALID_FD)
-		// {
-		// 	get_input_from(ioe, argv, env);
-		// }
+		
 		if (command->ioe[1] == TO_PIPE)
 			ioe[1] = TO_PIPE;
-		else if (command->ioe[1] == TO_FILE)
+		else if (command->ioe[1] == TO_FILE || command->ioe[1] == ATO_FILE)
 		{
 			if (command->next == NULL)
 				return (ERR);
-			if ((ioe[1] = get_file(command->next->argv[0])) == -1)
+			if ((ioe[1] = get_file(command->next->argv[0], command->ioe[1])) == -1)
 				return (ERR);
 		}
 
