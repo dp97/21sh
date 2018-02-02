@@ -6,7 +6,7 @@
 #    By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/06 09:37:16 by dpetrov           #+#    #+#              #
-#    Updated: 2018/02/01 16:21:43 by dpetrov          ###   ########.fr        #
+#    Updated: 2018/02/02 09:47:11 by dpetrov          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME	= 21sh
 CC		= -gcc
 CFLAGS	= #-Wall -Wextra -Werror
 
-SRCS	= main.c err.c msc.c \
+SRCS	= main.c err.c msc.c signal.c \
 		  \
 		  readline/tty.c readline/ft_readline.c readline/detect_ctrl.c \
 		  readline/exec_ctrl.c readline/history.c readline/init.c \

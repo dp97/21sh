@@ -30,7 +30,7 @@
 typedef struct		s_scmd
 {
 	char			**argv;
-	int				ioe[3];
+	int				ioe[4];
 	struct s_scmd	*next;
 }					t_scmd;
 
@@ -43,6 +43,7 @@ typedef struct		s_cmd
 t_cmd				*parser(t_token *cmd);
 void 				purge_cmd(t_cmd *cmd);
 void 				purge_scmd(t_scmd *scmd);
+int get_file(char *name, int append);
 /*
 **	Handleres for t_scmd and t_cmd structures.
 */

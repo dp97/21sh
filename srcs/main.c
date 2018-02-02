@@ -25,6 +25,7 @@ int		main(int argc, char **argv, char **env)
 	int		status;
 	(void)argc;
 	(void)argv;
+	setup_signals();
 	while(1)
 	{
 //ft_setenv("HELLO", "testing...",1);

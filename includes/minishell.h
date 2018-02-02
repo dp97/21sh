@@ -41,7 +41,7 @@ char				**ft_get_args(char **env, char *line);
 int					ft_error(char *message);
 int					ft_launch(char **args, char **env);
 char				*my_read_line(void);
-void				sig_handler(int signo);
+void setup_signals(void);
 //void				set_null_id(t_cmd *history);
 void				capture_time(char *buf);
 /*

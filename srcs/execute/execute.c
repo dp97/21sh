@@ -53,7 +53,7 @@ int			execute_scmd(t_scmd *scmd, char **env)
 	while (command)
 	{
 		argv = command->argv;
-		
+
 		if (command->ioe[1] == TO_PIPE)
 			ioe[1] = TO_PIPE;
 		else if (command->ioe[1] == TO_FILE || command->ioe[1] == ATO_FILE)
@@ -63,7 +63,10 @@ int			execute_scmd(t_scmd *scmd, char **env)
 			if ((ioe[1] = get_file(command->next->argv[0], command->ioe[1])) == -1)
 				return (ERR);
 		}
-
+/*
+	TODO:
+	- Make redirection so that before executing the whole command.
+*/
 		if (command->ioe[0] != INVALID_FD || command->ioe[1] != INVALID_FD)
 		{
 			if (get_input_from(ioe, argv, env) == EXIT)
