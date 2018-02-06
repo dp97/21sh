@@ -24,13 +24,20 @@
 # define ATO_FILE	9
 # define FROM_FILE	10
 # define FROM_HEREFILE	11
+# define NO_APPEND      12
 # include "libft.h"
 # include "tokening.h"
 # include "minishell.h"
 typedef struct		s_scmd
 {
 	char			**argv;
-	int				ioe[4];
+	int				open_flags;
+	char			*output;
+	int				out;
+	char			*input;
+	int				in;
+	char			*error;
+	int				err;
 	struct s_scmd	*next;
 }					t_scmd;
 
@@ -43,12 +50,12 @@ typedef struct		s_cmd
 t_cmd				*parser(t_token *cmd);
 void 				purge_cmd(t_cmd *cmd);
 void 				purge_scmd(t_scmd *scmd);
-int get_file(char *name, int append);
+void destroy_scmd(t_scmd **scmd);
 /*
 **	Handleres for t_scmd and t_cmd structures.
 */
 t_cmd				*new_cmd(void);
 t_scmd				*new_scmd(void);
-t_scmd				*add_scmd(t_scmd *head, t_scmd *new, int ioe);
+t_scmd				*add_scmd(t_scmd *head, t_scmd *new);
 t_cmd				*add_cmd(t_cmd *head, t_cmd *new);
 #endif

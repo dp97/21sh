@@ -10,8 +10,8 @@
 # include "libft.h"
 # include "tokening.h"
 # include "parser.h"
-#include <fcntl.h>
-#include <errno.h>
+# include <fcntl.h>
+# include <errno.h>
 # include <sys/wait.h>
 
 int		ret_error(char *pmsg, char *msg, int code);
@@ -21,11 +21,9 @@ int		ret_error(char *pmsg, char *msg, int code);
 int		execute(t_cmd *cmds, char **env);
 int		search_and_run(char **cmds, char **env);
 int   piping(char **cmd, char **env);
-int get_input_from(int descriptor[3], char **argv, char **env);
-/*
-**  open file for writing in it.
-*/
-int get_file(char *name, int append);
+int get_input_from(t_scmd *scmd, char **env);
+int open_streams(t_scmd *sc);
+
 /*
 **  path.c  - Search command location in system.
 */

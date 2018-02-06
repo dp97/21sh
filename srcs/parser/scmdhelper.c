@@ -1,22 +1,5 @@
 #include "parser.h"
 
-static void set_ioe(t_scmd *first, t_scmd *second, int ioe)
-{
-    if (ioe == PIPE)
-    {
-        first->ioe[1] = TO_PIPE;
-        second->ioe[0] = FROM_PIPE;
-    }
-    else if (ioe == OUT)
-        first->ioe[1] = TO_FILE;
-    else if (ioe == DOUT)
-        first->ioe[1] = ATO_FILE;
-    // else if (ioe == IN)
-    //     first->ioe[0] = FROM_FILE;
-    // else if (ioe == IN)
-    //     first->ioe[0] = FROM_HEREFILE;
-}
-
 t_scmd		*new_scmd(void)
 {
     t_scmd  *new;
@@ -25,32 +8,39 @@ t_scmd		*new_scmd(void)
     if (new)
     {
         new->argv = NULL;
-        new->ioe[0] = -1;
-        new->ioe[1] = -1;
-        new->ioe[2] = -1;
+        new->open_flags = 0;
+        new->output = NULL;
+        new->out = STDOUT_FILENO;
+        new->input = NULL;
+        new->in = STDIN_FILENO;
+        new->error = NULL;
+        new->err = STDERR_FILENO;
         new->next = NULL;
     }
     return (new);
 }
 
-t_scmd      *add_scmd(t_scmd *head, t_scmd *new, int ioe)
+t_scmd      *add_scmd(t_scmd *head, t_scmd *new)
 {
     t_scmd  *tmp;
 
     if (head == NULL)
-    {
-        if (ioe != -1)
-        {
-            ret_error("parse", "Grammar error.", ERR);
-            return (NULL);
-        }
         return (new);
-    }
     tmp = head;
     while (tmp->next)
         tmp = tmp->next;
     tmp->next = new;
-    if (ioe != -1)
-        set_ioe(tmp, tmp->next, ioe);
     return (head);
+}
+
+void destroy_scmd(t_scmd **scmd)
+{
+    if (scmd == NULL|| *scmd == NULL)
+        return ;
+    ft_2dstrdel((*scmd)->argv);
+    ft_strdel(&(*scmd)->input);
+    ft_strdel(&(*scmd)->output);
+    ft_strdel(&(*scmd)->error);
+    free(*scmd);
+    *scmd = NULL;
 }

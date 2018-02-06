@@ -10,30 +10,29 @@ int is_valid_fd(int fd)
 **  Create a pipe and pump result of command in it,
 **  and return read end of it.
 */
-int get_input_from(int descriptor[3], char **argv, char **env)
+int get_input_from(t_scmd *scmd, char **env)
 {
     pid_t pid;
-    int     fildes[2];
     int     ret_code;
 //ft_putstr("<GET>");
 
-fildes[0] = -1;
-fildes[1] = -1;
+    if (scmd->in > -1 && fcntl(scmd->in, F_GETFL) == -1)
+        return (ret_error(0, "INPUT is not a valid descriptor.", ERR));
+    if (scmd->out > -1 && fcntl(scmd->out, F_GETFL) == -1)
+        return (ret_error(0, "OUTPUT is not a valid descriptor.", ERR));
+    if (scmd->err > -1 && fcntl(scmd->err, F_GETFL) == -1)
+        return (ret_error(0, "OUTPUT is not a valid descriptor.", ERR));
 
-    if (descriptor[1] == TO_PIPE)
-    {
-        if (pipe(fildes) == -1)
-        {
-            perror("pipe()");
-            return (ERR);
-        }
-        descriptor[1] = fildes[1];
-    }
-    if (descriptor[1] != INVALID_FD && fcntl(descriptor[1], F_GETFL) == -1)
-        return (ret_error(0, "Output is not a valid descriptor.", ERR));
-    if (descriptor[0] != INVALID_FD && fcntl(descriptor[0], F_GETFL) == -1)
-        return (ret_error(0, "Input is not a valid descriptor.", ERR));
-
+    // if (descriptor[1] == TO_PIPE)
+    // {
+    //     if (pipe(fildes) == -1)
+    //     {
+    //         perror("pipe()");
+    //         return (ERR);
+    //     }
+    //     descriptor[1] = fildes[1];
+    // }
+printf("=>%s {%d.%d.%d}\n", scmd->argv[0], scmd->in, scmd->out, scmd->err);
 
     pid = fork();
     if (pid == -1)
@@ -43,25 +42,27 @@ fildes[1] = -1;
     }
     else if (pid == 0)
     {
-        close(fildes[0]);
-        if (descriptor[0] != INVALID_FD && descriptor[0] != STDIN_FILENO)
-            dup2(descriptor[0], STDIN_FILENO);
-        if (descriptor[1] != INVALID_FD && descriptor[1] != STDOUT_FILENO)
-            dup2(descriptor[1], STDOUT_FILENO);
-        ret_code = search_and_run(argv, env);
-        close(descriptor[0]);
-        close(descriptor[1]);
-        close(fildes[1]);
+        dup2(scmd->in, STDIN_FILENO);
+        dup2(scmd->out, STDOUT_FILENO);
+        dup2(scmd->err, STDERR_FILENO);
+
+        ret_code = search_and_run(scmd->argv, env);
+
+        close(scmd->in);
+        close(scmd->out);
+        close(scmd->err);
+
         exit(ret_code);
     }
     //waitpid(pid, 0, 0);
 
     //close(fildes[0]);
-    close(descriptor[0]);
-    close(descriptor[1]);
-
-    descriptor[0] = (fildes[0] != INVALID_FD) ? fildes[0] : -1;
-    descriptor[1] = -1;
+    if (scmd->in != STDIN_FILENO)
+        close(scmd->in);
+    if (scmd->out != STDOUT_FILENO)
+        close(scmd->out);
+    if (scmd->err != STDERR_FILENO)
+        close(scmd->err);
 
 int status;
     while (1)

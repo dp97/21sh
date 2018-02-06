@@ -9,6 +9,9 @@ void purge_scmd(t_scmd *scmd)
         scmd_del = scmd;
         scmd = scmd->next;
         ft_2dstrdel(scmd_del->argv);
+        ft_strdel(&scmd_del->input);
+        ft_strdel(&scmd_del->output);
+        ft_strdel(&scmd_del->error);
         free(scmd_del);
     }
 }

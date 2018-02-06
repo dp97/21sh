@@ -8,5 +8,7 @@ static void signal_handler(int signo)
 
 void setup_signals(void)
 {
-	signal(SIGINT, signal_handler);
+	signal(SIGINT, SIG_IGN);
+    signal(SIGQUIT, SIG_IGN);
+    signal(SIGTSTP, SIG_IGN);
 }

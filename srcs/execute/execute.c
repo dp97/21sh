@@ -44,37 +44,24 @@ int		search_and_run(char **cmds, char **env)
 int			execute_scmd(t_scmd *scmd, char **env)
 {
 	t_scmd	*command;
-	char	**argv;
-	int		ioe[3];
+	int		code;
 
 	command = scmd;
-	ioe[0] = INVALID_FD;
-	ioe[1] = INVALID_FD;
+
+	/* REDIRECTION and PIPING */
+	open_streams(command);
+	
 	while (command)
 	{
-		argv = command->argv;
+		code = get_input_from(command, env);
+		if (code == EXIT)
+			return (EXIT);
+		else if (code == ERR)
+			return (ERR);
 
-		if (command->ioe[1] == TO_PIPE)
-			ioe[1] = TO_PIPE;
-		else if (command->ioe[1] == TO_FILE || command->ioe[1] == ATO_FILE)
-		{
-			if (command->next == NULL)
-				return (ERR);
-			if ((ioe[1] = get_file(command->next->argv[0], command->ioe[1])) == -1)
-				return (ERR);
-		}
-/*
-	TODO:
-	- Make redirection so that before executing the whole command.
-*/
-		if (command->ioe[0] != INVALID_FD || command->ioe[1] != INVALID_FD)
-		{
-			if (get_input_from(ioe, argv, env) == EXIT)
-				return (EXIT);
-		}
-		else
-			if (search_and_run(argv, env) == EXIT)
-				return (EXIT);
+		// else
+		// 	if (search_and_run(argv, env) == EXIT)
+		// 		return (EXIT);
 		command = command->next;
 	}
 	return (DONE);
