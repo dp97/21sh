@@ -3,12 +3,29 @@
 static int	detect_simple_cmd(t_token *l)
 {
 	int		c;
+	char	*tmp;
+	t_token	*prevt;
 
 	c = 0;
 	while (l && l->type != OPERATOR_T)
 	{
+		prevt = l;
 		l = l->next;
 		c++;
+
+		if (l && l->next && ft_strlen(l->value) == 1 && \
+						l->next->type == OPERATOR_T && \
+						ft_strchr("><", l->next->value[0]) && \
+						ft_strchr("0123456789", l->value[0]))
+		{
+			tmp = ft_strjoin(l->value, l->next->value);
+			prevt->next = l->next;
+			ft_strdel(&(l->value));
+			free(l);
+			l = prevt->next;
+			ft_strdel(&(l->value));
+			l->value = tmp;
+		}
 	}
 	if (c == 0 && l == NULL)
 		return (-1);
@@ -26,53 +43,6 @@ static int	setup_argv(t_scmd *scmd, t_token **tokens, int count)
 		*tokens = (*tokens)->next;
 	}
 	scmd->argv[i] = NULL;
-	return (DONE);
-}
-
-static int	setup_stream_names(t_scmd *whole_scmd, t_scmd *scmd, char *pre, char *post)
-{
-	t_scmd	*whole;
-	t_scmd	*scommand;
-
-	whole = whole_scmd;
-	if (pre)
-	{
-		// if (0 == ft_strcmp("|", pre))
-		// 	scmd->input = ft_strdup("|");
-
-		if (0 == ft_strcmp(">", pre))
-		{
-			if (whole_scmd == NULL || scmd->argv == NULL)
-				return (ret_error("Parse", "Error near '>'", ERR));
-			while (whole->next)
-				whole = whole->next;
-			whole->open_flags = O_TRUNC | O_WRONLY | O_CREAT;
-			whole->output = ft_strdup(scmd->argv[0]);
-			return (NO_APPEND);
-		}
-		else if (0 == ft_strcmp(">>", pre))
-		{
-			if (whole_scmd == NULL || scmd->argv == NULL)
-				return (ret_error("Parse", "Error near '<<'", ERR));
-			while (whole->next)
-				whole = whole->next;
-			whole->open_flags = O_APPEND | O_WRONLY | O_CREAT;
-			whole->output = ft_strdup(scmd->argv[0]);
-			return (NO_APPEND);
-		}
-		else if (0 == ft_strcmp("<", pre))
-		{
-			if (whole_scmd == NULL || scmd->argv == NULL)
-				return (ret_error("Parse", "Error near '<'", ERR));
-			whole_scmd->input = ft_strdup(scmd->argv[0]);
-			return (NO_APPEND);
-		}
-	}
-	if (post)
-	{
-		if (ft_strcmp("|", post) == 0)
-			scmd->output = ft_strdup("|");
-	}
 	return (DONE);
 }
 
@@ -123,7 +93,7 @@ t_cmd		*parser(t_token *line)
 			if (l)
 				l = l->next;
 
-			if (setup_stream_names(cmd->by_one, simple_cmd, pre_operator, post_operator) != NO_APPEND)
+			if (prep_redir(cmd->by_one, simple_cmd, pre_operator, post_operator) != NO_APPEND)
 			{
 				if ((cmd->by_one = add_scmd(cmd->by_one, simple_cmd)) == NULL)
 				{

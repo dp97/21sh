@@ -51,6 +51,7 @@ t_cmd				*parser(t_token *cmd);
 void 				purge_cmd(t_cmd *cmd);
 void 				purge_scmd(t_scmd *scmd);
 void destroy_scmd(t_scmd **scmd);
+int	prep_redir(t_scmd *whole_scmd, t_scmd *scmd, char *pre, char *post);
 /*
 **	Handleres for t_scmd and t_cmd structures.
 */

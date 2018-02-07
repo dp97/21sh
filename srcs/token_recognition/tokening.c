@@ -3,7 +3,7 @@
 t_token		*new_token(char *value, short type)
 {
 	t_token	*new;
-	
+
 	if ((new = (t_token *)malloc(sizeof(t_token))) == NULL)
 		return (NULL);
 	new->value = NULL;
@@ -46,7 +46,7 @@ t_token		*tokening(char *line)
 		curr = *line;
 		if (curr == '\0')
 			return (tokens);
-/*2,3*/	else if (prev == OPERATOR_T && !(QUOTED_FLAG & flags))
+		else if (prev == OPERATOR_T && !(QUOTED_FLAG & flags))
 		{
 			if (curr == '<' || curr == '>')
 				t->value = ft_straddch(t->value, curr);
@@ -56,7 +56,7 @@ t_token		*tokening(char *line)
 				continue ;
 			}
 		}
-/*4*/	else if ((curr == '\\' || curr == '\'' || curr == '\"') && !(QUOTED_FLAG & flags))
+		else if ((curr == '\\' || curr == '\'' || curr == '\"') && !(QUOTED_FLAG & flags))
 		{
 			t->value = ft_straddch(t->value, curr);
 			flags |= QUOTED_FLAG;
@@ -67,13 +67,13 @@ t_token		*tokening(char *line)
 			append_token(&t, OPERATOR_T);
 			t->value = ft_straddch(t->value, curr);
 		}
-		else if (curr == '\n' && !(QUOTED_FLAG & flags))//delimiter
+		else if (curr == '\n' && !(QUOTED_FLAG & flags))
 			prev = DELIMIT;
-		else if (curr == ' ' && !(QUOTED_FLAG & flags))//delimiter
+		else if (curr == ' ' && !(QUOTED_FLAG & flags))
 			prev = DELIMIT;
-		else if (prev == WORD_T)//add to word
+		else if (prev == WORD_T)
 			t->value = ft_straddch(t->value, curr);
-		else if (curr == '#')//comments
+		else if (curr == '#')
 		{
 			while ((curr = *line) && curr != '\n')
 				line++;

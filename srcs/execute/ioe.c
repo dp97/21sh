@@ -49,6 +49,14 @@ int open_streams(t_scmd *sc)
                 return (ERR);
             }
         }
+        if (scmd->error)
+        {
+            if (-1 == (scmd->err = open(scmd->error, scmd->open_flags, 0755)))
+            {
+                perror("open");
+                return (ERR);
+            }
+        }
 
 		scmd = scmd->next;
 	}

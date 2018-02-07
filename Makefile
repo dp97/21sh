@@ -6,7 +6,7 @@
 #    By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/06 09:37:16 by dpetrov           #+#    #+#              #
-#    Updated: 2018/02/06 12:40:54 by dpetrov          ###   ########.fr        #
+#    Updated: 2018/02/07 16:10:36 by dpetrov          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRCS	= main.c err.c msc.c signal.c \
 		  execute/ft_execve.c execute/pipe.c execute/ioe.c \
 		  \
 		  parser/parser.c parser/scmdhelper.c parser/cmdhelper.c parser/purger.c \
+		  parser/prepare_redirection.c \
 		  \
 		  builtins/cd.c builtins/ft_setenv.c
 
