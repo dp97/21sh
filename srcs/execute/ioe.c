@@ -1,12 +1,17 @@
 #include "parser.h"
 
-int get_file(char *name)
+static int  setup_pipe(int *w, int *r)
 {
-    int descriptor;
+    int fildes[2];
 
-    if ((descriptor = open(name, O_WRONLY | O_TRUNC | O_CREAT, 0755)) == -1)
-        perror(name);
-    return (descriptor);
+    if (pipe(fildes) == -1)
+    {
+        perror("pipe()");
+        return (ERR);
+    }
+    *r = fildes[0];
+    *w = fildes[1];
+    return (DONE);
 }
 
 /*
@@ -22,7 +27,11 @@ int open_streams(t_scmd *sc)
 
         if (scmd->input)
         {
-            if (-1 == (scmd->in = open(scmd->input, O_RDONLY)))
+            if (0 == ft_strcmp(scmd->input, "|"))
+            {
+                //setup_pipe(&(scmd->out), &(scmd->next->in));
+            }
+            else if (-1 == (scmd->in = open(scmd->input, O_RDONLY)))
             {
                 perror("open");
                 return (ERR);
@@ -30,7 +39,11 @@ int open_streams(t_scmd *sc)
         }
         if (scmd->output)
         {
-            if (-1 == (scmd->out = open(scmd->output, scmd->open_flags, 0755)))
+            if (0 == ft_strcmp(scmd->output, "|"))
+            {
+                setup_pipe(&(scmd->out), &(scmd->next->in));
+            }
+            else if (-1 == (scmd->out = open(scmd->output, scmd->open_flags, 0755)))
             {
                 perror("open");
                 return (ERR);

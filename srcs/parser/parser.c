@@ -37,28 +37,19 @@ static int	setup_stream_names(t_scmd *whole_scmd, t_scmd *scmd, char *pre, char 
 	whole = whole_scmd;
 	if (pre)
 	{
-		if (0 == ft_strcmp("|", pre))
-			scmd->input = ft_strdup("|");
+		// if (0 == ft_strcmp("|", pre))
+		// 	scmd->input = ft_strdup("|");
 
-		else if (0 == ft_strcmp(">", pre))
+		if (0 == ft_strcmp(">", pre))
 		{
 			if (whole_scmd == NULL || scmd->argv == NULL)
 				return (ret_error("Parse", "Error near '>'", ERR));
 			while (whole->next)
 				whole = whole->next;
+			whole->open_flags = O_TRUNC | O_WRONLY | O_CREAT;
 			whole->output = ft_strdup(scmd->argv[0]);
 			return (NO_APPEND);
 		}
-
-		else if (0 == ft_strcmp("<", pre))
-		{
-			if (whole_scmd == NULL || scmd->argv == NULL)
-				return (ret_error("Parse", "Error near '<'", ERR));
-			whole_scmd->open_flags = O_TRUNC | O_WRONLY | O_CREAT;
-			whole_scmd->input = ft_strdup(scmd->argv[0]);
-			return (NO_APPEND);
-		}
-
 		else if (0 == ft_strcmp(">>", pre))
 		{
 			if (whole_scmd == NULL || scmd->argv == NULL)
@@ -69,10 +60,17 @@ static int	setup_stream_names(t_scmd *whole_scmd, t_scmd *scmd, char *pre, char 
 			whole->output = ft_strdup(scmd->argv[0]);
 			return (NO_APPEND);
 		}
+		else if (0 == ft_strcmp("<", pre))
+		{
+			if (whole_scmd == NULL || scmd->argv == NULL)
+				return (ret_error("Parse", "Error near '<'", ERR));
+			whole_scmd->input = ft_strdup(scmd->argv[0]);
+			return (NO_APPEND);
+		}
 	}
 	if (post)
 	{
-		if (0 == ft_strcmp("|", pre))
+		if (ft_strcmp("|", post) == 0)
 			scmd->output = ft_strdup("|");
 	}
 	return (DONE);

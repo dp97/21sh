@@ -1,11 +1,6 @@
 #include "execute.h"
 #include <stdio.h>
 
-int is_valid_fd(int fd)
-{
-    return fcntl(fd, F_GETFL) != -1 || errno != EBADF;
-}
-
 /*
 **  Create a pipe and pump result of command in it,
 **  and return read end of it.
@@ -23,16 +18,8 @@ int get_input_from(t_scmd *scmd, char **env)
     if (scmd->err > -1 && fcntl(scmd->err, F_GETFL) == -1)
         return (ret_error(0, "OUTPUT is not a valid descriptor.", ERR));
 
-    // if (descriptor[1] == TO_PIPE)
-    // {
-    //     if (pipe(fildes) == -1)
-    //     {
-    //         perror("pipe()");
-    //         return (ERR);
-    //     }
-    //     descriptor[1] = fildes[1];
-    // }
-printf("=>%s {%d.%d.%d}\n", scmd->argv[0], scmd->in, scmd->out, scmd->err);
+
+//printf("=>%s {%d.%d.%d}\n", scmd->argv[0], scmd->in, scmd->out, scmd->err);
 
     pid = fork();
     if (pid == -1)

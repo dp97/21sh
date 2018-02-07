@@ -41,6 +41,15 @@ int		search_and_run(char **cmds, char **env)
 	return (ret_code);
 }
 
+static int	check_descriptors(t_scmd *scmd)
+{
+	if (scmd->in != STDIN_FILENO \
+		|| scmd->out != STDOUT_FILENO \
+		|| scmd->err != STDERR_FILENO)
+		return (0);
+	return (1);
+}
+
 int			execute_scmd(t_scmd *scmd, char **env)
 {
 	t_scmd	*command;
@@ -50,18 +59,20 @@ int			execute_scmd(t_scmd *scmd, char **env)
 
 	/* REDIRECTION and PIPING */
 	open_streams(command);
-	
+
 	while (command)
 	{
-		code = get_input_from(command, env);
+		if (check_descriptors(command))
+		{
+			code = search_and_run(command->argv, env);
+		}
+		else
+			code = get_input_from(command, env);
 		if (code == EXIT)
 			return (EXIT);
 		else if (code == ERR)
 			return (ERR);
 
-		// else
-		// 	if (search_and_run(argv, env) == EXIT)
-		// 		return (EXIT);
 		command = command->next;
 	}
 	return (DONE);
