@@ -45,7 +45,7 @@ int		main(int argc, char **argv, char **env)
 		if (cmds == NULL)
 			continue ;
 		ft_deltokens(&tokens);
-
+		
 		status = execute(cmds, env);
 		purge_cmd(cmds);
 

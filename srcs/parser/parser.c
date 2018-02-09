@@ -29,6 +29,8 @@ static int	detect_simple_cmd(t_token *l)
 	}
 	if (c == 0 && l == NULL)
 		return (-1);
+	else if (c == 0 && l && l->type == OPERATOR_T)
+		return (ret_error("Parse", "invalid use of operator", -2));
 	return (c);
 }
 
@@ -37,6 +39,8 @@ static int	setup_argv(t_scmd *scmd, t_token **tokens, int count)
 	int	i;
 
 	i = 0;
+	if (count == 0)
+		return(DONE);
 	while (i < count)
 	{
 		scmd->argv[i++] = ft_strdup((*tokens)->value);
@@ -74,14 +78,13 @@ t_cmd		*parser(t_token *line)
 
 		pre_operator = NULL;
 		post_operator = NULL;
-		while ((count = detect_simple_cmd(l)) != -1)
+		while ((count = detect_simple_cmd(l)) > -1)
 		{
 			if ((simple_cmd = new_scmd()) == NULL || \
 				(simple_cmd->argv = \
 					(char **)malloc(sizeof(char *) * (count + 1))) == NULL)
 			{
 				ret_error("#2 parser", "Not enough memory.", ERR);
-				purge_scmd(cmd->by_one);
 				purge_cmd(cmd);
 				return (NULL);
 			}
@@ -109,7 +112,13 @@ t_cmd		*parser(t_token *line)
 				break ;
 		}
 		head = add_cmd(head, cmd);
-		if (count == -1 || l == NULL)
+
+		if (count == -2 || (head && head->by_one == NULL))
+		{
+			purge_cmd(head);
+			return (NULL);
+		}
+		else if (count == -1 || l == NULL)
 			break ;
 	}
 	return (head);

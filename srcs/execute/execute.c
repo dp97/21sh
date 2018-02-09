@@ -31,7 +31,10 @@ int		search_and_run(char **cmds, char **env)
 		else
 		{
 			if ((in_path = search_in_path(cmd_name)) != NULL)
+			{
 				ret_code = ft_execve(in_path, cmds, env);
+				ft_strdel(&in_path);
+			}
 			else
 				return (ret_error(cmd_name, "Command not found.", 127));
 		}

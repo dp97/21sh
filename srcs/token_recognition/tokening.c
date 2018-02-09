@@ -23,6 +23,8 @@ void	append_token(t_token **tokens, short type)
 		(*tokens)->next = new_token(NULL, type);
 		*tokens = (*tokens)->next;
 	}
+	else
+		(*tokens)->type = type;
 }
 
 t_token		*tokening(char *line)
