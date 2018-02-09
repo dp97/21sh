@@ -39,6 +39,32 @@ static int  resolve_optfd(char **op)
     return (-1);
 }
 
+/*
+**  Duplicate or close a file descriptor.
+*/
+static int     dup_output(t_scmd *whole_scmd, t_scmd *curr_scmd, int stream)
+{
+    t_scmd      *whole;
+    int         fd;
+
+    whole = whole_scmd;
+    while (whole->next)
+        whole = whole->next;
+    if (0 == ft_strcmp(curr_scmd->argv[0], "-"))
+        fd = -2;
+    else
+        fd = ft_atoi(curr_scmd->argv[0]);
+    if (fd >= 0 && fcntl(fd, F_GETFL) == -1)
+        return (ret_error(curr_scmd->argv[0], "not an open descriptor.", ERR));
+    if (stream == STDIN_FILENO)
+        whole->in = fd;
+    else if (stream == STDERR_FILENO)
+        whole->err = fd;
+    else
+        whole->out = fd;
+    return (NO_APPEND);
+}
+
 int	prep_redir(t_scmd *whole_scmd, t_scmd *curr_scmd, char *pre, char *post)
 {
     int     optional_fd;
@@ -50,6 +76,8 @@ int	prep_redir(t_scmd *whole_scmd, t_scmd *curr_scmd, char *pre, char *post)
         optional_fd = resolve_optfd(&pre);
 		if (0 == ft_strcmp(">", pre))
             return (red_output(whole_scmd, curr_scmd, optional_fd, 0));
+        else if (0 == ft_strcmp(">&", pre))
+            return (dup_output(whole_scmd, curr_scmd, optional_fd));
 		else if (0 == ft_strcmp(">>", pre))
             return (red_output(whole_scmd, curr_scmd, optional_fd, 1));
 		else if (0 == ft_strcmp("<", pre))

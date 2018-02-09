@@ -50,13 +50,11 @@ t_token		*tokening(char *line)
 			return (tokens);
 		else if (prev == OPERATOR_T && !(QUOTED_FLAG & flags))
 		{
-			if (curr == '<' || curr == '>')
+			prev = DELIMIT;
+			if (curr == '<' || curr == '>' || curr == '&')
 				t->value = ft_straddch(t->value, curr);
 			else
-			{
-				prev = DELIMIT;
 				continue ;
-			}
 		}
 		else if ((curr == '\\' || curr == '\'' || curr == '\"') && !(QUOTED_FLAG & flags))
 		{

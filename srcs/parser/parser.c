@@ -30,7 +30,7 @@ static int	detect_simple_cmd(t_token *l)
 	if (c == 0 && l == NULL)
 		return (-1);
 	else if (c == 0 && l && l->type == OPERATOR_T)
-		return (ret_error("Parse", "invalid use of operator", -2));
+		return (ret_error("Parse invalid use of operator", l->value, -2));
 	return (c);
 }
 

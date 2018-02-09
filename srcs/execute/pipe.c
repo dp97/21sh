@@ -29,9 +29,18 @@ int get_input_from(t_scmd *scmd, char **env)
     }
     else if (pid == 0)
     {
-        dup2(scmd->in, STDIN_FILENO);
-        dup2(scmd->out, STDOUT_FILENO);
-        dup2(scmd->err, STDERR_FILENO);
+        if (scmd->in == -2)
+            close(STDIN_FILENO);
+        else
+            dup2(scmd->in, STDIN_FILENO);
+        if (scmd->out == -2)
+            close(STDOUT_FILENO);
+        else
+            dup2(scmd->out, STDOUT_FILENO);
+        if (scmd->err == -2)
+            close(STDERR_FILENO);
+        else
+            dup2(scmd->err, STDERR_FILENO);
 
         ret_code = search_and_run(scmd->argv, env);
 

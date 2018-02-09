@@ -1,5 +1,6 @@
 #ifndef EXECUTE_H
 # define EXECUTE_H
+# define CLOSE_FD       -2
 # define INVALID_FD     -1
 # define DONE			0
 # define ERR			1
