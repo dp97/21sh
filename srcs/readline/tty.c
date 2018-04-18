@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/05 11:32:09 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/07 18:01:46 by dpetrov          ###   ########.fr       */
+/*   Updated: 2018/04/18 11:11:34 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	find(void)
 {
 	char	*path;
 
-	printf("{%d}", ttyslot());
 	if (isatty(STDIN_FILENO))
 	{
 		if ((path = ttyname(STDIN_FILENO)) == NULL)

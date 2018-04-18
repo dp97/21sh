@@ -6,7 +6,7 @@
 #    By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/06 09:37:16 by dpetrov           #+#    #+#              #
-#    Updated: 2018/02/07 16:10:36 by dpetrov          ###   ########.fr        #
+#    Updated: 2018/04/18 11:30:17 by dpetrov          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ SRCS	= main.c err.c msc.c signal.c \
 		  readline/arrows.c readline/ft_log.c readline/s_chain.c \
 		  readline/shift_plus_arrows.c readline/msc_keypad.c \
 		  readline/cut_copy_paste.c readline/clipboard.c \
-		  readline/quotes.c readline/delete_keys.c \
+		  readline/quotes.c readline/delete_keys.c readline/auto_completion.c \
 		  \
 		  token_recognition/tokening.c token_recognition/deltokens.c\
 		  \

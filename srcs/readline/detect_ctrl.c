@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/06 12:22:44 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/12 18:21:55 by dpetrov          ###   ########.fr       */
+/*   Updated: 2018/04/18 11:28:40 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int		detect_escape(char *ctrl, t_cursor *cursor, t_chain **line, t_flag *flags)
 		;
 	else if (cut_copy_paste(ctrl, *line, cursor) != NO_MATCH)
 		;
+	else if (0 == ft_strcmp(ctrl, "\t"))
+		auto_completion(cursor, line);
 	else
 		return (NO_MATCH);
 	return (MATCH);

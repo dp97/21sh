@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/07 17:56:19 by dpetrov           #+#    #+#             */
-/*   Updated: 2018/01/26 13:50:27 by dpetrov          ###   ########.fr       */
+/*   Updated: 2018/04/18 11:29:43 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 # define BACKSLASH_PROMPT	"$> "
 # define QUOTE_PROMPT		"quote> "
 # define DQUOTE_PROMPT		"dquote> "
-# define HISTORY_PATH		"/nfs/zfs-student-6/users/2016_cluj/dpetrov/21sh/.history"
-# define LOG_PATH				"/nfs/zfs-student-6/users/2016_cluj/dpetrov/21sh/.log"
+# define HISTORY_PATH		"/nfs/zfs-student-6/users/2016_cluj/dpetrov/.21sh_history"
+# define LOG_PATH			"/nfs/zfs-student-6/users/2016_cluj/dpetrov/.21sh_log"
 # define RET_OK		0
 # define RET_ERR	1
 # define RET_MIRR	-1
@@ -181,4 +181,9 @@ void			ft_update_history(char *line);
 **		- Handles 'Home', 'End' keys.
 */
 int				if_msc_keypad(char *key, t_cursor *cursor);
+/*
+ *	auto_completion.c
+ *		- Autocomplition feature.
+ */
+void			auto_completion(t_cursor *cursor, t_chain **line);
 #endif

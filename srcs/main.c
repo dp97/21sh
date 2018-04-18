@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/24 10:17:14 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/08 12:33:43 by dpetrov          ###   ########.fr       */
+/*   Updated: 2018/04/18 11:13:17 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ int		main(int argc, char **argv, char **env)
 	setup_signals();
 	while(1)
 	{
-//ft_setenv("HELLO", "testing...",1);
-//ft_putstr(getenv("HELLO"));
 		line = ft_readline();
 		ft_putchar('\n');
 		if (line == NULL)

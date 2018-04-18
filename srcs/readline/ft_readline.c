@@ -6,13 +6,14 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/06 11:52:07 by dpetrov           #+#    #+#             */
-/*   Updated: 2017/12/12 19:28:03 by dpetrov          ###   ########.fr       */
+/*   Updated: 2018/04/18 11:33:26 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_readline.h"
 
-/*	Extract and concatenate all s_chain 'value' field.
+/*
+** 	Extract and concatenate all s_chain 'value' field.
 */
 char	 	*ft_assemble_line(t_chain *line)
 {
@@ -146,25 +147,25 @@ char			*ft_readline(void)
 		ft_strclr(key);
 	}
 
-char *result = ft_assemble_line(line);
-ft_update_history(result);
-ft_chainpurge(&history);
-ft_chainpurge(&line);
-tputs(tgetstr("ke", 0), 1, ft_puti);
-tty_disable_raw();
+	char *result = ft_assemble_line(line);
+	ft_update_history(result);
+	ft_chainpurge(&history);
+	ft_chainpurge(&line);
+	tputs(tgetstr("ke", 0), 1, ft_puti);
+	tty_disable_raw();
 
-if (flags & QUOTE_FLAG)
-	ft_puterr(NAME, ": unexpected EOF while looking for matching `''.");
-else if (flags & DQUOTE_FLAG)
-	ft_puterr(NAME, ": unexpected EOF while looking for matching `\"'.");
-else if (flags & EXIT_FLAG)
-{
-	ft_strdel(&result);
-	result = ft_strdup("exit");
-}
-else if (flags & CANCEL_FLAG)
-	ft_strdel(&result);
-return (result);
+	if (flags & QUOTE_FLAG)
+		ft_puterr(NAME, ": unexpected EOF while looking for matching `''.");
+	else if (flags & DQUOTE_FLAG)
+		ft_puterr(NAME, ": unexpected EOF while looking for matching `\"'.");
+	else if (flags & EXIT_FLAG)
+	{
+		ft_strdel(&result);
+		result = ft_strdup("exit");
+	}
+	else if (flags & CANCEL_FLAG)
+		ft_strdel(&result);
+	return (result);
 }
 
 /*
