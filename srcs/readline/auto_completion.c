@@ -6,7 +6,7 @@
 /*   By: dpetrov <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:24:20 by dpetrov           #+#    #+#             */
-/*   Updated: 2018/04/18 18:06:51 by dpetrov          ###   ########.fr       */
+/*   Updated: 2018/04/18 18:14:08 by dpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,5 @@ void				auto_completion(t_cursor *cursor, t_chain **line)
 		}
 	}
 	ft_strdel(&name);
+	closedir(dirp);
 }
